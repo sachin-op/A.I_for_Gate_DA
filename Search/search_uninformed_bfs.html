@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Introduction to Breadth-First Search</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+  <article>
+    <h1>Introduction to Breadth-First Search</h1>
+    <p> <strong> Breadth-First Search (BFS) </strong>is an uninformed search algorithm that explores the search space level by level, expanding all nodes at the present depth before moving to the next depth level.<br> BFS Follows a  <strong> Queue (FIFO: First In First Out) </strong>Data Structure.</p>
+    <h2>Example of Breadth First Search (BFS)</h2>
+
+<p>Consider the following search tree:</p>
+
+<pre>
+            A
+          /   \
+         B     C
+        / \   / \
+       D   E F   G
+          /
+         H
+</pre>
+
+<h3>BFS Traversal (Level Order)</h3>
+<p>BFS explores level by level from left to right.</p>
+
+<h3>Step-by-step Queue Process</h3>
+<table border="1" cellpadding="8" cellspacing="0">
+  <tr>
+    <th>Step</th>
+    <th>Queue (Front → Rear)</th>
+    <th>Visited Node</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>A</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>B, C</td>
+    <td>B</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>C, D, E</td>
+    <td>C</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>D, E, F, G</td>
+    <td>D</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>E, F, G</td>
+    <td>E</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>F, G, H</td>
+    <td>F</td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>G, H</td>
+    <td>G</td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>H</td>
+    <td>H</td>
+  </tr>
+</table>
+<h3>Explanation</h3>
+<ul>
+  <li>Start at root <strong>A</strong></li>
+  <li>Visit all nodes at depth 1 → <strong>B, C</strong></li>
+  <li>Then depth 2 → <strong>D, E, F, G</strong></li>
+  <li>Finally depth 3 → <strong>H</strong></li>
+</ul>
+
+<h3>Final BFS Order</h3>
+<p><strong>A → B → C → D → E → F → G → H</strong></p>
+
+
+
+<p>
+So, BFS always expands nodes <strong>level by level</strong>, ensuring the 
+shallowest nodes are visited first.
+</p>
+<p>
+<h2>1. Key Properties of BFS</h2>
+<ul>
+  <li><strong>Complete:</strong> Yes (finds solution if exists in finite space)</li>
+  <li><strong>Optimal:</strong> Yes (when all step costs are equal)</li>
+  <li><strong>Time Complexity:</strong> O(b<sup>d</sup>)</li>
+  <li><strong>Space Complexity:</strong> O(b<sup>d</sup>)</li>
+</ul>
+<p>
+  Where:<br>
+  <strong>b</strong> = branching factor<br>
+  <strong>d</strong> = depth of shallowest goal node
+</p>
+
+<h2>2. Pseudocode of BFS (Very Important)</h2>
+<pre>
+BFS(start, goal):
+  create empty queue Q
+  enqueue(start)
+
+  while Q is not empty:
+      node = dequeue(Q)
+      if node is goal:
+          return solution
+      enqueue all unvisited children of node
+</pre>
+
+<h2>3. Advantages of BFS</h2>
+<ul>
+  <li>Finds shortest path in unweighted graphs</li>
+  <li>Guaranteed to find solution (complete)</li>
+  <li>Simple and systematic search</li>
+</ul>
+
+<h2>4. Disadvantages of BFS</h2>
+<ul>
+  <li>High memory usage (stores all nodes at a level)</li>
+  <li>Slow for very deep trees</li>
+  <li>Not suitable when branching factor is large</li>
+</ul>
+
+<h2>5. Applications of BFS</h2>
+<ul>
+  <li>Shortest path in unweighted graphs</li>
+  <li>Web crawling (search engines)</li>
+  <li>Social network analysis (friend suggestions)</li>
+  <li>Puzzle solving (8-puzzle, maze solving)</li>
+  <li>Network broadcasting</li>
+</ul>
+
+<h2>6. When to Use BFS?</h2>
+<ul>
+  <li>Solution is close to root</li>
+  <li>Need shortest path (minimum steps)</li>
+  <li>Tree depth is small</li>
+</ul>
+</p>
+
+
+    <a href="../Search/search_uninformed.html">← Back to Uninformed Search Topics</a>
+
+
+
+</body>
+</html>

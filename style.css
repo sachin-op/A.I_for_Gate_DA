@@ -1,0 +1,606 @@
+/* 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Background */
+/* body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #eef1f7;
+  min-height: 100vh;
+  color: #333;
+  line-height: 1.7;
+} */
+
+/* HEADER */
+/* header {
+  text-align: center;
+  padding: 30px 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+} */
+/* 
+header h1 {
+  font-size: 2.2em;
+  margin-bottom: 10px;
+}
+
+.tagline {
+  opacity: 0.9;
+  font-size: 1rem;
+}
+
+/* PDF Page Style Container */
+/* .tree-container,
+article {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 50px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+  position: relative;
+} */
+
+/* subtle page border like PDF */
+/* .tree-container::before,
+article::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  pointer-events: none;
+} */
+
+/* Navigation Link Card */
+/* .posts {
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 0 20px;
+} */
+/* 
+.posts a {
+  display: block;
+  padding: 20px;
+  margin: 15px 0;
+  background: white;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+  border-left: 5px solid #667eea;
+  font-weight: 600;
+  text-align: center;
+}
+
+.posts a:hover {
+  transform: translateY(-3px);
+  border-left-color: #764ba2;
+} */
+
+/* Article Typography */
+/* article h1 {
+  font-size: 2.2em;
+  color: #667eea;
+  margin-bottom: 20px;
+  border-bottom: 3px solid #667eea;
+  padding-bottom: 10px;
+}
+
+article h2 {
+  font-size: 1.6em;
+  color: #764ba2;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+article p {
+  margin-bottom: 15px;
+  font-size: 1.08em;
+} */
+
+/* Tree styling (important) */
+/* .tree {
+  font-family: "Fira Code", monospace;
+  font-size: 1.05em;
+  line-height: 1.8;
+  background: #fafbff;
+  padding: 25px;
+  border-radius: 10px;
+  border-left: 5px solid #667eea;
+  overflow-x: auto;
+}
+
+/* Tree Links */
+/* .tree a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.tree a:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}  */
+
+/* Divider */
+/* hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, #667eea, #764ba2);
+  margin: 30px 0;
+} */
+
+/* Footer */
+/* footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: #666;
+  font-size: 0.9em;
+  margin-top: 50px;
+} */
+
+
+/* Horizontal Tab Bar */
+/* .tab-bar {
+  display: flex;
+  width: 100%;
+  padding: 15px 30px;
+  gap: 12px; /* 🔥 small gap between buttons */
+  /* background: #eef1f7;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.tab-btn {
+  flex: 1;              /* equal width buttons */
+  /* text-align: center;
+  padding: 14px 10px;
+  border: none;
+  border-radius: 12px;
+  background: white;
+  font-weight: 600;
+  cursor: pointer;
+  border-left: 5px solid #667eea;
+  transition: all 0.3s ease;
+} */ */
+
+/* .tab-btn:hover {
+  transform: translateY(-2px);
+}
+
+.tab-btn.active {
+  background: #667eea;
+  color: white;
+  border-left-color: #764ba2;
+}
+
+.tab-btn.back {
+  background: #f1f1f1;
+} */ 
+
+/* Content Area */
+/* .tab-content {
+  max-width: 1000px;
+  margin: 0 auto 50px;
+  padding: 20px;
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+} */
+
+/* iframe makes pages appear inside */
+/* .tab-pane iframe {
+  width: 100%;
+  height: 75vh;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+}  */
+
+
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base Background */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #eef1f7;
+  min-height: 100vh;
+  color: #333;
+  line-height: 1.7;
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 28px 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+header h1 {
+  font-size: 2.2em;
+  margin-bottom: 8px;
+}
+
+.tagline {
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+/* ===============================
+   PDF PAGE STYLE (DESKTOP VIEW)
+================================ */
+.tree-container,
+article {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 50px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+  position: relative;
+}
+
+/* subtle page border */
+.tree-container::before,
+article::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+/* Navigation Cards */
+.posts {
+  max-width: 700px;
+  margin: 25px auto;
+  padding: 0 20px;
+}
+
+.posts a {
+  display: block;
+  padding: 20px;
+  margin: 15px 0;
+  background: white;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+  border-left: 5px solid #667eea;
+  font-weight: 600;
+  text-align: center;
+}
+
+.posts a:hover {
+  transform: translateY(-3px);
+  border-left-color: #764ba2;
+}
+
+/* Typography */
+article h1 {
+  font-size: 2.1em;
+  color: #667eea;
+  margin-bottom: 20px;
+  border-bottom: 3px solid #667eea;
+  padding-bottom: 10px;
+}
+
+article h2 {
+  font-size: 1.5em;
+  color: #764ba2;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+article p {
+  margin-bottom: 15px;
+  font-size: 1.05em;
+}
+
+/* Code Tree */
+.tree {
+  font-family: "Fira Code", monospace;
+  font-size: 1.02em;
+  line-height: 1.8;
+  background: #fafbff;
+  padding: 25px;
+  border-radius: 10px;
+  border-left: 5px solid #667eea;
+  overflow-x: auto;
+}
+
+.tree a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.tree a:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+/* Divider */
+hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, #667eea, #764ba2);
+  margin: 30px 0;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: #666;
+  font-size: 0.9em;
+  margin-top: 50px;
+}
+
+/* ===============================
+   TAB BAR
+================================ */
+.tab-bar {
+  display: flex;
+  width: 100%;
+  padding: 15px 30px;
+  gap: 12px;
+  background: #eef1f7;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.tab-btn {
+  flex: 1;
+  text-align: center;
+  padding: 14px 10px;
+  border: none;
+  border-radius: 12px;
+  background: white;
+  font-weight: 600;
+  cursor: pointer;
+  border-left: 5px solid #667eea;
+  transition: all 0.25s ease;
+}
+
+.tab-btn:hover {
+  transform: translateY(-2px);
+}
+
+.tab-btn.active {
+  background: #667eea;
+  color: white;
+  border-left-color: #764ba2;
+}
+
+.tab-btn.back {
+  background: #f1f1f1;
+}
+
+/* Content Area */
+.tab-content {
+  max-width: 1000px;
+  margin: 0 auto 50px;
+  padding: 20px;
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+/* iframe viewer */
+.tab-pane iframe {
+  width: 100%;
+  height: 78vh;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+}
+
+/* ===============================
+   📱 MOBILE = FULL WIDTH READER
+================================ */
+@media (max-width: 768px) {
+
+  body {
+    background: #ffffff; /* full white reading mode */
+  }
+
+  header {
+    border-radius: 0;
+  }
+
+  .tree-container,
+  article {
+    max-width: 100%;
+    margin: 0;
+    padding: 25px 18px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .tree-container::before,
+  article::before {
+    display: none; /* remove page border on mobile */
+  }
+
+  .tab-content {
+    max-width: 100%;
+    margin: 0;
+    padding: 10px;
+  }
+
+  .tab-bar {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .tab-btn {
+    padding: 12px 8px;
+    font-size: 0.9rem;
+  }
+
+  .tab-pane iframe {
+    height: calc(100vh - 140px);
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+
+
+
+
+
+
+/* ===============================
+   🌙 DARK MODE (PDF Reader Style)
+================================ */
+:root {
+  --bg-main: #eef1f7;
+  --bg-page: #ffffff;
+  --text-main: #333;
+  --accent: #667eea;
+}
+
+body.dark {
+  --bg-main: #0f1117;
+  --bg-page: #1a1d26;
+  --text-main: #e6e6e6;
+  --accent: #8fa2ff;
+}
+
+/* Apply variables */
+body {
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+.tree-container,
+article,
+.posts a,
+.tab-btn {
+  background: var(--bg-page);
+  color: var(--text-main);
+}
+
+article h1,
+.tree a {
+  color: var(--accent);
+}
+
+.tab-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+body.dark .tree {
+  background: #11131a;
+  border-left-color: var(--accent);
+}
+
+body.dark iframe {
+  filter: invert(0.9) hue-rotate(180deg);
+  background: #111;
+}
+
+
+
+
+.theme-toggle {
+  margin-top: 15px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background: white;
+  color: #333;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-2px);
+}
+
+body.dark .theme-toggle {
+  background: #2a2f3a;
+  color: #fff;
+}
+
+
+
+
+/* Back button visibility fix */
+.tab-btn.back {
+  background: #f1f1f1;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Dark mode override */
+body.dark .tab-btn.back {
+  background: #2a2f3a;
+  color: #ffffff;
+  border-left: 5px solid #8fa2ff;
+}
+
+
+
+.tab-btn.back:hover {
+  transform: translateY(-2px);
+  background: #e4e4e4;
+}
+
+body.dark .tab-btn.back:hover {
+  background: #3a4050;
+}
+
+
+ nav {
+      background-color: #222;
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #4CAF50;
+    }

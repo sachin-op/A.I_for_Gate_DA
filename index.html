@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My AI Notes</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>📘 GATE DA – Syllabus </h1>
+    <!-- Button or link to go to index.html -->
+    <main class="posts">
+      <a class="post-link" href="index.html">Click Here to Start Learning A.I for Gate Exam! </a>
+    </main>
+    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
+    </header>
+    
+ <article class="tree-container">
+  <p class="tagline" style="font-weight: bold; text-align: center">
+    GATE DA Artificial Intelligence syllabus.
+  </p>
+
+  <pre class="tree">
+Artificial Intelligence (GATE DA)
+│
+├── <a href="Search/search_ai.html">1) Search</a>
+│   ├── <a href="Search/search_uninformed.html">a) Uninformed Search</a>
+│   │   ├── Breadth First Search (BFS)
+│   │   ├── Depth First Search (DFS)
+│   │   ├── Depth-Limited Search
+│   │   ├── Iterative Deepening Search
+│   │   └── Uniform Cost Search (UCS)
+│   │
+│   ├── <a href="Search/search_informed.html">b) Informed Search</a>
+│   │   ├── Heuristics
+│   │   ├── Greedy Best-First Search
+│   │   ├── A* Search
+│   │   ├── Admissibility
+│   │   └── Consistency (Monotonicity)
+│   │
+│   └── <a href="Search/search_adversarial.html">c) Adversarial Search</a>
+│       ├── Minimax Algorithm
+│       ├── Alpha–Beta Pruning
+│       └── Evaluation Functions
+│
+├── <a href="Logic/logic.html">2) Logic</a>
+│   ├── <a href="Logic/propositional_logic.html">a) Propositional Logic</a>
+│   │   ├── Syntax
+│   │   ├── Semantics
+│   │   ├── Truth Tables
+│   │   └── Logical Equivalence
+│   │
+│   └── <a href="Logic/predicate_logic.html">b) Predicate Logic</a>
+│       ├── Predicates
+│       ├── Quantifiers (∀, ∃)
+│       ├── Unification
+│       └── Interpretation
+│
+├── <a href="./Reasoning/reasoning.html">3) Reasoning</a>
+│   └── <a href="./Reasoning/logical_reasoning.html">a) Logical Reasoning</a>
+│       ├── Inference Rules
+│       ├── Resolution
+│       ├── Forward Chaining
+│       └── Backward Chaining
+│
+└── <a href="Reasoning_Under_Uncertainty/ruuncertainty.html">4) Reasoning Under Uncertainty</a>
+    ├── <a href="Reasoning_Under_Uncertainty/prob_basics.html">a) Probability Basics</a>
+    │   ├── Random Variables
+    │   ├── Conditional Probability
+    │   └── Bayes’ Theorem
+    │
+    ├── <a href="Reasoning_Under_Uncertainty/cond_indep.html">b) Conditional Independence</a>
+    │   ├── Definition
+    │   └── Graphical Representation
+    │
+    ├── <a href="Reasoning_Under_Uncertainty/represent.html">c) Representation</a>
+    │   ├── Bayesian Networks
+    │   └── Conditional Probability Tables (CPTs)
+    │
+    ├── <a href="Reasoning_Under_Uncertainty/exact_infer.html">d) Exact Inference</a>
+    │   └── Variable Elimination Algorithm
+    │
+    └── <a href="Reasoning_Under_Uncertainty/approx_infer.html">e) Approximate Inference</a>
+        ├── Prior Sampling
+        ├── Rejection Sampling
+        ├── Likelihood Weighting
+        └── Gibbs Sampling
+  </pre>
+</article>
+
+<script>
+      const toggleBtn = document.getElementById("themeToggle");
+
+      // Load saved theme
+      if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark");
+        toggleBtn.textContent = "☀ Light Mode";
+      }
+
+      toggleBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+
+        if (document.body.classList.contains("dark")) {
+          localStorage.setItem("theme", "dark");
+          toggleBtn.textContent = "☀ Light Mode";
+        } else {
+          localStorage.setItem("theme", "light");
+          toggleBtn.textContent = "🌙 Dark Mode";
+        }
+      });
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Introduction to Depth-First Search</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+  <article>
+    <h1>Introduction to Depth-First Search</h1>
+    <p>Published on: 6 Feb 2026</p>
+    <a href="../notes/search_uninformed.html">← Back to Uninformed Search Topics</a>
+    <p>
+      Depth-First Search (DFS) is a fundamental algorithm used to explore and traverse graphs and trees.
+      It explores as far as possible along each branch before backtracking, making it a powerful tool for various applications.
+    </p>  
+    <h2>How DFS Works</h2>
+    <p>
+      DFS starts at a given node (called the root) and explores as far as possible along each branch before backtracking. It uses a stack data structure (either explicitly or through recursion) to keep track of the nodes to be explored.
+    </p>
+    <h2>DFS Algorithm Steps</h2>
+    <ol>
+      <li>Start at the root node and mark it as visited.</li>  
+      <li>Push the current node onto the stack.</li>
+      <li>Explore all unvisited neighbors of the current node.</li>
+      <li>Mark the neighbor as visited.</li>
+      <li>Push the neighbor onto the stack.</li>
+      <li>Repeat steps 2-5 for all unvisited neighbors of the current node.</li>
+      <li>Backtrack by popping the current node off the stack.</li>
+    </ol>
+    <a href="../Search/search_uninformed.html">← Back to Uninformed Search Topics</a>
+  </article>
+</body>
+</html>
