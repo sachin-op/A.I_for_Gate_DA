@@ -152,7 +152,7 @@ article p {
   width: 100%;
   padding: 15px 30px;
   gap: 12px; /* 🔥 small gap between buttons */
-  /* background: #eef1f7;
+/* background: #eef1f7;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -160,7 +160,7 @@ article p {
 
 .tab-btn {
   flex: 1;              /* equal width buttons */
-  /* text-align: center;
+/* text-align: center;
   padding: 14px 10px;
   border: none;
   border-radius: 12px;
@@ -169,8 +169,8 @@ article p {
   cursor: pointer;
   border-left: 5px solid #667eea;
   transition: all 0.3s ease;
-} */ */
-
+} */
+*/
 /* .tab-btn:hover {
   transform: translateY(-2px);
 }
@@ -183,7 +183,7 @@ article p {
 
 .tab-btn.back {
   background: #f1f1f1;
-} */ 
+} */
 
 /* Content Area */
 /* .tab-content {
@@ -233,7 +233,7 @@ header {
   padding: 28px 20px;
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 header h1 {
@@ -256,7 +256,7 @@ article {
   padding: 50px;
   background: white;
   border-radius: 14px;
-  box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
   position: relative;
 }
 
@@ -303,7 +303,8 @@ article h1 {
   font-size: 2.1em;
   color: #667eea;
   margin-bottom: 20px;
-  border-bottom: 3px solid #667eea;
+  /* border-bottom: 3px solid #667eea; */
+   border-bottom: none;
   padding-bottom: 10px;
 }
 
@@ -421,7 +422,7 @@ footer {
   height: 78vh;
   border: none;
   border-radius: 12px;
-  box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
 }
 
 /* ===============================
@@ -430,7 +431,8 @@ footer {
 @media (max-width: 768px) {
 
   body {
-    background: #ffffff; /* full white reading mode */
+    background: #ffffff;
+    /* full white reading mode */
   }
 
   header {
@@ -448,7 +450,8 @@ footer {
 
   .tree-container::before,
   article::before {
-    display: none; /* remove page border on mobile */
+    display: none;
+    /* remove page border on mobile */
   }
 
   .tab-content {
@@ -584,23 +587,70 @@ body.dark .tab-btn.back:hover {
 }
 
 
- nav {
-      background-color: #222;
-      padding: 12px;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
+nav {
+  background-color: #222;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 8px 14px;
-      border-radius: 6px;
-      transition: 0.3s;
-    }
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: 0.3s;
+}
 
-    nav a:hover {
-      background-color: #4CAF50;
-    }
+nav a:hover {
+  background-color: #4CAF50;
+}
+
+.article-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #5a6fd1; /* blue underline */
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.article-header h1 {
+  margin: 0;
+  border: none; /* remove old underline from h1 */
+}
+/* ===== Clean Fix: Title left + Dark mode button right (No HTML change) ===== */
+
+/* Make article a positioning container */
+article {
+  position: relative;
+}
+
+/* Title styling */
+article h1 {
+  position: relative;
+  padding-right: 180px; /* space for dark mode button */
+  margin-bottom: 30px;
+}
+
+/* Blue underline under title */
+article h1::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -12px;
+  width: 100%;
+  height: 3px;
+  background: #5a6fd1;
+  border-radius: 2px;
+}
+
+/* Align dark mode button to the right of title */
+.theme-toggle {
+  position: absolute;
+  top: 90px;   /* adjust 58–66px if slightly off */
+  right: 70px; /* inside article padding */
+  margin: 0;
+}
