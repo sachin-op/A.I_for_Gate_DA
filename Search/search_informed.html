@@ -1,20 +1,669 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Informed Search Algorithms</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Informed Search — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<!-- ── Top Nav ────────────────────────────────────── -->
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="search_ai.html">Search</a>
+    <span>›</span>
+    <span>Informed Search</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Informed Search Algorithms</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <p>Published on: 6 Feb 2026</p>
-    <a href="../Search/search_ai.html">← Back to Search Topics</a>
+
+    <h1>Informed Search Algorithms</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Informed Search</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~15 min read</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
+      <p>
+        <strong>Informed Search</strong> algorithms use
+        <strong>domain-specific knowledge (heuristics)</strong> to make smarter
+        decisions during the search process — unlike uninformed search which
+        explores blindly. By estimating how close a node is to the goal, these
+        algorithms prioritize promising paths and find solutions much more efficiently.
+      </p>
+
+      <div class="info-box">
+        <strong>Key Difference:</strong> Uninformed search has no idea which direction
+        the goal is. Informed search uses a <strong>heuristic function h(n)</strong>
+        that estimates the cost from node n to the goal — guiding the search in the
+        right direction.
+      </div>
+    </section>
+
+    <!-- ── Key Functions ─────────────────────────── -->
+    <section id="functions">
+      <h2>Key Functions</h2>
+      <p>Three functions are used to evaluate nodes in informed search:</p>
+
+      <table>
+        <thead>
+          <tr><th>Function</th><th>Name</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>g(n)</strong></td>
+            <td>Path Cost</td>
+            <td>Cumulative cost from the <strong>start node</strong> to node n (actual cost so far)</td>
+          </tr>
+          <tr>
+            <td><strong>h(n)</strong></td>
+            <td>Heuristic Function</td>
+            <td>Estimated cost from node n to the <strong>goal</strong> (domain knowledge)</td>
+          </tr>
+          <tr>
+            <td><strong>f(n)</strong></td>
+            <td>Evaluation Function</td>
+            <td>Total estimated cost — used to decide which node to expand next</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Important Properties of h(n)</h3>
+      <ul>
+        <li>h(n) is always <strong>non-negative</strong> — h(n) ≥ 0</li>
+        <li>If n is a goal state → <strong>h(n) = 0</strong></li>
+        <li>h(n) is <strong>state dependent</strong> — different for each node</li>
+        <li>h(n) cannot be derived from the problem description alone — requires domain knowledge</li>
+      </ul>
+    </section>
+
+    <!-- ── Best First Search ──────────────────────── -->
+    <section id="best-first">
+      <h2>Best-First Search</h2>
+      <p>
+        <strong>Best-First Search</strong> is the general framework for informed search.
+        It selects the node for expansion based on an <strong>evaluation function f(n)</strong>
+        — the node with the best (lowest) f(n) is expanded first using a
+        <strong>min-priority queue</strong>.
+      </p>
+
+      <p>The specific algorithm depends on what f(n) is defined as:</p>
+
+      <table>
+        <thead>
+          <tr><th>Algorithm</th><th>f(n) Definition</th><th>Strategy</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Greedy BFS</strong></td>
+            <td>f(n) = h(n)</td>
+            <td>Only heuristic — fastest to goal but not optimal</td>
+          </tr>
+          <tr>
+            <td><strong>A* Search</strong></td>
+            <td>f(n) = g(n) + h(n)</td>
+            <td>Actual cost + heuristic — complete and optimal</td>
+          </tr>
+          <tr>
+            <td><strong>UCS</strong></td>
+            <td>f(n) = g(n)</td>
+            <td>Only actual cost — optimal but no heuristic guidance</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Greedy BFS ─────────────────────────────── -->
+    <section id="greedy">
+      <h2>1. Greedy Best-First Search</h2>
+      <p>
+        <strong>Greedy Best-First Search</strong> selects the node that appears
+        <strong>closest to the goal</strong> based solely on the heuristic function.
+        It ignores the cost already paid to reach the current node.
+      </p>
+
+      <h3>Evaluation Function</h3>
+      <code class="formula-block amber">f(n) = h(n)</code>
+
+      <p>
+        It is "greedy" because it always picks whichever node looks best right now —
+        without considering whether the overall path will be optimal.
+      </p>
+
+      <h3>Example</h3>
+      <p>
+        Finding a route from city A to city G. Greedy BFS always moves to
+        the city with the <strong>smallest straight-line distance to G</strong>,
+        regardless of how far it has already traveled.
+      </p>
+
+      <h3>Properties of Greedy BFS</h3>
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Complete?</td>
+            <td style="color:var(--red)">✗ No</td>
+            <td>Can enter infinite loops in certain state spaces</td>
+          </tr>
+          <tr>
+            <td>Optimal?</td>
+            <td style="color:var(--red)">✗ No</td>
+            <td>Ignores g(n) — may find a longer path</td>
+          </tr>
+          <tr>
+            <td>Time Complexity</td>
+            <td>O(b<sup>m</sup>)</td>
+            <td>Worst case — explores all nodes like DFS</td>
+          </tr>
+          <tr>
+            <td>Space Complexity</td>
+            <td>O(b<sup>m</sup>)</td>
+            <td>Keeps all nodes in memory</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Why Greedy BFS Fails</h3>
+      <p>
+        Consider two paths to goal G:
+      </p>
+      <pre>
+  Path 1: S → A → G    actual cost = 10 + 1  = 11
+  Path 2: S → B → G    actual cost = 1  + 15 = 16
+      </pre>
+      <p>
+        If h(B) &lt; h(A), Greedy BFS picks Path 2 (seems closer by heuristic)
+        but Path 1 is actually cheaper. Greedy BFS is <strong>not optimal</strong>.
+      </p>
+    </section>
+
+    <!-- ── A* Search ──────────────────────────────── -->
+    <section id="astar">
+      <h2>2. A* Search</h2>
+      <p>
+        <strong>A* Search</strong> combines the actual cost g(n) and the heuristic
+        estimate h(n) to evaluate nodes. It is the most widely used informed search
+        algorithm in AI.
+      </p>
+
+      <h3>Evaluation Function</h3>
+      <code class="formula-block amber">f(n) = g(n) + h(n)</code>
+
+      <p>Where:</p>
+      <ul>
+        <li><strong>g(n)</strong> = actual cost from start to node n</li>
+        <li><strong>h(n)</strong> = estimated cost from n to goal</li>
+        <li><strong>f(n)</strong> = estimated total cost of cheapest solution through n</li>
+      </ul>
+
+      <div class="info-box">
+        <strong>Key Insight:</strong> A* expands nodes in order of increasing f(n).
+        The first time A* reaches the goal, it is guaranteed to be via the
+        <strong>optimal path</strong> — provided h(n) is admissible.
+      </div>
+
+      <h3>A* vs UCS vs Greedy BFS</h3>
+      <table>
+        <thead>
+          <tr><th>Algorithm</th><th>f(n)</th><th>Complete</th><th>Optimal</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>UCS</strong></td>
+            <td>g(n)</td>
+            <td style="color:var(--green)">✓</td>
+            <td style="color:var(--green)">✓</td>
+          </tr>
+          <tr>
+            <td><strong>Greedy BFS</strong></td>
+            <td>h(n)</td>
+            <td style="color:var(--red)">✗</td>
+            <td style="color:var(--red)">✗</td>
+          </tr>
+          <tr>
+            <td><strong>A*</strong></td>
+            <td>g(n) + h(n)</td>
+            <td style="color:var(--green)">✓</td>
+            <td style="color:var(--green)">✓*</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>* A* is optimal when h(n) is <strong>admissible</strong> (tree search) or <strong>consistent</strong> (graph search).</p>
+
+      <h3>Properties of A*</h3>
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Complete?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Will find a solution if one exists (finite branching, positive costs)</td>
+          </tr>
+          <tr>
+            <td>Optimal?</td>
+            <td style="color:var(--green)">✓ Yes*</td>
+            <td>Optimal when h(n) is admissible / consistent</td>
+          </tr>
+          <tr>
+            <td>Time Complexity</td>
+            <td>Exponential</td>
+            <td>Depends on heuristic accuracy — better h(n) = fewer nodes</td>
+          </tr>
+          <tr>
+            <td>Space Complexity</td>
+            <td>O(b<sup>d</sup>)</td>
+            <td>Keeps all frontier nodes in memory — main weakness</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Admissibility ──────────────────────────── -->
+    <section id="admissibility">
+      <h2>3. Admissibility</h2>
+      <p>
+        A heuristic h(n) is <strong>admissible</strong> if it
+        <strong>never overestimates</strong> the true cost to reach the goal.
+      </p>
+
+      <code class="formula-block">h(n) ≤ h*(n)   for all nodes n</code>
+
+      <p>Where <strong>h*(n)</strong> is the true actual cost from n to the goal.</p>
+
+      <h3>In Simple Terms</h3>
+      <ul>
+        <li>h(n) is always <strong>optimistic</strong> — it never says "it costs more than it actually does"</li>
+        <li>An admissible heuristic may <strong>underestimate</strong> the cost — that is allowed</li>
+        <li>An admissible heuristic must <strong>never overestimate</strong> the cost</li>
+      </ul>
+
+      <h3>Example — 8-Puzzle</h3>
+      <p>Two common admissible heuristics for the 8-puzzle:</p>
+      <table>
+        <thead>
+          <tr><th>Heuristic</th><th>Definition</th><th>Admissible?</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>h1 — Misplaced Tiles</strong></td>
+            <td>Number of tiles not in their goal position</td>
+            <td style="color:var(--green)">✓ Yes — each misplaced tile needs at least 1 move</td>
+          </tr>
+          <tr>
+            <td><strong>h2 — Manhattan Distance</strong></td>
+            <td>Sum of distances of tiles from their goal positions</td>
+            <td style="color:var(--green)">✓ Yes — ignores blocking, so underestimates</td>
+          </tr>
+          <tr>
+            <td><strong>h3 — Exact cost</strong></td>
+            <td>True number of moves needed</td>
+            <td style="color:var(--green)">✓ Yes — but too expensive to compute</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Why Admissibility Guarantees Optimality:</strong> If h(n) never overestimates,
+        A* will never skip the optimal path. It will always explore the optimal path before
+        any suboptimal one reaches the goal.
+      </div>
+    </section>
+
+    <!-- ── Consistency ────────────────────────────── -->
+    <section id="consistency">
+      <h2>4. Consistency (Monotonicity)</h2>
+      <p>
+        A heuristic h(n) is <strong>consistent</strong> (also called monotone) if for
+        every node n and every successor n' reached by action a with step cost c:
+      </p>
+
+      <code class="formula-block">h(n) ≤ c(n, a, n') + h(n')</code>
+
+      <p>This means: the estimated cost from n is no more than the step cost to n' plus the estimated cost from n'.</p>
+
+      <h3>Triangle Inequality</h3>
+      <p>
+        Consistency is essentially the <strong>triangle inequality</strong> — the direct
+        path from n to the goal is never longer than going via an intermediate node n':
+      </p>
+      <pre>
+  n ──── c ────→ n'
+  │                \
+  h(n)           h(n')
+  │                  \
+  └──────────────→ GOAL
+      </pre>
+      <code class="formula-block">h(n)  ≤  c(n → n')  +  h(n')</code>
+
+      <h3>Consistency vs Admissibility</h3>
+      <table>
+        <thead>
+          <tr><th></th><th>Admissibility</th><th>Consistency</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Definition</strong></td>
+            <td>h(n) ≤ h*(n) — never overestimates</td>
+            <td>h(n) ≤ c + h(n') — triangle inequality</td>
+          </tr>
+          <tr>
+            <td><strong>Applies to</strong></td>
+            <td>Tree search</td>
+            <td>Graph search (with repeated states)</td>
+          </tr>
+          <tr>
+            <td><strong>Stronger?</strong></td>
+            <td>Weaker condition</td>
+            <td>Stronger — consistency implies admissibility</td>
+          </tr>
+          <tr>
+            <td><strong>Guarantees</strong></td>
+            <td>A* optimal in tree search</td>
+            <td>A* optimal in graph search + f(n) never decreases along path</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Key Rule:</strong> Consistency → Admissibility (always).
+        Admissibility → Consistency (not always).
+        Every consistent heuristic is admissible, but not every admissible heuristic is consistent.
+      </div>
+    </section>
+
+    <!-- ── Conditions for Optimality ─────────────── -->
+    <section id="optimality">
+      <h2>5. Conditions for A* Optimality</h2>
+
+      <table>
+        <thead>
+          <tr><th>Search Type</th><th>Required Condition</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Tree Search</strong> (no repeated state check)</td>
+            <td>h(n) must be <strong>Admissible</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Graph Search</strong> (with visited/closed set)</td>
+            <td>h(n) must be <strong>Consistent</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Why Consistent Heuristic is Needed for Graph Search</h3>
+      <p>
+        In graph search, once a node is added to the closed set it is never re-expanded.
+        If h(n) is only admissible but not consistent, A* might close a node with a
+        suboptimal g value and miss the optimal path. Consistency ensures f(n) values
+        are <strong>non-decreasing along any path</strong>, so the first time a node
+        is expanded its g(n) is already optimal.
+      </p>
+    </section>
+
+    <!-- ── Dominance ──────────────────────────────── -->
+    <section id="dominance">
+      <h2>6. Dominance — Comparing Heuristics</h2>
+      <p>
+        If two heuristics h1 and h2 are both admissible and
+        <strong>h2(n) ≥ h1(n)</strong> for all nodes n, then <strong>h2 dominates h1</strong>.
+      </p>
+
+      <code class="formula-block">h2 dominates h1  ⟺  h2(n) ≥ h1(n)  for all n</code>
+
+      <div class="info-box">
+        <strong>Why Dominance Matters:</strong> A dominant heuristic is always better to use.
+        It is closer to the true cost h*(n) so A* expands fewer nodes.
+        Manhattan distance dominates Misplaced Tiles for the 8-puzzle —
+        so Manhattan distance is always preferred.
+      </div>
+
+      <h3>Heuristic Quality</h3>
+      <ul>
+        <li><strong>h(n) = 0</strong> → worst heuristic (becomes UCS — no guidance)</li>
+        <li><strong>h(n) = h*(n)</strong> → perfect heuristic (A* goes straight to goal, but too expensive to compute)</li>
+        <li><strong>Between 0 and h*(n)</strong> → admissible heuristic (practical range)</li>
+      </ul>
+    </section>
+
+    <!-- ── Quick Reference ────────────────────────── -->
+    <section id="summary">
+      <h2>Quick Reference Summary</h2>
+
+      <table>
+        <thead>
+          <tr><th>Algorithm</th><th>f(n)</th><th>Complete</th><th>Optimal</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Greedy BFS</strong></td>
+            <td>h(n)</td>
+            <td style="color:var(--red)">✗</td>
+            <td style="color:var(--red)">✗</td>
+            <td>Fast but unreliable</td>
+          </tr>
+          <tr>
+            <td><strong>A* (tree)</strong></td>
+            <td>g(n) + h(n)</td>
+            <td style="color:var(--green)">✓</td>
+            <td style="color:var(--green)">✓ if admissible</td>
+            <td>Most used informed search</td>
+          </tr>
+          <tr>
+            <td><strong>A* (graph)</strong></td>
+            <td>g(n) + h(n)</td>
+            <td style="color:var(--green)">✓</td>
+            <td style="color:var(--green)">✓ if consistent</td>
+            <td>Requires consistent h(n)</td>
+          </tr>
+          <tr>
+            <td><strong>UCS</strong></td>
+            <td>g(n)</td>
+            <td style="color:var(--green)">✓</td>
+            <td style="color:var(--green)">✓</td>
+            <td>A* with h(n) = 0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── GATE Tips ──────────────────────────────── -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li><strong>f(n) = g(n) + h(n)</strong> — memorize this formula for A*.</li>
+        <li>Greedy BFS uses only <strong>h(n)</strong> — not optimal, not complete.</li>
+        <li>UCS is A* with <strong>h(n) = 0</strong>.</li>
+        <li>Admissible = never overestimates. <strong>h(n) ≤ h*(n)</strong>.</li>
+        <li>Consistent = triangle inequality. <strong>h(n) ≤ c + h(n')</strong>.</li>
+        <li><strong>Consistency implies admissibility</strong> — not the other way around.</li>
+        <li>For <strong>tree search</strong> → admissibility is enough for optimality.</li>
+        <li>For <strong>graph search</strong> → need consistency for optimality.</li>
+        <li>Manhattan Distance dominates Misplaced Tiles for 8-puzzle — fewer nodes expanded.</li>
+        <li>A perfect heuristic h(n) = h*(n) makes A* expand only nodes on the optimal path.</li>
+      </ul>
+    </section>
+
+    <!-- ── Practice Questions ─────────────────────── -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> What is the evaluation function used by A* search?</h4>
+      <ol type="A">
+        <li>f(n) = h(n)</li>
+        <li>f(n) = g(n)</li>
+        <li>f(n) = g(n) + h(n)</li>
+        <li>f(n) = g(n) × h(n)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — f(n) = g(n) + h(n)</strong></p>
+        <p>g(n) = cost from start to n. h(n) = estimated cost from n to goal. f(n) = total estimated cost.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> A heuristic is admissible if:</h4>
+      <ol type="A">
+        <li>h(n) ≥ h*(n) for all n</li>
+        <li>h(n) ≤ h*(n) for all n</li>
+        <li>h(n) = g(n) for all n</li>
+        <li>h(n) = 0 for all n</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — h(n) ≤ h*(n)</strong></p>
+        <p>Admissible means never overestimating — the heuristic is always ≤ the true cost h*(n).</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> Which condition must h(n) satisfy for A* graph search to be optimal?</h4>
+      <ol type="A">
+        <li>Admissibility only</li>
+        <li>Consistency only</li>
+        <li>Both admissibility and consistency</li>
+        <li>Neither — A* is always optimal</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Consistency</strong></p>
+        <p>Graph search needs consistency. Tree search only needs admissibility. Consistency implies admissibility so B is sufficient.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q4</span> Greedy Best-First Search uses:</h4>
+      <ol type="A">
+        <li>f(n) = g(n) + h(n)</li>
+        <li>f(n) = g(n)</li>
+        <li>f(n) = h(n)</li>
+        <li>f(n) = h(n) - g(n)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — f(n) = h(n)</strong></p>
+        <p>Greedy BFS only uses the heuristic — it ignores the actual cost g(n) already paid.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q5</span> If h2(n) ≥ h1(n) for all n and both are admissible, then:</h4>
+      <ol type="A">
+        <li>h1 dominates h2</li>
+        <li>h2 dominates h1</li>
+        <li>They are equally good</li>
+        <li>Neither dominates</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — h2 dominates h1</strong></p>
+        <p>h2 is closer to the true cost h*(n), so A* expands fewer nodes with h2.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q6</span> The consistency condition states:</h4>
+      <ol type="A">
+        <li>h(n) ≤ h*(n)</li>
+        <li>h(n) ≤ c(n, n') + h(n')</li>
+        <li>h(n) = g(n) + h(n')</li>
+        <li>h(n) ≥ c(n, n') + h(n')</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — h(n) ≤ c(n, n') + h(n')</strong></p>
+        <p>This is the triangle inequality — the estimated cost from n is no more than the step cost to n' plus the estimated cost from n'.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q7</span> UCS is a special case of A* when:</h4>
+      <ol type="A">
+        <li>g(n) = 0</li>
+        <li>h(n) = 0</li>
+        <li>f(n) = h(n)</li>
+        <li>g(n) = h(n)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — h(n) = 0</strong></p>
+        <p>When h(n) = 0, f(n) = g(n) + 0 = g(n) — which is exactly what UCS uses.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q8</span> Which statement about consistency and admissibility is TRUE?</h4>
+      <ol type="A">
+        <li>Admissibility implies consistency</li>
+        <li>Consistency implies admissibility</li>
+        <li>They are equivalent conditions</li>
+        <li>Neither implies the other</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Consistency implies admissibility</strong></p>
+        <p>Consistency is the stronger condition. Every consistent heuristic is also admissible, but not every admissible heuristic is consistent.</p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="search_uninformed.html">← Uninformed Search</a>
+      <a class="nav-btn next" href="search_adversarial.html">Adversarial Search →</a>
+    </div>
+
   </article>
-  <script src="../theme.js"></script>
+
+  <!-- ── TOC Sidebar ─────────────────────────────── -->
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#functions">Key Functions</a></li>
+      <li><a href="#best-first">Best-First Search</a></li>
+      <li><a href="#greedy">Greedy BFS</a></li>
+      <li><a href="#astar">A* Search</a></li>
+      <li><a href="#admissibility">Admissibility</a></li>
+      <li><a href="#consistency">Consistency</a></li>
+      <li><a href="#optimality">Optimality Conditions</a></li>
+      <li><a href="#dominance">Dominance</a></li>
+      <li><a href="#summary">Quick Summary</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>
-
-
- 

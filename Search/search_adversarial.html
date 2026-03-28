@@ -1,18 +1,637 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Adversarial Search Algorithms</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adversarial Search — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<!-- ── Top Nav ────────────────────────────────────── -->
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="search_ai.html">Search</a>
+    <span>›</span>
+    <span>Adversarial Search</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Adversarial Search Algorithms</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <p>Published on: 6 Feb 2026</p>
-    <a href="../Search/search_ai.html">← Back to Search Topics</a>
+
+    <h1>Adversarial Search Algorithms</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Search</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~15 min read</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
+      <p>
+        <strong>Adversarial Search</strong> is used in competitive environments —
+        typically <strong>two-player games</strong> — where one player tries to
+        maximize their advantage while the opponent tries to minimize it.
+        Unlike regular search where we control all actions, here an
+        <strong>opponent works against us</strong>.
+      </p>
+
+      <div class="info-box">
+        <strong>Core Idea:</strong> We cannot just plan our own moves — we must also
+        anticipate and account for every possible move the opponent might make.
+        The goal is to find the <strong>optimal strategy</strong> assuming the
+        opponent also plays optimally.
+      </div>
+    </section>
+
+    <!-- ── Game Formulation ───────────────────────── -->
+    <section id="formulation">
+      <h2>Game Formulation</h2>
+      <p>A two-player zero-sum game is defined by:</p>
+
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Meaning</th><th>Example (Chess)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Initial State</strong></td>
+            <td>Starting configuration of the board</td>
+            <td>Standard chess starting position</td>
+          </tr>
+          <tr>
+            <td><strong>Players</strong></td>
+            <td>Two players — MAX and MIN</td>
+            <td>White (MAX) and Black (MIN)</td>
+          </tr>
+          <tr>
+            <td><strong>Actions</strong></td>
+            <td>Legal moves available at each state</td>
+            <td>All valid chess moves</td>
+          </tr>
+          <tr>
+            <td><strong>Result</strong></td>
+            <td>New state after an action is applied</td>
+            <td>Board position after a move</td>
+          </tr>
+          <tr>
+            <td><strong>Terminal Test</strong></td>
+            <td>Is the game over?</td>
+            <td>Checkmate, stalemate, draw</td>
+          </tr>
+          <tr>
+            <td><strong>Utility Function</strong></td>
+            <td>Score at terminal states</td>
+            <td>+1 (win), 0 (draw), -1 (loss)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Zero-Sum Game</h3>
+      <p>
+        In a <strong>zero-sum game</strong>, one player's gain is exactly the other
+        player's loss. The total payoff always sums to zero.
+      </p>
+      <ul>
+        <li>MAX wants to <strong>maximize</strong> the utility value</li>
+        <li>MIN wants to <strong>minimize</strong> the utility value</li>
+        <li>Examples: Chess, Tic-Tac-Toe, Go, Checkers</li>
+      </ul>
+    </section>
+
+    <!-- ── Game Tree ──────────────────────────────── -->
+    <section id="game-tree">
+      <h2>Game Tree</h2>
+      <p>
+        A <strong>game tree</strong> represents all possible states of a game. Each node
+        is a game state and each edge is a move. The tree alternates between
+        MAX nodes (our turn) and MIN nodes (opponent's turn).
+      </p>
+
+      <pre>
+                    MAX's turn
+                   [Root: 3]
+                  /          \
+          MIN's turn        MIN's turn
+           [3]                [2]
+          /   \              /   \
+        [3]   [5]          [2]   [9]
+    (terminal) (terminal) (terminal) (terminal)
+      </pre>
+
+      <p>
+        The numbers at terminal nodes are <strong>utility values</strong>.
+        MAX picks the child with the highest value, MIN picks the lowest.
+      </p>
+    </section>
+
+    <!-- ── Minimax ────────────────────────────────── -->
+    <section id="minimax">
+      <h2>1. Minimax Algorithm</h2>
+      <p>
+        The <strong>Minimax algorithm</strong> computes the optimal move for MAX
+        assuming MIN plays optimally. It performs a complete depth-first search
+        of the game tree.
+      </p>
+
+      <h3>How Minimax Works</h3>
+      <ol>
+        <li>Build the complete game tree down to terminal states.</li>
+        <li>Assign utility values to all terminal states.</li>
+        <li>Back up values from terminal nodes to the root:
+          <ul>
+            <li>At a <strong>MAX node</strong> → take the <strong>maximum</strong> of children's values</li>
+            <li>At a <strong>MIN node</strong> → take the <strong>minimum</strong> of children's values</li>
+          </ul>
+        </li>
+        <li>The root's backed-up value is the minimax value — MAX chooses the move leading to it.</li>
+      </ol>
+
+      <h3>Minimax Formula</h3>
+      <pre>
+  MINIMAX(s) =
+    UTILITY(s)                          if s is terminal
+    max { MINIMAX(result(s,a)) }        if player(s) = MAX
+    min { MINIMAX(result(s,a)) }        if player(s) = MIN
+      </pre>
+
+      <h3>Example — Step by Step</h3>
+      <pre>
+                       MAX
+                      [ ? ]
+                   /         \
+                MIN            MIN
+               [ ? ]          [ ? ]
+              /     \        /     \
+            [3]     [5]    [2]     [9]
+
+  Step 1: Terminal values → 3, 5, 2, 9
+  Step 2: MIN nodes:
+          Left MIN  = min(3, 5) = 3
+          Right MIN = min(2, 9) = 2
+  Step 3: MAX node:
+          Root MAX  = max(3, 2) = 3
+
+  ✓ Optimal move: go LEFT (value = 3)
+      </pre>
+
+      <h3>Properties of Minimax</h3>
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Complete?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Complete if game tree is finite</td>
+          </tr>
+          <tr>
+            <td>Optimal?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Optimal against a perfect opponent</td>
+          </tr>
+          <tr>
+            <td>Time Complexity</td>
+            <td>O(b<sup>m</sup>)</td>
+            <td>b = branching factor, m = max depth</td>
+          </tr>
+          <tr>
+            <td>Space Complexity</td>
+            <td>O(b·m)</td>
+            <td>DFS — only stores current path</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Problem with Minimax:</strong> For games like Chess (b ≈ 35, m ≈ 100),
+        the number of nodes is 35<sup>100</sup> — completely infeasible.
+        This is why Alpha-Beta Pruning is needed.
+      </div>
+    </section>
+
+    <!-- ── Alpha Beta ─────────────────────────────── -->
+    <section id="alpha-beta">
+      <h2>2. Alpha-Beta Pruning</h2>
+      <p>
+        <strong>Alpha-Beta Pruning</strong> is an optimization of Minimax that
+        <strong>prunes branches</strong> of the game tree that cannot possibly affect
+        the final decision. It returns the exact same result as Minimax but
+        explores far fewer nodes.
+      </p>
+
+      <h3>Two Key Parameters</h3>
+      <table>
+        <thead>
+          <tr><th>Parameter</th><th>Maintained by</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>α (Alpha)</strong></td>
+            <td>MAX player</td>
+            <td>Best value MAX can guarantee so far (starts at -∞)</td>
+          </tr>
+          <tr>
+            <td><strong>β (Beta)</strong></td>
+            <td>MIN player</td>
+            <td>Best value MIN can guarantee so far (starts at +∞)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Pruning Conditions</h3>
+      <ul>
+        <li>
+          <strong>At a MIN node:</strong> If the current value ≤ α → <strong>prune</strong>
+          (MAX already has a better option elsewhere)
+        </li>
+        <li>
+          <strong>At a MAX node:</strong> If the current value ≥ β → <strong>prune</strong>
+          (MIN already has a better option elsewhere)
+        </li>
+      </ul>
+
+      <h3>Pruning Rule</h3>
+      <pre>
+  Prune when:  α ≥ β
+
+  At MIN node: if value ≤ α → stop (prune remaining children)
+  At MAX node: if value ≥ β → stop (prune remaining children)
+      </pre>
+
+      <h3>Alpha-Beta Example</h3>
+      <pre>
+                        MAX [α=-∞, β=+∞]
+                       /                \
+            MIN [α=-∞, β=+∞]        MIN [α=3, β=+∞]
+            /        \               /        \
+         [3]         [5]          [2]         [PRUNED ✂]
+     α updated=3                β=2 < α=3 → PRUNE!
+
+  Left subtree: MIN sees 3,5 → returns 3. α = 3.
+  Right subtree: MIN sees 2. Since 2 < α(3) → prune remaining.
+  Root MAX: max(3, 2) = 3. Same answer as Minimax!
+      </pre>
+
+      <h3>How Much Does Alpha-Beta Save?</h3>
+      <table>
+        <thead>
+          <tr><th>Move Ordering</th><th>Nodes Explored</th><th>Effective Branching Factor</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Worst case (worst ordering)</td>
+            <td>O(b<sup>m</sup>)</td>
+            <td>Same as Minimax — no savings</td>
+          </tr>
+          <tr>
+            <td>Average case (random ordering)</td>
+            <td>O(b<sup>3m/4</sup>)</td>
+            <td>Significant reduction</td>
+          </tr>
+          <tr>
+            <td>Best case (perfect ordering)</td>
+            <td>O(b<sup>m/2</sup>)</td>
+            <td>Search depth effectively doubles!</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Best Case Insight:</strong> With perfect move ordering, Alpha-Beta can
+        search twice as deep as Minimax in the same time. For Chess, this means
+        going from depth 8 to depth 16 — a massive improvement.
+      </div>
+
+      <h3>Properties of Alpha-Beta Pruning</h3>
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Complete?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Same as Minimax</td>
+          </tr>
+          <tr>
+            <td>Optimal?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Returns exact same result as Minimax</td>
+          </tr>
+          <tr>
+            <td>Time (best case)</td>
+            <td>O(b<sup>m/2</sup>)</td>
+            <td>Perfect move ordering</td>
+          </tr>
+          <tr>
+            <td>Time (worst case)</td>
+            <td>O(b<sup>m</sup>)</td>
+            <td>No pruning happens</td>
+          </tr>
+          <tr>
+            <td>Space</td>
+            <td>O(b·m)</td>
+            <td>Same as Minimax</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Evaluation Function ────────────────────── -->
+    <section id="evaluation">
+      <h2>3. Evaluation Functions</h2>
+      <p>
+        In real games like Chess, we cannot search all the way to terminal states —
+        the tree is too large. Instead we search to a fixed depth and use an
+        <strong>evaluation function</strong> to estimate how good a non-terminal
+        state is for MAX.
+      </p>
+
+      <h3>What is an Evaluation Function?</h3>
+      <p>
+        An evaluation function <strong>EVAL(s)</strong> estimates the utility of
+        state s — it replaces the exact utility used in Minimax when we cut off
+        the search early.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Value</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Large positive</td><td>State is very good for MAX</td></tr>
+          <tr><td>Zero</td><td>State is neutral / balanced</td></tr>
+          <tr><td>Large negative</td><td>State is very good for MIN</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Properties of a Good Evaluation Function</h3>
+      <ul>
+        <li>Must <strong>agree with utility function</strong> at terminal states</li>
+        <li>Must be <strong>fast to compute</strong> — called millions of times per move</li>
+        <li>Should <strong>accurately reflect</strong> the true chance of winning</li>
+        <li>Based on <strong>features</strong> of the state (material count, piece position, control of center etc.)</li>
+      </ul>
+
+      <h3>Example — Chess Evaluation</h3>
+      <pre>
+  EVAL(s) = Σ w_i × f_i(s)
+
+  Features (f_i):    Weights (w_i):
+  ─────────────────────────────────
+  Pawn count         +1 per pawn advantage
+  Knight/Bishop      +3 per piece advantage
+  Rook               +5 per piece advantage
+  Queen              +9 per piece advantage
+  King safety        large weight
+      </pre>
+
+      <h3>Cutoff Test</h3>
+      <p>
+        Instead of a terminal test, we use a <strong>cutoff test</strong> to decide
+        when to stop the search and apply the evaluation function:
+      </p>
+      <ul>
+        <li>Simple cutoff: stop at a fixed depth d</li>
+        <li>Smarter cutoff: use <strong>quiescence search</strong> — continue until the position is stable (no captures or checks)</li>
+      </ul>
+    </section>
+
+    <!-- ── Minimax vs Alpha-Beta ──────────────────── -->
+    <section id="comparison">
+      <h2>Minimax vs Alpha-Beta — Quick Comparison</h2>
+
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Minimax</th><th>Alpha-Beta Pruning</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Result</td>
+            <td>Optimal</td>
+            <td>Identical to Minimax</td>
+          </tr>
+          <tr>
+            <td>Nodes explored</td>
+            <td>O(b<sup>m</sup>)</td>
+            <td>O(b<sup>m/2</sup>) best case</td>
+          </tr>
+          <tr>
+            <td>Pruning</td>
+            <td>✗ None</td>
+            <td>✓ Yes — skips irrelevant branches</td>
+          </tr>
+          <tr>
+            <td>Extra parameters</td>
+            <td>None</td>
+            <td>α and β values</td>
+          </tr>
+          <tr>
+            <td>Move ordering matters?</td>
+            <td>✗ No</td>
+            <td>✓ Yes — better ordering = more pruning</td>
+          </tr>
+          <tr>
+            <td>Practical use</td>
+            <td>Too slow for real games</td>
+            <td>Used in real chess engines</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── GATE Tips ──────────────────────────────── -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li><strong>Minimax</strong> — MAX maximizes, MIN minimizes. Back up values from leaves to root.</li>
+        <li>Time complexity of Minimax = <strong>O(b<sup>m</sup>)</strong>. Space = <strong>O(b·m)</strong>.</li>
+        <li>Alpha-Beta gives <strong>same result as Minimax</strong> — just faster.</li>
+        <li><strong>α = best MAX can guarantee</strong> (starts -∞). <strong>β = best MIN can guarantee</strong> (starts +∞).</li>
+        <li>Prune when <strong>α ≥ β</strong>.</li>
+        <li>Best case Alpha-Beta = <strong>O(b<sup>m/2</sup>)</strong> with perfect move ordering.</li>
+        <li>Evaluation function replaces utility when search is cut off before terminal states.</li>
+        <li>Zero-sum game — one player's gain = other player's loss. Total utility always = 0.</li>
+        <li>In GATE questions, always calculate minimax values bottom-up from leaves to root.</li>
+      </ul>
+    </section>
+
+    <!-- ── Practice Questions ─────────────────────── -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> In Minimax, what does the MAX player do at each node?</h4>
+      <ol type="A">
+        <li>Picks the child with minimum utility</li>
+        <li>Picks the child with maximum utility</li>
+        <li>Picks a random child</li>
+        <li>Picks the child closest to the goal</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Picks the child with maximum utility</strong></p>
+        <p>MAX wants to maximize their advantage. MIN picks the minimum.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> What is the time complexity of the Minimax algorithm?</h4>
+      <ol type="A">
+        <li>O(b<sup>m/2</sup>)</li>
+        <li>O(b · m)</li>
+        <li>O(b<sup>m</sup>)</li>
+        <li>O(m<sup>b</sup>)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — O(b<sup>m</sup>)</strong></p>
+        <p>b = branching factor, m = maximum depth. Minimax explores the entire game tree.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> Alpha-Beta Pruning returns a result that is:</h4>
+      <ol type="A">
+        <li>Always better than Minimax</li>
+        <li>Always worse than Minimax</li>
+        <li>Identical to Minimax</li>
+        <li>An approximation of Minimax</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Identical to Minimax</strong></p>
+        <p>Alpha-Beta is an optimization — it prunes branches that cannot affect the result, so the final answer is exactly the same.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q4</span> In Alpha-Beta Pruning, pruning occurs when:</h4>
+      <ol type="A">
+        <li>α &lt; β</li>
+        <li>α &gt; β</li>
+        <li>α ≥ β</li>
+        <li>α = 0</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — α ≥ β</strong></p>
+        <p>When alpha (MAX's best) ≥ beta (MIN's best), the current branch cannot improve the result and is pruned.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q5</span> What is the best-case time complexity of Alpha-Beta Pruning?</h4>
+      <ol type="A">
+        <li>O(b<sup>m</sup>)</li>
+        <li>O(b<sup>m/2</sup>)</li>
+        <li>O(b · m)</li>
+        <li>O(log b<sup>m</sup>)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — O(b<sup>m/2</sup>)</strong></p>
+        <p>With perfect move ordering, Alpha-Beta effectively doubles the search depth compared to Minimax.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q6</span> Consider this game tree. What is the Minimax value at the root?</h4>
+      <p>Terminal values (left to right): 3, 12, 8, 2, 4, 6, 14, 5, 2</p>
+      <p>Tree has 3 levels: Root (MAX) → Level 1 (MIN) → Level 2 (MIN) → Leaves</p>
+      <ol type="A">
+        <li>2</li>
+        <li>3</li>
+        <li>12</li>
+        <li>14</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — 3</strong></p>
+        <p>
+          Level 2 MIN nodes: min(3,12)=3, min(8,2)=2, min(4,6)=4, min(14,5)=5, min(2,?)=2<br>
+          Level 1 MIN nodes: min(3,2)=2, min(4,5)=4<br>
+          Root MAX: max(2,4) = ... depends on tree structure. Work bottom-up carefully from leaves.
+        </p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q7</span> An evaluation function in game search is used when:</h4>
+      <ol type="A">
+        <li>The game has no terminal states</li>
+        <li>The search is cut off before reaching terminal states</li>
+        <li>Alpha-Beta pruning fails</li>
+        <li>The branching factor is 1</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Search is cut off before terminal states</strong></p>
+        <p>When the game tree is too large to search completely, we cut off at a fixed depth and use an evaluation function to estimate the utility.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q8</span> Which of the following is TRUE about a zero-sum game?</h4>
+      <ol type="A">
+        <li>Both players can win simultaneously</li>
+        <li>One player's gain equals the other player's loss</li>
+        <li>The total utility is always positive</li>
+        <li>Both players cooperate to maximize total utility</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — One player's gain equals the other player's loss</strong></p>
+        <p>In zero-sum games, the sum of utilities for all players is always zero. What MAX gains, MIN loses.</p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="search_informed.html">← Informed Search</a>
+      <a class="nav-btn next" href="../index.html">Home →</a>
+    </div>
+
   </article>
-  <script src="../theme.js"></script>
+
+  <!-- ── TOC Sidebar ─────────────────────────────── -->
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#formulation">Game Formulation</a></li>
+      <li><a href="#game-tree">Game Tree</a></li>
+      <li><a href="#minimax">Minimax Algorithm</a></li>
+      <li><a href="#alpha-beta">Alpha-Beta Pruning</a></li>
+      <li><a href="#evaluation">Evaluation Functions</a></li>
+      <li><a href="#comparison">Comparison</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>
-

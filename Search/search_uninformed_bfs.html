@@ -1,160 +1,270 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Breadth-First Search</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breadth-First Search — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="search_ai.html">Search</a>
+    <span>›</span>
+    <a href="search_uninformed.html">Uninformed Search</a>
+    <span>›</span>
+    <span>BFS</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Breadth-First Search</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <p> <strong> Breadth-First Search (BFS) </strong>is an uninformed search algorithm that explores the search space level by level, expanding all nodes at the present depth before moving to the next depth level.<br> BFS Follows a  <strong> Queue (FIFO: First In First Out) </strong>Data Structure.</p>
-    <h2>Example of Breadth First Search (BFS)</h2>
 
-<p>Consider the following search tree:</p>
+    <h1>Breadth-First Search (BFS)</h1>
 
-<pre>
-            A
-          /   \
-         B     C
-        / \   / \
-       D   E F   G
-          /
-         H
-</pre>
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Uninformed Search</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~8 min read</span>
+      </div>
+    </div>
 
-<h3>BFS Traversal (Level Order)</h3>
-<p>BFS explores level by level from left to right.</p>
+    <!-- Intro -->
+    <section id="intro">
+      <p>
+        <strong>Breadth-First Search (BFS)</strong> is an uninformed search algorithm that
+        explores all nodes at the current depth level before moving to the next level.
+        It uses a <strong>FIFO queue</strong> as its data structure.
+      </p>
 
-<h3>Step-by-step Queue Process</h3>
-<table border="1" cellpadding="8" cellspacing="0">
-  <tr>
-    <th>Step</th>
-    <th>Queue (Front → Rear)</th>
-    <th>Visited Node</th>
-  </tr>
-  <tr>
-    <td>1</td>
-    <td>A</td>
-    <td>A</td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>B, C</td>
-    <td>B</td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>C, D, E</td>
-    <td>C</td>
-  </tr>
-  <tr>
-    <td>4</td>
-    <td>D, E, F, G</td>
-    <td>D</td>
-  </tr>
-  <tr>
-    <td>5</td>
-    <td>E, F, G</td>
-    <td>E</td>
-  </tr>
-  <tr>
-    <td>6</td>
-    <td>F, G, H</td>
-    <td>F</td>
-  </tr>
-  <tr>
-    <td>7</td>
-    <td>G, H</td>
-    <td>G</td>
-  </tr>
-  <tr>
-    <td>8</td>
-    <td>H</td>
-    <td>H</td>
-  </tr>
-</table>
-<h3>Explanation</h3>
-<ul>
-  <li>Start at root <strong>A</strong></li>
-  <li>Visit all nodes at depth 1 → <strong>B, C</strong></li>
-  <li>Then depth 2 → <strong>D, E, F, G</strong></li>
-  <li>Finally depth 3 → <strong>H</strong></li>
-</ul>
+      <div class="info-box">
+        <strong>Core Idea:</strong> Expand the shallowest unexpanded node first.
+        BFS guarantees finding the goal at the minimum depth (shallowest path).
+      </div>
+    </section>
 
-<h3>Final BFS Order</h3>
-<p><strong>A → B → C → D → E → F → G → H</strong></p>
+    <!-- How it works -->
+    <section id="how-it-works">
+      <h2>How BFS Works</h2>
+      <ol>
+        <li>Start with the initial state in the queue.</li>
+        <li>Dequeue the front node and check if it is the goal.</li>
+        <li>If yes → return the solution.</li>
+        <li>If no → expand the node and add all its children to the <strong>back</strong> of the queue.</li>
+        <li>Repeat until goal is found or queue is empty.</li>
+      </ol>
 
+      <h3>Data Structure Used</h3>
+      <p><strong>Queue (FIFO)</strong> — First In, First Out. Nodes added to the back, removed from the front.</p>
+    </section>
 
+    <!-- Example -->
+    <section id="example">
+      <h2>Example</h2>
+      <p>Consider a tree with branching factor b = 2:</p>
+      <pre>
+         A          ← Level 0 (Start)
+        / \
+       B   C        ← Level 1
+      / \ / \
+     D  E F  G      ← Level 2 (Goal = G)
+      </pre>
+      <p><strong>BFS Order:</strong> A → B → C → D → E → F → G</p>
+      <p>BFS visits level by level, so it finds <strong>G</strong> after visiting all nodes at level 1 first.</p>
+    </section>
 
-<p>
-So, BFS always expands nodes <strong>level by level</strong>, ensuring the 
-shallowest nodes are visited first.
-</p>
-<p>
-<h2>1. Key Properties of BFS</h2>
-<ul>
-  <li><strong>Complete:</strong> Yes (finds solution if exists in finite space)</li>
-  <li><strong>Optimal:</strong> Yes (when all step costs are equal)</li>
-  <li><strong>Time Complexity:</strong> O(b<sup>d</sup>)</li>
-  <li><strong>Space Complexity:</strong> O(b<sup>d</sup>)</li>
-</ul>
-<p>
-  Where:<br>
-  <strong>b</strong> = branching factor<br>
-  <strong>d</strong> = depth of shallowest goal node
-</p>
+    <!-- Properties -->
+    <section id="properties">
+      <h2>Properties of BFS</h2>
 
-<h2>2. Pseudocode of BFS (Very Important)</h2>
-<pre>
-BFS(start, goal):
-  create empty queue Q
-  enqueue(start)
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Complete?</td><td style="color:var(--green)">✓ Yes</td><td>Will always find a solution if one exists (finite branching factor)</td></tr>
+          <tr><td>Optimal?</td><td style="color:var(--green)">✓ Yes*</td><td>Finds shallowest goal — optimal when all step costs are equal</td></tr>
+          <tr><td>Time Complexity</td><td>O(b<sup>d</sup>)</td><td>b = branching factor, d = depth of shallowest goal</td></tr>
+          <tr><td>Space Complexity</td><td>O(b<sup>d</sup>)</td><td>Keeps all frontier nodes in memory — major drawback</td></tr>
+        </tbody>
+      </table>
 
-  while Q is not empty:
-      node = dequeue(Q)
-      if node is goal:
-          return solution
-      enqueue all unvisited children of node
-</pre>
+      <p>* Not optimal if step costs are different — use <strong>UCS</strong> instead.</p>
+    </section>
 
-<h2>3. Advantages of BFS</h2>
-<ul>
-  <li>Finds shortest path in unweighted graphs</li>
-  <li>Guaranteed to find solution (complete)</li>
-  <li>Simple and systematic search</li>
-</ul>
+    <!-- Complexity Analysis -->
+    <section id="complexity">
+      <h2>Complexity Analysis</h2>
+      <p>With branching factor <strong>b</strong> and goal at depth <strong>d</strong>:</p>
 
-<h2>4. Disadvantages of BFS</h2>
-<ul>
-  <li>High memory usage (stores all nodes at a level)</li>
-  <li>Slow for very deep trees</li>
-  <li>Not suitable when branching factor is large</li>
-</ul>
+      <table>
+        <thead>
+          <tr><th>Level</th><th>Nodes Generated</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0</td><td>1</td></tr>
+          <tr><td>1</td><td>b</td></tr>
+          <tr><td>2</td><td>b²</td></tr>
+          <tr><td>3</td><td>b³</td></tr>
+          <tr><td>d</td><td>b<sup>d</sup></td></tr>
+        </tbody>
+      </table>
 
-<h2>5. Applications of BFS</h2>
-<ul>
-  <li>Shortest path in unweighted graphs</li>
-  <li>Web crawling (search engines)</li>
-  <li>Social network analysis (friend suggestions)</li>
-  <li>Puzzle solving (8-puzzle, maze solving)</li>
-  <li>Network broadcasting</li>
-</ul>
+      <p>Total nodes = 1 + b + b² + ... + b<sup>d</sup> = <strong>O(b<sup>d</sup>)</strong></p>
 
-<h2>6. When to Use BFS?</h2>
-<ul>
-  <li>Solution is close to root</li>
-  <li>Need shortest path (minimum steps)</li>
-  <li>Tree depth is small</li>
-</ul>
-</p>
+      <div class="info-box">
+        <strong>Memory Problem:</strong> BFS stores all nodes at the current frontier.
+        For b=10, d=10 → over <strong>10 billion nodes</strong> in memory. This makes BFS
+        impractical for deep search spaces.
+      </div>
+    </section>
 
+    <!-- Advantages & Disadvantages -->
+    <section id="pros-cons">
+      <h2>Advantages & Disadvantages</h2>
 
-    <a href="../Search/search_uninformed.html">← Back to Uninformed Search Topics</a>
+      <h3>✅ Advantages</h3>
+      <ul>
+        <li>Always finds the <strong>shallowest</strong> (shortest path) solution</li>
+        <li>Complete — will not miss a solution if it exists</li>
+        <li>Simple to implement using a queue</li>
+      </ul>
 
+      <h3>❌ Disadvantages</h3>
+      <ul>
+        <li><strong>High memory usage</strong> — stores all frontier nodes (O(b<sup>d</sup>))</li>
+        <li>Not optimal when step costs are unequal</li>
+        <li>Slow for deep goal states — explores all shallower nodes first</li>
+      </ul>
+    </section>
+
+    <!-- GATE Tips -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li>BFS is <strong>complete and optimal</strong> only when step costs are equal.</li>
+        <li>For weighted graphs, use <strong>UCS</strong> — BFS may not find the optimal cost path.</li>
+        <li>Space complexity O(b<sup>d</sup>) is BFS's biggest weakness compared to DFS O(b·m).</li>
+        <li>IDDFS gives BFS-like optimality with DFS-like memory — preferred in practice.</li>
+        <li>BFS uses a <strong>Queue (FIFO)</strong>. DFS uses a <strong>Stack (LIFO)</strong>.</li>
+      </ul>
+    </section>
+
+    <!-- Practice Questions -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> What data structure does BFS use?</h4>
+      <ol type="A">
+        <li>Stack</li>
+        <li>Priority Queue</li>
+        <li>Queue (FIFO)</li>
+        <li>Linked List</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Queue (FIFO)</strong></p>
+        <p>BFS uses a FIFO queue to ensure nodes are explored level by level.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> BFS is optimal when:</h4>
+      <ol type="A">
+        <li>The graph is directed</li>
+        <li>All step costs are equal</li>
+        <li>The branching factor is large</li>
+        <li>The depth is large</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — All step costs are equal</strong></p>
+        <p>BFS finds the shallowest goal, which is optimal only when all edges have equal cost.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> For b=4 and d=5, how many nodes does BFS explore?</h4>
+      <ol type="A">
+        <li>20</li>
+        <li>1024</li>
+        <li>1364</li>
+        <li>4096</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — 1364</strong></p>
+        <p>Total = 1 + 4 + 16 + 64 + 256 + 1024 = 1365 ≈ O(b<sup>d</sup>) = O(4<sup>5</sup>) = 1024</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q4</span> Which is the main disadvantage of BFS?</h4>
+      <ol type="A">
+        <li>It is not complete</li>
+        <li>It may miss the optimal solution</li>
+        <li>It requires exponential memory</li>
+        <li>It cannot handle cycles</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — It requires exponential memory O(b<sup>d</sup>)</strong></p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="search_uninformed.html">← Uninformed Search</a>
+      <a class="nav-btn next" href="search_uninformed_dfs.html">DFS →</a>
+    </div>
 
   </article>
-  <script src="../theme.js"></script>
+
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#how-it-works">How BFS Works</a></li>
+      <li><a href="#example">Example</a></li>
+      <li><a href="#properties">Properties</a></li>
+      <li><a href="#complexity">Complexity</a></li>
+      <li><a href="#pros-cons">Pros & Cons</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>

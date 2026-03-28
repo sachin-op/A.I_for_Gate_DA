@@ -1,25 +1,230 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Reasoning</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reasoning — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<!-- ── Top Nav ────────────────────────────────────── -->
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <span>Reasoning</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Reasoning</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <p>Published on: 6 Feb 2026</p>
 
-    <h2>Types of Reasoning</h2>
+    <h1>Reasoning in Artificial Intelligence</h1>
 
-  <main class="posts">
-    <a class="post-link" href="logical_reasoning.html">
-       1) Logical Reasoning
-    </a>
-  </main>
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Reasoning</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 Topic Overview</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
+      <p>
+        <strong>Reasoning</strong> is the process by which an AI agent derives new
+        conclusions from existing knowledge. It is the core mechanism that allows
+        an intelligent system to go beyond what it has been directly told and
+        <strong>infer new facts automatically</strong>.
+      </p>
+
+      <div class="info-box">
+        <strong>Simple Definition:</strong> Reasoning = using what you know to figure
+        out what you don't know. Given a set of facts and rules, reasoning produces
+        new facts that must logically follow.
+      </div>
+    </section>
+
+    <!-- ── What is Reasoning ──────────────────────── -->
+    <section id="what-is-reasoning">
+      <h2>What is Reasoning?</h2>
+      <p>
+        In AI, reasoning works on top of a <strong>Knowledge Base (KB)</strong>.
+        The KB contains facts and rules. The reasoning engine applies
+        <strong>inference rules</strong> to derive new conclusions.
+      </p>
+
+      <pre>
+  Knowledge Base:
+  ├── Fact:  "It is raining"              (P)
+  └── Rule:  "If it rains → roads are wet" (P → Q)
+
+  Reasoning derives:
+  └── New Fact: "Roads are wet"           (Q)  ✓
+      </pre>
+
+      <h3>Two Key Properties of Good Reasoning</h3>
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Soundness</strong></td>
+            <td>Only derives conclusions that are actually true — no wrong answers</td>
+          </tr>
+          <tr>
+            <td><strong>Completeness</strong></td>
+            <td>Derives every conclusion that logically follows — misses nothing</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Types of Reasoning ─────────────────────── -->
+    <section id="types">
+      <h2>Types of Reasoning in AI</h2>
+
+      <table>
+        <thead>
+          <tr><th>Type</th><th>Direction</th><th>Description</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Deductive</strong></td>
+            <td>General → Specific</td>
+            <td>Derives specific facts from general rules. Guaranteed to be correct.</td>
+            <td>All men are mortal. Socrates is a man. → Socrates is mortal.</td>
+          </tr>
+          <tr>
+            <td><strong>Inductive</strong></td>
+            <td>Specific → General</td>
+            <td>Derives general rules from specific observations. Not guaranteed.</td>
+            <td>The sun rose every day so far → The sun always rises.</td>
+          </tr>
+          <tr>
+            <td><strong>Abductive</strong></td>
+            <td>Observation → Best Explanation</td>
+            <td>Finds the simplest explanation for an observation.</td>
+            <td>The road is wet → It probably rained.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>GATE Focus:</strong> The GATE DA syllabus focuses primarily on
+        <strong>Deductive Reasoning</strong> — specifically logical inference using
+        Forward Chaining, Backward Chaining, and Resolution.
+      </div>
+    </section>
+
+    <!-- ── Reasoning vs Logic ─────────────────────── -->
+    <section id="reasoning-vs-logic">
+      <h2>Reasoning vs Logic</h2>
+
+      <table>
+        <thead>
+          <tr><th></th><th>Logic</th><th>Reasoning</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>What it is</strong></td>
+            <td>The formal language for representing knowledge</td>
+            <td>The process of deriving new knowledge</td>
+          </tr>
+          <tr>
+            <td><strong>Role</strong></td>
+            <td>Provides the syntax and semantics</td>
+            <td>Uses inference rules to draw conclusions</td>
+          </tr>
+          <tr>
+            <td><strong>Analogy</strong></td>
+            <td>Grammar of a language</td>
+            <td>Speaking and understanding that language</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Topic in this section ──────────────────── -->
+    <section id="topics">
+      <h2>Topics in Reasoning</h2>
+
+      <div class="algo-grid">
+        <a class="algo-card" href="logical_reasoning.html">
+          <span class="card-num">01</span>
+          <span class="card-title">Logical Reasoning</span>
+          <span class="card-desc">
+            Inference rules, Resolution, Forward Chaining, Backward Chaining —
+            the core mechanisms for deriving new facts from a Knowledge Base.
+          </span>
+          <div class="card-tags">
+            <span class="tag complete">Deductive</span>
+            <span class="tag time">Sound & Complete</span>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ── GATE Tips ──────────────────────────────── -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li><strong>Deductive reasoning</strong> is the main type tested in GATE — always valid if premises are true.</li>
+        <li><strong>Sound</strong> = never wrong. <strong>Complete</strong> = never misses anything.</li>
+        <li>An inference algorithm should be both sound and complete for reliable reasoning.</li>
+        <li><strong>Forward Chaining</strong> starts from facts and applies rules to derive new facts.</li>
+        <li><strong>Backward Chaining</strong> starts from the goal and works backward to find supporting facts.</li>
+        <li><strong>Resolution</strong> is the key inference rule used in automated theorem proving.</li>
+        <li>Reasoning is the engine that makes logic useful in practice — logic is the language, reasoning is the thinking.</li>
+      </ul>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="../index.html">← Home</a>
+      <a class="nav-btn next" href="logical_reasoning.html">Logical Reasoning →</a>
+    </div>
+
   </article>
-  <script src="../theme.js"></script>
-</body>
-</html> 
 
+  <!-- ── TOC Sidebar ─────────────────────────────── -->
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#what-is-reasoning">What is Reasoning?</a></li>
+      <li><a href="#types">Types of Reasoning</a></li>
+      <li><a href="#reasoning-vs-logic">Reasoning vs Logic</a></li>
+      <li><a href="#topics">Topics</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
+</body>
+</html>

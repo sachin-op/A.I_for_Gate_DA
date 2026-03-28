@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bidirectional Search — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="search_ai.html">Search</a>
+    <span>›</span>
+    <a href="search_uninformed.html">Uninformed Search</a>
+    <span>›</span>
+    <span>Bidirectional Search</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
+  <article>
+
+    <h1>Bidirectional Search</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Uninformed Search</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~10 min read</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
+      <p>
+        <strong>Bidirectional Search</strong> is a search strategy that runs
+        <strong>two simultaneous searches</strong> — one forward from the
+        <strong>initial state</strong> and one backward from the
+        <strong>goal state</strong> — and stops when the two frontiers
+        <strong>meet in the middle</strong>.
+      </p>
+
+      <div class="info-box">
+        <strong>Core Idea:</strong> Instead of one search exploring b<sup>d</sup> nodes,
+        run two searches each exploring only b<sup>d/2</sup> nodes.
+        Meeting in the middle gives a dramatic reduction in nodes explored.
+      </div>
+    </section>
+
+    <!-- ── Motivation ────────────────────────────── -->
+    <section id="motivation">
+      <h2>Why Bidirectional Search?</h2>
+      <p>
+        The key motivation is the <strong>exponential reduction</strong> in nodes explored.
+        Consider BFS with branching factor b = 10 and goal at depth d = 6:
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Algorithm</th><th>Nodes Explored</th><th>Calculation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>BFS (one direction)</strong></td>
+            <td>1,111,111</td>
+            <td>b<sup>d</sup> = 10<sup>6</sup> ≈ 1 million</td>
+          </tr>
+          <tr>
+            <td><strong>Bidirectional BFS</strong></td>
+            <td>2,222</td>
+            <td>2 × b<sup>d/2</sup> = 2 × 10<sup>3</sup> ≈ 2 thousand</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        Bidirectional search explores roughly <strong>500× fewer nodes</strong> in this example.
+        The deeper the goal, the more dramatic the saving.
+      </p>
+    </section>
+
+    <!-- ── How it works ───────────────────────────── -->
+    <section id="how-it-works">
+      <h2>How Bidirectional Search Works</h2>
+      <ol>
+        <li>Start <strong>Search 1 (forward)</strong> from the initial state.</li>
+        <li>Start <strong>Search 2 (backward)</strong> from the goal state.</li>
+        <li>Both searches expand their frontiers simultaneously, one level at a time.</li>
+        <li>At each step, check if the frontier of one search <strong>intersects</strong> with the explored set of the other.</li>
+        <li>When they meet → <strong>combine the two partial paths</strong> to form the full solution.</li>
+      </ol>
+
+      <h3>Data Structure Used</h3>
+      <p>
+        Typically uses <strong>two BFS queues</strong> — one for each direction.
+        Can also use DFS or UCS in each direction depending on the variant.
+      </p>
+
+      <h3>Key Condition</h3>
+      <p>
+        The search terminates when a node is found that is in <strong>both frontiers</strong>
+        (or one frontier intersects the explored set of the other).
+      </p>
+    </section>
+
+    <!-- ── Visual Intuition ───────────────────────── -->
+    <section id="intuition">
+      <h2>Visual Intuition</h2>
+      <pre>
+  Forward search         Backward search
+  from START             from GOAL
+       ↓                      ↑
+  [ S ]→→→→→[ ... ]    [ ... ]←←←←[ G ]
+                  ↘        ↙
+                  [ MEET ] ← intersection point
+      </pre>
+
+      <p>
+        Think of two people trying to find each other in a city.
+        Instead of one person searching everywhere, both walk toward each other —
+        they meet in half the distance.
+      </p>
+    </section>
+
+    <!-- ── Properties ────────────────────────────── -->
+    <section id="properties">
+      <h2>Properties of Bidirectional Search</h2>
+
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Complete?</td>
+            <td style="color:var(--green)">✓ Yes*</td>
+            <td>Complete if both directions use BFS</td>
+          </tr>
+          <tr>
+            <td>Optimal?</td>
+            <td style="color:var(--green)">✓ Yes*</td>
+            <td>Optimal if both directions use BFS with equal step costs</td>
+          </tr>
+          <tr>
+            <td>Time Complexity</td>
+            <td>O(b<sup>d/2</sup>)</td>
+            <td>Each direction explores half the depth</td>
+          </tr>
+          <tr>
+            <td>Space Complexity</td>
+            <td>O(b<sup>d/2</sup>)</td>
+            <td>Both frontiers stored simultaneously</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>* Depends on the search strategy used in each direction.</p>
+    </section>
+
+    <!-- ── Complexity Analysis ────────────────────── -->
+    <section id="complexity">
+      <h2>Complexity Analysis</h2>
+
+      <p>
+        With branching factor <strong>b</strong> and goal at depth <strong>d</strong>:
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Algorithm</th><th>Time</th><th>Space</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>BFS</strong></td><td>O(b<sup>d</sup>)</td><td>O(b<sup>d</sup>)</td></tr>
+          <tr><td><strong>Bidirectional BFS</strong></td><td>O(b<sup>d/2</sup>)</td><td>O(b<sup>d/2</sup>)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Mathematical Insight:</strong> b<sup>d/2</sup> + b<sup>d/2</sup> = 2·b<sup>d/2</sup>
+        which is far less than b<sup>d</sup> for large b and d.
+        For b=10, d=10: BFS explores 10<sup>10</sup> = 10 billion nodes,
+        Bidirectional explores 2 × 10<sup>5</sup> = 200,000 nodes.
+      </div>
+    </section>
+
+    <!-- ── Requirements ───────────────────────────── -->
+    <section id="requirements">
+      <h2>Requirements for Bidirectional Search</h2>
+      <p>Bidirectional search has some important prerequisites that must be satisfied:</p>
+
+      <table>
+        <thead>
+          <tr><th>Requirement</th><th>Why It's Needed</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Goal state must be known</strong></td>
+            <td>The backward search starts from the goal — so the goal must be a single explicit state, not a general condition</td>
+          </tr>
+          <tr>
+            <td><strong>Operators must be reversible</strong></td>
+            <td>The backward search needs to apply operators in reverse — not always possible</td>
+          </tr>
+          <tr>
+            <td><strong>Predecessor function must exist</strong></td>
+            <td>Must be able to generate parent nodes from a child (reverse of successor function)</td>
+          </tr>
+          <tr>
+            <td><strong>Efficient intersection check</strong></td>
+            <td>Need a fast way to check if frontiers overlap — typically a hash set</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Variants ───────────────────────────────── -->
+    <section id="variants">
+      <h2>Variants of Bidirectional Search</h2>
+
+      <table>
+        <thead>
+          <tr><th>Variant</th><th>Forward</th><th>Backward</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Bidirectional BFS</strong></td>
+            <td>BFS</td>
+            <td>BFS</td>
+            <td>Most common. Complete and optimal (equal costs).</td>
+          </tr>
+          <tr>
+            <td><strong>Bidirectional UCS</strong></td>
+            <td>UCS</td>
+            <td>UCS</td>
+            <td>Optimal for weighted graphs. More complex stopping condition.</td>
+          </tr>
+          <tr>
+            <td><strong>Bidirectional A*</strong></td>
+            <td>A*</td>
+            <td>A*</td>
+            <td>Informed variant. Requires careful handling to guarantee optimality.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── When to use ────────────────────────────── -->
+    <section id="when-to-use">
+      <h2>When to Use Bidirectional Search</h2>
+
+      <table>
+        <thead>
+          <tr><th>Situation</th><th>Use Bidirectional?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Single explicit goal state known</td><td style="color:var(--green)">✓ Yes — ideal case</td></tr>
+          <tr><td>Goal is a general condition (e.g. any state satisfying X)</td><td style="color:var(--red)">✗ No — backward search not possible</td></tr>
+          <tr><td>Operators are reversible</td><td style="color:var(--green)">✓ Yes — required condition</td></tr>
+          <tr><td>Very deep search space</td><td style="color:var(--green)">✓ Yes — biggest benefit here</td></tr>
+          <tr><td>Memory is very limited</td><td style="color:var(--red)">✗ No — both frontiers consume memory</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Comparison with other algorithms ──────── -->
+    <section id="comparison">
+      <h2>Comparison with Other Uninformed Algorithms</h2>
+
+      <table>
+        <thead>
+          <tr><th>Algorithm</th><th>Complete</th><th>Optimal</th><th>Time</th><th>Space</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>BFS</strong></td>
+            <td style="color:var(--green)">✓</td>
+            <td style="color:var(--green)">✓*</td>
+            <td>O(b<sup>d</sup>)</td>
+            <td>O(b<sup>d</sup>)</td>
+          </tr>
+          <tr>
+            <td><strong>DFS</strong></td>
+            <td style="color:var(--red)">✗</td>
+            <td style="color:var(--red)">✗</td>
+            <td>O(b<sup>m</sup>)</td>
+            <td>O(b·m)</td>
+          </tr>
+          <tr>
+            <td><strong>IDDFS</strong></td>
+            <td style="color:var(--green)">✓</td>
+            <td style="color:var(--green)">✓*</td>
+            <td>O(b<sup>d</sup>)</td>
+            <td>O(b·d)</td>
+          </tr>
+          <tr>
+            <td><strong>UCS</strong></td>
+            <td style="color:var(--green)">✓</td>
+            <td style="color:var(--green)">✓</td>
+            <td>O(b<sup>1+⌊C*/ε⌋</sup>)</td>
+            <td>O(b<sup>1+⌊C*/ε⌋</sup>)</td>
+          </tr>
+          <tr>
+            <td><strong>Bidirectional</strong></td>
+            <td style="color:var(--green)">✓*</td>
+            <td style="color:var(--green)">✓*</td>
+            <td>O(b<sup>d/2</sup>)</td>
+            <td>O(b<sup>d/2</sup>)</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.82rem; color:var(--text-muted);">
+        * when using BFS in both directions with equal step costs
+      </p>
+    </section>
+
+    <!-- ── Advantages & Disadvantages ────────────── -->
+    <section id="pros-cons">
+      <h2>Advantages & Disadvantages</h2>
+
+      <h3>✅ Advantages</h3>
+      <ul>
+        <li>Dramatically reduces time and space — <strong>O(b<sup>d/2</sup>)</strong> vs O(b<sup>d</sup>)</li>
+        <li>Complete and optimal when using BFS in both directions</li>
+        <li>Very effective for problems with a single well-defined goal</li>
+      </ul>
+
+      <h3>❌ Disadvantages</h3>
+      <ul>
+        <li>Goal state must be <strong>explicitly known</strong> in advance</li>
+        <li>Operators must be <strong>reversible</strong> — not always possible</li>
+        <li>More complex to implement — need intersection detection</li>
+        <li>Both frontiers require memory — worse than IDDFS for memory</li>
+        <li>Stopping condition is tricky — must ensure the path found is truly optimal</li>
+      </ul>
+    </section>
+
+    <!-- ── GATE Tips ──────────────────────────────── -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li>Time and space complexity is <strong>O(b<sup>d/2</sup>)</strong> — the key fact to remember.</li>
+        <li>Two conditions required: <strong>goal must be known</strong> + <strong>operators reversible</strong>.</li>
+        <li>Bidirectional BFS is <strong>complete and optimal</strong> for equal step costs.</li>
+        <li>The meeting point is in the <strong>middle</strong> at depth d/2 — not always exactly half.</li>
+        <li>For GATE MCQs: compare b<sup>d</sup> (BFS) vs 2·b<sup>d/2</sup> (Bidirectional) — bidirectional is always smaller for b,d &gt; 1.</li>
+        <li><strong>Bidirectional A*</strong> is the informed version — mentioned often in GATE context.</li>
+      </ul>
+    </section>
+
+    <!-- ── Practice Questions ─────────────────────── -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> What is the time complexity of Bidirectional BFS?</h4>
+      <ol type="A">
+        <li>O(b<sup>d</sup>)</li>
+        <li>O(b<sup>d/2</sup>)</li>
+        <li>O(b · d)</li>
+        <li>O(2<sup>d</sup>)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — O(b<sup>d/2</sup>)</strong></p>
+        <p>Each direction searches to depth d/2, so total nodes = 2 × b<sup>d/2</sup> = O(b<sup>d/2</sup>).</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> Which condition is NOT required for Bidirectional Search?</h4>
+      <ol type="A">
+        <li>The goal state must be known explicitly</li>
+        <li>Operators must be reversible</li>
+        <li>The branching factor must be less than 10</li>
+        <li>A predecessor function must exist</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Branching factor restriction</strong></p>
+        <p>There is no restriction on the branching factor. The other three are genuine requirements.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> For b=10, d=6, how many nodes does Bidirectional BFS explore compared to BFS?</h4>
+      <ol type="A">
+        <li>Same number</li>
+        <li>Half as many</li>
+        <li>About 500 times fewer</li>
+        <li>About 1000 times fewer</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — About 500 times fewer</strong></p>
+        <p>BFS: b<sup>d</sup> = 10<sup>6</sup> = 1,000,000. Bidirectional: 2 × 10<sup>3</sup> = 2,000. Ratio ≈ 500.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q4</span> Bidirectional search is NOT suitable when:</h4>
+      <ol type="A">
+        <li>The graph is very large</li>
+        <li>The goal is a general condition rather than an explicit state</li>
+        <li>The branching factor is large</li>
+        <li>The start and goal are far apart</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Goal is a general condition</strong></p>
+        <p>Backward search requires starting from an explicit goal state. A vague goal condition makes backward search impossible.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q5</span> Bidirectional search terminates when:</h4>
+      <ol type="A">
+        <li>The forward search reaches the goal</li>
+        <li>The backward search reaches the start</li>
+        <li>The two frontiers intersect (meet in the middle)</li>
+        <li>Both queues become empty</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Two frontiers intersect</strong></p>
+        <p>The algorithm stops when a node appears in both frontiers, meaning a complete path from start to goal has been found.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q6</span> Which of the following is true about Bidirectional BFS?</h4>
+      <ol type="A">
+        <li>It uses less memory than IDDFS</li>
+        <li>It is complete and optimal for equal step costs</li>
+        <li>It does not require the goal state to be known</li>
+        <li>It always explores exactly d/2 levels in each direction</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Complete and optimal for equal step costs</strong></p>
+        <p>A is false (IDDFS uses O(b·d), bidirectional uses O(b<sup>d/2</sup>) — bidirectional uses more memory). C is false (goal must be known). D is false (meeting point is approximately d/2 but not always exact).</p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="search_uninformed_ucs.html">← UCS</a>
+      <a class="nav-btn next" href="search_informed.html">Informed Search →</a>
+    </div>
+
+  </article>
+
+  <!-- ── TOC Sidebar ─────────────────────────────── -->
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#motivation">Why Bidirectional?</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#intuition">Visual Intuition</a></li>
+      <li><a href="#properties">Properties</a></li>
+      <li><a href="#complexity">Complexity</a></li>
+      <li><a href="#requirements">Requirements</a></li>
+      <li><a href="#variants">Variants</a></li>
+      <li><a href="#when-to-use">When to Use</a></li>
+      <li><a href="#comparison">Comparison</a></li>
+      <li><a href="#pros-cons">Pros & Cons</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
+</body>
+</html>

@@ -1,18 +1,301 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Iterative Deepening Search</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iterative Deepening DFS — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="search_ai.html">Search</a>
+    <span>›</span>
+    <a href="search_uninformed.html">Uninformed Search</a>
+    <span>›</span>
+    <span>IDDFS</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Iterative Deepening Search</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <p>Published on: 6 Feb 2026</p>
-    <a href="../Search/search_uninformed.html">← Back to Uninformed Search Topics</a>
+
+    <h1>Iterative Deepening DFS (IDDFS)</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Uninformed Search</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~9 min read</span>
+      </div>
+    </div>
+
+    <!-- Intro -->
+    <section id="intro">
+      <p>
+        <strong>Iterative Deepening Depth-First Search (IDDFS)</strong> combines the best
+        properties of BFS and DFS. It runs <strong>DLS repeatedly</strong> with an increasing
+        depth limit — starting from ℓ = 0, then ℓ = 1, then ℓ = 2, and so on — until the
+        goal is found.
+      </p>
+
+      <div class="info-box">
+        <strong>Core Idea:</strong> Run DLS with ℓ = 0, 1, 2, 3, ... until goal found.
+        Gets <strong>BFS completeness + optimality</strong> with <strong>DFS memory efficiency</strong>.
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works">
+      <h2>How IDDFS Works</h2>
+      <ol>
+        <li>Set depth limit ℓ = 0.</li>
+        <li>Run DLS with current ℓ.</li>
+        <li>If solution found → return it.</li>
+        <li>If cutoff (limit reached, goal not found) → increment ℓ by 1 and repeat.</li>
+        <li>If failure (no solution exists at any depth) → return failure.</li>
+      </ol>
+
+      <h3>Pseudocode</h3>
+      <pre>
+function IDDFS(problem):
+  for depth = 0, 1, 2, 3, ... :
+    result = DLS(problem, depth)
+    if result ≠ cutoff:
+      return result
+      </pre>
+    </section>
+
+    <!-- Example -->
+    <section id="example">
+      <h2>Example — Step by Step</h2>
+      <pre>
+         A          ← depth 0
+        / \
+       B   C        ← depth 1
+      / \ / \
+     D  E F  G      ← depth 2 (Goal = G)
+      </pre>
+
+      <table>
+        <thead>
+          <tr><th>Iteration</th><th>Limit ℓ</th><th>Nodes Visited</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>0</td><td>A</td><td>Cutoff</td></tr>
+          <tr><td>2</td><td>1</td><td>A → B → C</td><td>Cutoff</td></tr>
+          <tr><td>3</td><td>2</td><td>A → B → D → E → C → F → G</td><td>✓ Goal Found!</td></tr>
+        </tbody>
+      </table>
+
+      <p>Notice that A, B, C are visited again in each iteration — this is the overhead cost of IDDFS.</p>
+    </section>
+
+    <!-- Properties -->
+    <section id="properties">
+      <h2>Properties of IDDFS</h2>
+
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Complete?</td><td style="color:var(--green)">✓ Yes</td><td>Will find solution if it exists (like BFS)</td></tr>
+          <tr><td>Optimal?</td><td style="color:var(--green)">✓ Yes*</td><td>Finds shallowest goal first (like BFS)</td></tr>
+          <tr><td>Time Complexity</td><td>O(b<sup>d</sup>)</td><td>Same asymptotic as BFS</td></tr>
+          <tr><td>Space Complexity</td><td>O(b·d)</td><td>Same as DFS — only current path stored</td></tr>
+        </tbody>
+      </table>
+      <p>* Optimal when step costs are equal.</p>
+    </section>
+
+    <!-- Repeated work -->
+    <section id="repeated-work">
+      <h2>Is Repeated Work a Problem?</h2>
+      <p>
+        IDDFS re-visits nodes in earlier iterations (e.g. level 0 and 1 nodes are
+        visited again in iteration 3). This seems wasteful, but the overhead is small:
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Level</th><th>Times Visited</th><th>Nodes at Level</th><th>Total Cost</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0 (root)</td><td>d+1 times</td><td>1</td><td>d+1</td></tr>
+          <tr><td>1</td><td>d times</td><td>b</td><td>d·b</td></tr>
+          <tr><td>2</td><td>d-1 times</td><td>b²</td><td>(d-1)·b²</td></tr>
+          <tr><td>d</td><td>1 time</td><td>b<sup>d</sup></td><td>b<sup>d</sup></td></tr>
+        </tbody>
+      </table>
+
+      <p>Total nodes ≈ <strong>O(b<sup>d</sup>)</strong> — dominated by the last level.</p>
+
+      <div class="info-box">
+        <strong>Key Insight:</strong> The repeated work at upper levels is negligible because
+        the number of nodes grows exponentially. The bottom level (b<sup>d</sup>) dominates
+        all previous iterations combined. IDDFS is only ~10-15% slower than BFS in practice.
+      </div>
+    </section>
+
+    <!-- BFS vs IDDFS -->
+    <section id="comparison">
+      <h2>IDDFS vs BFS vs DFS</h2>
+
+      <table>
+        <thead>
+          <tr><th>Property</th><th>BFS</th><th>DFS</th><th>IDDFS</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Complete</td><td style="color:var(--green)">✓</td><td style="color:var(--red)">✗</td><td style="color:var(--green)">✓</td></tr>
+          <tr><td>Optimal</td><td style="color:var(--green)">✓*</td><td style="color:var(--red)">✗</td><td style="color:var(--green)">✓*</td></tr>
+          <tr><td>Time</td><td>O(b<sup>d</sup>)</td><td>O(b<sup>m</sup>)</td><td>O(b<sup>d</sup>)</td></tr>
+          <tr><td>Space</td><td>O(b<sup>d</sup>)</td><td>O(b·m)</td><td>O(b·d)</td></tr>
+        </tbody>
+      </table>
+
+      <p>IDDFS is the <strong>preferred uninformed search algorithm</strong> in practice when the search depth is unknown.</p>
+    </section>
+
+    <!-- Advantages & Disadvantages -->
+    <section id="pros-cons">
+      <h2>Advantages & Disadvantages</h2>
+
+      <h3>✅ Advantages</h3>
+      <ul>
+        <li><strong>Complete and optimal</strong> like BFS (equal step costs)</li>
+        <li><strong>Low memory</strong> like DFS — only O(b·d) space</li>
+        <li>No need to know the depth in advance</li>
+        <li>Best choice when search depth is unknown</li>
+      </ul>
+
+      <h3>❌ Disadvantages</h3>
+      <ul>
+        <li>Revisits upper-level nodes multiple times (small overhead in practice)</li>
+        <li>Not optimal for unequal step costs — use UCS instead</li>
+      </ul>
+    </section>
+
+    <!-- GATE Tips -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li>IDDFS = DLS called repeatedly with ℓ = 0, 1, 2, ...</li>
+        <li>IDDFS is <strong>complete and optimal</strong> (equal costs) — same as BFS.</li>
+        <li>Space complexity is <strong>O(b·d)</strong> — much better than BFS O(b<sup>d</sup>).</li>
+        <li>Time complexity is <strong>O(b<sup>d</sup>)</strong> — same as BFS asymptotically.</li>
+        <li>IDDFS is the <strong>preferred algorithm</strong> when memory is limited and depth is unknown.</li>
+        <li>Repeated work overhead is negligible — lower levels dominate.</li>
+      </ul>
+    </section>
+
+    <!-- Practice Questions -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> IDDFS combines the benefits of:</h4>
+      <ol type="A">
+        <li>DLS and UCS</li>
+        <li>BFS and DFS</li>
+        <li>BFS and UCS</li>
+        <li>DFS and UCS</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — BFS and DFS</strong></p>
+        <p>IDDFS gets BFS completeness/optimality with DFS memory efficiency.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> Space complexity of IDDFS is:</h4>
+      <ol type="A">
+        <li>O(b<sup>d</sup>)</li>
+        <li>O(b·m)</li>
+        <li>O(b·d)</li>
+        <li>O(d)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — O(b·d)</strong></p>
+        <p>Like DFS, IDDFS only keeps the current path in memory — bounded by depth d.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> Why is the repeated work in IDDFS not a major concern?</h4>
+      <ol type="A">
+        <li>Nodes at lower levels are visited only once</li>
+        <li>The bottom level dominates — upper levels are exponentially smaller</li>
+        <li>IDDFS uses memoization to avoid repetition</li>
+        <li>It only repeats leaf nodes</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B</strong></p>
+        <p>The bottom level has b<sup>d</sup> nodes which dominates all previous iterations combined.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q4</span> IDDFS is preferred over BFS in practice because:</h4>
+      <ol type="A">
+        <li>It is faster than BFS</li>
+        <li>It uses much less memory — O(b·d) vs O(b<sup>d</sup>)</li>
+        <li>It always finds a shorter path</li>
+        <li>It handles weighted graphs better</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Much less memory</strong></p>
+        <p>IDDFS achieves the same time complexity as BFS but with DFS-like space — the key practical advantage.</p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="search_uninformed_dls.html">← DLS</a>
+      <a class="nav-btn next" href="search_uninformed_ucs.html">UCS →</a>
+    </div>
 
   </article>
-  <script src="../theme.js"></script>
+
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#how-it-works">How IDDFS Works</a></li>
+      <li><a href="#example">Example</a></li>
+      <li><a href="#properties">Properties</a></li>
+      <li><a href="#repeated-work">Repeated Work</a></li>
+      <li><a href="#comparison">vs BFS vs DFS</a></li>
+      <li><a href="#pros-cons">Pros & Cons</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>

@@ -1,32 +1,354 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Logic</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logic — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<!-- ── Top Nav ────────────────────────────────────── -->
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <span>Logic</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Logic</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <p>Published on: 6 Feb 2026</p>
 
-    <h2>Types of Logic</h2>
+    <h1>Logic in Artificial Intelligence</h1>
 
-  <main class="posts">
-    <a class="post-link" href="propositional_logic.html">
-       1) Propositional Logic
-    </a>
-  </main>
-  <main class="posts">
-    <a class="post-link" href="predicate_logic.html">
-      2) Predicate Logic
-    </a>
-  </main>
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Logic</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 Topic Overview</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
+      <p>
+        <strong>Logic</strong> is the foundation of Artificial Intelligence. It provides
+        a formal language for representing knowledge and a set of rules for deriving
+        new knowledge through reasoning. AI agents use logic to make decisions,
+        prove theorems, and understand the world.
+      </p>
+
+      <div class="info-box">
+        <strong>Why Logic in AI?</strong> Humans reason using logic every day —
+        "If it is raining, I will carry an umbrella." AI systems need a formal
+        way to represent such knowledge and reason with it automatically.
+        Logic provides exactly that — a precise, unambiguous language for knowledge representation.
+      </div>
+    </section>
+
+    <!-- ── What is Logic ──────────────────────────── -->
+    <section id="what-is-logic">
+      <h2>What is Logic?</h2>
+      <p>
+        Logic is the study of <strong>valid reasoning</strong>. It defines:
+      </p>
+      <ul>
+        <li><strong>Syntax</strong> — What sentences are legal / well-formed</li>
+        <li><strong>Semantics</strong> — What sentences mean (true or false in the world)</li>
+        <li><strong>Inference</strong> — How to derive new true sentences from existing ones</li>
+      </ul>
+
+      <h3>The Core Goal</h3>
+      <p>
+        Given a set of known facts (<strong>Knowledge Base</strong>), logic allows an AI
+        agent to automatically derive new conclusions that must be true — without
+        explicitly being told them.
+      </p>
+
+      <pre>
+  Knowledge Base (KB):
+  ├── "It is raining"              → P = True
+  └── "If it rains, roads are wet" → P → Q = True
+
+  Derived automatically:
+  └── "Roads are wet"              → Q = True  ✓
+      </pre>
+    </section>
+
+    <!-- ── Syntax vs Semantics ────────────────────── -->
+    <section id="syntax-semantics">
+      <h2>Syntax vs Semantics</h2>
+
+      <table>
+        <thead>
+          <tr><th></th><th>Syntax</th><th>Semantics</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Definition</strong></td>
+            <td>Rules for writing valid sentences</td>
+            <td>Meaning of sentences — True or False</td>
+          </tr>
+          <tr>
+            <td><strong>Deals with</strong></td>
+            <td>Structure / Form</td>
+            <td>Truth / Meaning</td>
+          </tr>
+          <tr>
+            <td><strong>Example</strong></td>
+            <td>P ∧ Q is valid syntax</td>
+            <td>P ∧ Q is True only when both P and Q are True</td>
+          </tr>
+          <tr>
+            <td><strong>Analogy</strong></td>
+            <td>Grammar rules of a language</td>
+            <td>Meaning of words in that language</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Why Logic in AI ────────────────────────── -->
+    <section id="why-logic">
+      <h2>Role of Logic in AI</h2>
+
+      <table>
+        <thead>
+          <tr><th>Application</th><th>How Logic Helps</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Knowledge Representation</strong></td>
+            <td>Store facts and rules about the world in a formal language</td>
+          </tr>
+          <tr>
+            <td><strong>Automated Reasoning</strong></td>
+            <td>Derive new facts automatically from existing knowledge</td>
+          </tr>
+          <tr>
+            <td><strong>Theorem Proving</strong></td>
+            <td>Prove whether a statement follows from the knowledge base</td>
+          </tr>
+          <tr>
+            <td><strong>Planning</strong></td>
+            <td>Determine what actions lead from current state to goal state</td>
+          </tr>
+          <tr>
+            <td><strong>Expert Systems</strong></td>
+            <td>Encode expert knowledge as logical rules for decision making</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Types of Logic ─────────────────────────── -->
+    <section id="types">
+      <h2>Types of Logic in AI</h2>
+      <p>
+        There are two main types of logic studied in GATE DA. They differ in
+        <strong>expressive power</strong> — what kinds of statements they can represent.
+      </p>
+
+      <div class="algo-grid">
+
+        <a class="algo-card" href="propositional_logic.html">
+          <span class="card-num">01</span>
+          <span class="card-title">Propositional Logic</span>
+          <span class="card-desc">
+            Deals with simple True/False propositions connected by logical operators.
+            Also called Boolean Logic or Zeroth-Order Logic.
+          </span>
+          <div class="card-tags">
+            <span class="tag">Simpler</span>
+            <span class="tag time">Decidable</span>
+            <span class="tag complete">Complete</span>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+
+        <a class="algo-card" href="predicate_logic.html">
+          <span class="card-num">02</span>
+          <span class="card-title">Predicate Logic</span>
+          <span class="card-desc">
+            Extends propositional logic with predicates, objects, and quantifiers (∀, ∃).
+            Also called First-Order Logic (FOL).
+          </span>
+          <div class="card-tags">
+            <span class="tag optimal">More Expressive</span>
+            <span class="tag space">Semi-decidable</span>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ── Comparison ─────────────────────────────── -->
+    <section id="comparison">
+      <h2>Propositional vs Predicate Logic</h2>
+
+      <table>
+        <thead>
+          <tr><th>Feature</th><th>Propositional Logic</th><th>Predicate Logic (FOL)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Also called</strong></td>
+            <td>Boolean / Zeroth-Order Logic</td>
+            <td>First-Order Logic (FOL)</td>
+          </tr>
+          <tr>
+            <td><strong>Basic unit</strong></td>
+            <td>Proposition (P, Q, R...)</td>
+            <td>Predicate with objects (Likes(Alice, Bob))</td>
+          </tr>
+          <tr>
+            <td><strong>Quantifiers</strong></td>
+            <td>✗ None</td>
+            <td>✓ ∀ (for all), ∃ (there exists)</td>
+          </tr>
+          <tr>
+            <td><strong>Objects / Variables</strong></td>
+            <td>✗ None</td>
+            <td>✓ Constants, Variables, Functions</td>
+          </tr>
+          <tr>
+            <td><strong>Expressiveness</strong></td>
+            <td>Low — can only say True/False</td>
+            <td>High — can describe relationships between objects</td>
+          </tr>
+          <tr>
+            <td><strong>Example sentence</strong></td>
+            <td>"It is raining" → P = True</td>
+            <td>"All humans are mortal" → ∀x Human(x) → Mortal(x)</td>
+          </tr>
+          <tr>
+            <td><strong>Decidability</strong></td>
+            <td>Decidable — always terminates</td>
+            <td>Semi-decidable — may not terminate</td>
+          </tr>
+          <tr>
+            <td><strong>Completeness</strong></td>
+            <td>Complete</td>
+            <td>Complete (Gödel's completeness theorem)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Knowledge Base ─────────────────────────── -->
+    <section id="knowledge-base">
+      <h2>Knowledge Base & Inference</h2>
+
+      <p>
+        A <strong>Knowledge Base (KB)</strong> is a collection of sentences in a formal
+        language. An AI agent uses the KB to answer queries by logical inference.
+      </p>
+
+      <h3>Two Operations on a KB</h3>
+      <table>
+        <thead>
+          <tr><th>Operation</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>TELL</strong></td>
+            <td>Add a new sentence to the KB (store a fact or rule)</td>
+          </tr>
+          <tr>
+            <td><strong>ASK</strong></td>
+            <td>Query the KB — derive whether something is true</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Entailment</h3>
+      <p>
+        The KB <strong>entails</strong> a sentence α (written KB |= α) if α is true
+        in every possible world where KB is true.
+      </p>
+
+      <div class="info-box">
+        <strong>Entailment vs Implication:</strong>
+        Implication (P → Q) is a sentence inside the logic.
+        Entailment (KB |= α) is a statement about truth across all possible worlds —
+        a stronger guarantee.
+      </div>
+
+      <h3>Inference</h3>
+      <p>
+        <strong>Inference</strong> is the process of deriving sentences from the KB.
+        A good inference algorithm is:
+      </p>
+      <ul>
+        <li><strong>Sound</strong> — only derives sentences that are actually entailed (no wrong conclusions)</li>
+        <li><strong>Complete</strong> — derives every sentence that is entailed (misses nothing)</li>
+      </ul>
+    </section>
+
+    <!-- ── GATE Tips ──────────────────────────────── -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li><strong>Propositional Logic</strong> is simpler and decidable — always terminates.</li>
+        <li><strong>Predicate Logic (FOL)</strong> is more expressive but only semi-decidable.</li>
+        <li>A <strong>Sound</strong> inference system never derives false conclusions.</li>
+        <li>A <strong>Complete</strong> inference system can derive everything that is entailed.</li>
+        <li><strong>Entailment (|=)</strong> is about truth in all possible worlds — stronger than implication.</li>
+        <li>Syntax = structure. Semantics = meaning. Inference = reasoning.</li>
+        <li>Every consistent heuristic is admissible — same pattern: stronger condition implies weaker.</li>
+        <li>In GATE, most logic questions test truth tables, equivalence laws, and inference rules.</li>
+      </ul>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="../index.html">← Home</a>
+      <a class="nav-btn next" href="propositional_logic.html">Propositional Logic →</a>
+    </div>
+
   </article>
-  <script src="../theme.js"></script>
 
+  <!-- ── TOC Sidebar ─────────────────────────────── -->
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#what-is-logic">What is Logic?</a></li>
+      <li><a href="#syntax-semantics">Syntax vs Semantics</a></li>
+      <li><a href="#why-logic">Role in AI</a></li>
+      <li><a href="#types">Types of Logic</a></li>
+      <li class="toc-sub"><a href="#types">Propositional</a></li>
+      <li class="toc-sub"><a href="#types">Predicate</a></li>
+      <li><a href="#comparison">Comparison</a></li>
+      <li><a href="#knowledge-base">KB & Inference</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+    </ol>
+  </aside>
 
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>
-

@@ -1,48 +1,225 @@
 <!doctype html>
-<html>
-  <head>
-    <title>Introduction to Search</title>
-    <link rel="stylesheet" href="../style.css" />
-  </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search in AI — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
 
-  <body>
-    <header>
-      <h1>Search in Artificial Intelligence</h1>
-    </header>
-    <article>
-      <h1>Introduction to Search</h1>
-      <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
+<div id="reading-progress"></div>
 
+<!-- ── Top Nav ────────────────────────────────────── -->
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <span>Search</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
+  <article>
+
+    <h1>Search in Artificial Intelligence</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Search</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 Topic Overview</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
       <p>
-        Search is a fundamental technique used to solve problems by exploring
-        possible states to reach a goal.
-        <strong>Search</strong> = Process of finding a sequence of actions from
-        <strong>initial state → goal state</strong>.
+        <strong>Search</strong> is a fundamental technique in AI for solving problems
+        by exploring possible states to reach a goal.
       </p>
-      <h3>Used in:-</h3>
+
+      <div class="info-box">
+        <strong>Definition:</strong> Search = Process of finding a sequence of actions
+        from <strong>Initial State → Goal State</strong> by systematically exploring
+        the search space.
+      </div>
+
+      <h3>Real World Examples</h3>
+      <ul>
+        <li>Finding the best route from your origin to destination (Google Maps)</li>
+        <li>Playing games and figuring out the best next move to win (Chess, Go)</li>
+        <li>Solving puzzles like the 8-puzzle or Rubik's cube</li>
+        <li>Robot navigation through an environment</li>
+      </ul>
+    </section>
+
+    <!-- ── Key Concepts ───────────────────────────── -->
+    <section id="key-concepts">
+      <h2>Key Concepts</h2>
+
+      <table>
+        <thead>
+          <tr><th>Term</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>State</strong></td><td>A representation of the world at a given point</td></tr>
+          <tr><td><strong>Initial State</strong></td><td>The starting configuration of the problem</td></tr>
+          <tr><td><strong>Goal State</strong></td><td>The desired end configuration</td></tr>
+          <tr><td><strong>Actions</strong></td><td>Operations that transition from one state to another</td></tr>
+          <tr><td><strong>Path Cost</strong></td><td>The total cost of reaching a state from the start</td></tr>
+          <tr><td><strong>Search Space</strong></td><td>The set of all possible states reachable from the initial state</td></tr>
+          <tr><td><strong>Branching Factor (b)</strong></td><td>Average number of successors per node</td></tr>
+          <tr><td><strong>Depth (d)</strong></td><td>Level of the shallowest goal node</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Types of Search ────────────────────────── -->
+    <section id="types">
+      <h2>Types of Search in AI</h2>
+      <p>Search algorithms are broadly divided into three categories based on their strategy:</p>
+
+      <!-- 1. Uninformed -->
+      <h3>1. Uninformed Search (Blind Search)</h3>
       <p>
-        - Findings the best route from your origin to destination. <br />
-        - Playing games and figuring out the best next move to win the game.
+        No domain knowledge or heuristics used. The algorithm explores the search space
+        without any information about how close it is to the goal.
       </p>
+      <a class="algo-card" href="search_uninformed.html" style="margin-bottom:10px;">
+        <span class="card-num">01</span>
+        <span class="card-title">Uninformed Search Algorithms</span>
+        <span class="card-desc">BFS · DFS · DLS · IDDFS · UCS · Bidirectional Search</span>
+        <div class="card-tags">
+          <span class="tag">No Heuristic</span>
+          <span class="tag time">Systematic Exploration</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
 
-      <h2>Types of Search in A.I</h2>
+      <!-- 2. Informed -->
+      <h3>2. Informed Search (Heuristic Search)</h3>
+      <p>
+        Uses domain-specific heuristic knowledge h(n) to guide the search toward
+        the goal more efficiently. Explores promising paths first.
+      </p>
+      <a class="algo-card" href="search_informed.html" style="margin-bottom:10px;">
+        <span class="card-num">02</span>
+        <span class="card-title">Informed Search Algorithms</span>
+        <span class="card-desc">Greedy Best-First Search · A* Search · Heuristics · Admissibility · Consistency</span>
+        <div class="card-tags">
+          <span class="tag complete">Uses h(n)</span>
+          <span class="tag time">Goal-Directed</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
 
-      <main class="posts">
-        <a class="post-link" href="search_uninformed.html">
-          1) Uninformed Search Algorithms
-        </a>
-      </main>
-      <main class="posts">
-        <a class="post-link" href="search_informed.html">
-          2) Informed Search Algorithms
-        </a>
-      </main>
-      <main class="posts">
-        <a class="post-link" href="search_adversarial.html">
-          3) Adversarial Search Algorithms
-        </a>
-      </main>
-    </article>
-    <script src="../theme.js"></script>
-  </body>
+      <!-- 3. Adversarial -->
+      <h3>3. Adversarial Search</h3>
+      <p>
+        Used in competitive environments (games) where an opponent is trying to
+        work against you. The algorithm must consider the opponent's moves.
+      </p>
+      <a class="algo-card" href="search_adversarial.html" style="margin-bottom:10px;">
+        <span class="card-num">03</span>
+        <span class="card-title">Adversarial Search Algorithms</span>
+        <span class="card-desc">Minimax · Alpha-Beta Pruning · Evaluation Functions</span>
+        <div class="card-tags">
+          <span class="tag optimal">Two Players</span>
+          <span class="tag space">Game Trees</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </section>
+
+    <!-- ── Quick Comparison ───────────────────────── -->
+    <section id="comparison">
+      <h2>Quick Comparison</h2>
+
+      <table>
+        <thead>
+          <tr><th>Type</th><th>Uses Heuristic?</th><th>Best For</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Uninformed</strong></td>
+            <td style="color:var(--red)">✗ No</td>
+            <td>When no domain knowledge available</td>
+            <td>BFS, DFS, UCS</td>
+          </tr>
+          <tr>
+            <td><strong>Informed</strong></td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>When heuristic estimate available</td>
+            <td>A*, Greedy</td>
+          </tr>
+          <tr>
+            <td><strong>Adversarial</strong></td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Two-player competitive games</td>
+            <td>Minimax, Alpha-Beta</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── GATE Tips ──────────────────────────────── -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li><strong>Completeness</strong> — will the algorithm always find a solution if one exists?</li>
+        <li><strong>Optimality</strong> — will it find the best (lowest cost) solution?</li>
+        <li><strong>Time complexity</strong> — how many nodes are explored?</li>
+        <li><strong>Space complexity</strong> — how many nodes are stored in memory?</li>
+        <li>These four properties are asked in almost every GATE question about search algorithms.</li>
+        <li>Remember: <strong>BFS uses Queue, DFS uses Stack, UCS uses Priority Queue</strong>.</li>
+        <li>A* = UCS + heuristic. When h(n) = 0, A* becomes UCS.</li>
+      </ul>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="../index.html">← Home</a>
+      <a class="nav-btn next" href="search_uninformed.html">Uninformed Search →</a>
+    </div>
+
+  </article>
+
+  <!-- ── TOC Sidebar ─────────────────────────────── -->
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#key-concepts">Key Concepts</a></li>
+      <li><a href="#types">Types of Search</a></li>
+      <li class="toc-sub"><a href="#types">Uninformed</a></li>
+      <li class="toc-sub"><a href="#types">Informed</a></li>
+      <li class="toc-sub"><a href="#types">Adversarial</a></li>
+      <li><a href="#comparison">Quick Comparison</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
+</body>
 </html>

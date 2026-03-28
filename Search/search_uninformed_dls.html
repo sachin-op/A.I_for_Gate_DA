@@ -1,18 +1,255 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Depth-Limited Search</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Depth-Limited Search — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="search_ai.html">Search</a>
+    <span>›</span>
+    <a href="search_uninformed.html">Uninformed Search</a>
+    <span>›</span>
+    <span>DLS</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Depth-Limited Search</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <p>Published on: 6 Feb 2026</p>
-    <a href="../Search/search_uninformed.html">← Back to Uninformed Search Topics</a>
+
+    <h1>Depth-Limited Search (DLS)</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Uninformed Search</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~7 min read</span>
+      </div>
+    </div>
+
+    <!-- Intro -->
+    <section id="intro">
+      <p>
+        <strong>Depth-Limited Search (DLS)</strong> is a modified version of DFS that
+        introduces a <strong>depth limit ℓ</strong>. The algorithm will not explore any node
+        beyond depth ℓ, preventing DFS from getting trapped in infinite paths.
+      </p>
+
+      <div class="info-box">
+        <strong>Core Idea:</strong> Run DFS but stop at depth ℓ.
+        Nodes at depth ℓ are treated as if they have no children.
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works">
+      <h2>How DLS Works</h2>
+      <ol>
+        <li>Set a depth limit <strong>ℓ</strong>.</li>
+        <li>Run DFS normally.</li>
+        <li>If a node's depth exceeds ℓ → do not expand it (treat as leaf).</li>
+        <li>Return solution if goal found within depth ℓ.</li>
+        <li>Return <strong>failure</strong> if no solution found within ℓ.</li>
+        <li>Return <strong>cutoff</strong> if the limit was reached (goal may exist deeper).</li>
+      </ol>
+
+      <h3>Two Types of Failure</h3>
+      <table>
+        <thead>
+          <tr><th>Result</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Failure</strong></td><td>No solution exists at all</td></tr>
+          <tr><td><strong>Cutoff</strong></td><td>No solution within depth ℓ, but may exist deeper</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Example -->
+    <section id="example">
+      <h2>Example</h2>
+      <pre>
+         A          ← depth 0
+        / \
+       B   C        ← depth 1
+      / \ / \
+     D  E F  G      ← depth 2
+        </pre>
+      <p>With depth limit <strong>ℓ = 1</strong>:</p>
+      <p><strong>DLS explores:</strong> A → B → C (stops here — depth 1 reached)</p>
+      <p>D, E, F, G are never visited. If goal is G → returns <strong>cutoff</strong>.</p>
+
+      <p>With depth limit <strong>ℓ = 2</strong>:</p>
+      <p><strong>DLS explores:</strong> A → B → D → E → C → F → G ✓ (Goal found!)</p>
+    </section>
+
+    <!-- Properties -->
+    <section id="properties">
+      <h2>Properties of DLS</h2>
+
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Complete?</td><td style="color:var(--red)">✗ No</td><td>Fails if goal is deeper than ℓ</td></tr>
+          <tr><td>Optimal?</td><td style="color:var(--red)">✗ No</td><td>May miss better solutions outside depth ℓ</td></tr>
+          <tr><td>Time Complexity</td><td>O(b<sup>ℓ</sup>)</td><td>Explores all nodes up to depth ℓ</td></tr>
+          <tr><td>Space Complexity</td><td>O(b·ℓ)</td><td>Same as DFS but bounded by ℓ instead of m</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Choosing the depth limit -->
+    <section id="depth-limit">
+      <h2>How to Choose the Depth Limit ℓ</h2>
+      <p>Choosing a good depth limit is the main challenge of DLS:</p>
+
+      <table>
+        <thead>
+          <tr><th>If ℓ is...</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Too small (ℓ &lt; d)</td><td>Goal not found → returns cutoff</td></tr>
+          <tr><td>Equal to d</td><td>Goal found optimally</td></tr>
+          <tr><td>Too large (ℓ &gt; d)</td><td>Goal found but wastes time exploring extra levels</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Domain Knowledge:</strong> In practice, domain knowledge helps set a good ℓ.
+        For example, in the 8-puzzle, the diameter of the state space is known to be 31,
+        so ℓ = 31 is a reasonable limit.
+      </div>
+    </section>
+
+    <!-- Advantages & Disadvantages -->
+    <section id="pros-cons">
+      <h2>Advantages & Disadvantages</h2>
+
+      <h3>✅ Advantages</h3>
+      <ul>
+        <li>Solves the <strong>infinite loop problem</strong> of DFS</li>
+        <li>Low memory usage — O(b·ℓ)</li>
+        <li>Useful when the depth of the solution is known or estimated</li>
+      </ul>
+
+      <h3>❌ Disadvantages</h3>
+      <ul>
+        <li><strong>Not complete</strong> — fails if ℓ &lt; d</li>
+        <li><strong>Not optimal</strong> — may miss better solutions</li>
+        <li>Choosing the right ℓ requires domain knowledge</li>
+        <li>Returns two types of failure (failure vs cutoff) — more complex to handle</li>
+      </ul>
+    </section>
+
+    <!-- GATE Tips -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li>DLS is <strong>DFS with a depth limit ℓ</strong> — not to be confused with IDDFS.</li>
+        <li>DLS is <strong>neither complete nor optimal</strong>.</li>
+        <li>Space complexity is O(b·ℓ) — not O(b·m) like DFS (ℓ replaces m).</li>
+        <li>Two return values to remember: <strong>failure</strong> (no solution) vs <strong>cutoff</strong> (limit reached).</li>
+        <li>DLS is the building block for <strong>IDDFS</strong> — IDDFS runs DLS repeatedly with increasing ℓ.</li>
+      </ul>
+    </section>
+
+    <!-- Practice Questions -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> DLS returns "cutoff" when:</h4>
+      <ol type="A">
+        <li>The goal does not exist</li>
+        <li>The depth limit is reached without finding the goal</li>
+        <li>The queue is empty</li>
+        <li>The branching factor is 0</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B</strong></p>
+        <p>Cutoff means the search hit the depth limit — the goal may still exist at a greater depth.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> DLS is complete when:</h4>
+      <ol type="A">
+        <li>ℓ ≥ d (depth limit ≥ depth of shallowest goal)</li>
+        <li>The branching factor b = 1</li>
+        <li>The graph has no cycles</li>
+        <li>DLS is never complete</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: A</strong></p>
+        <p>DLS finds the goal only when ℓ ≥ d. In general, ℓ is unknown so DLS is considered incomplete.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> Space complexity of DLS with limit ℓ is:</h4>
+      <ol type="A">
+        <li>O(b<sup>ℓ</sup>)</li>
+        <li>O(b·m)</li>
+        <li>O(b·ℓ)</li>
+        <li>O(ℓ)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — O(b·ℓ)</strong></p>
+        <p>Same as DFS but depth bounded by ℓ instead of m.</p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="search_uninformed_dfs.html">← DFS</a>
+      <a class="nav-btn next" href="search_uninformed_ids.html">IDDFS →</a>
+    </div>
 
   </article>
-  <script src="../theme.js"></script>
+
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#how-it-works">How DLS Works</a></li>
+      <li><a href="#example">Example</a></li>
+      <li><a href="#properties">Properties</a></li>
+      <li><a href="#depth-limit">Choosing ℓ</a></li>
+      <li><a href="#pros-cons">Pros & Cons</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>

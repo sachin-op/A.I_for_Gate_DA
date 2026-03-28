@@ -1,55 +1,311 @@
 <!doctype html>
-<html>
-  <head>
-    <title>Introduction to Uninformed Search Algorithms</title>
-    <link rel="stylesheet" href="../style.css" />
-  </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uninformed Search — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
 
-  <body>
-    <article>
-      <h1>Introduction to Uninformed Search Algorithms(Blind Search)</h1>
-      <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
+<!-- Reading progress -->
+<div id="reading-progress"></div>
 
+<!-- Breadcrumb nav -->
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="search_ai.html">Search</a>
+    <span>›</span>
+    <span>Uninformed Search</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<!-- Main layout -->
+<div class="page-wrap">
+
+  <!-- ── Article ─────────────────────────────────── -->
+  <article>
+
+    <h1>Uninformed Search Algorithms <span style="font-size:1.3rem; color:var(--text-muted);">(Blind Search)</span></h1>
+
+    <!-- Meta -->
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Search</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~10 min read</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
       <p>
-        <strong> Uninformed Search </strong> is also called as a
-        <strong>(Blind Search).</strong> It is a class of search algorithms in
-        Artificial Intelligence that explore the search space without using any
-        domain-specific knowledge or heuristics about the goal.
+        <strong>Uninformed Search</strong> (also called <strong>Blind Search</strong>) is a class of
+        search algorithms in Artificial Intelligence that explore the search space
+        <strong>without using any domain-specific knowledge or heuristics</strong> about the goal.
+      </p>
+      <p>
+        The algorithm only knows the initial state, the goal state, and the actions available —
+        it has no idea whether one path is "better" or "closer" than another.
+        It simply explores systematically until it finds the goal.
       </p>
 
-      <h2>Example of Uninformed Search Algorithms</h2>
-      <p>
-        There are several examples of uninformed search algorithms,each with
-        it's own stretgy for exploring the search.
-      </p>
+      <div class="info-box">
+        <strong>Key Difference from Informed Search:</strong> Uninformed search has
+        <strong>no heuristic function</strong> h(n). It treats all nodes equally and
+        explores blindly. Informed search (like A*) uses h(n) to guide exploration
+        toward the goal more efficiently.
+      </div>
 
-      <main class="posts">
-        <a class="post-link" href="search_uninformed_bfs.html">
-          1) Breadth-First Search
+      <div class="box warn">
+        <div class="box-icon">⚠</div>
+        <div><strong>Limitation:</strong> These algorithms can be very inefficient for large search spaces because they cannot "see" whether they are getting closer to the goal.</div>
+      </div>
+
+    </section>
+
+    <!-- ── Algorithms ─────────────────────────────── -->
+    <section id="algorithms">
+      <h2>Algorithms in Uninformed Search</h2>
+      <p>There are five main uninformed search algorithms, each with its own strategy for exploring the search space:</p>
+
+      <div class="algo-grid">
+
+        <a class="algo-card" href="search_uninformed_bfs.html">
+          <span class="card-num">01</span>
+          <span class="card-title">Breadth-First Search</span>
+          <span class="card-desc">Explores all nodes level by level. Guaranteed to find the shallowest goal.</span>
+          <div class="card-tags">
+            <span class="tag complete">Complete ✓</span>
+            <span class="tag optimal">Optimal ✓</span>
+            <span class="tag time">Time: O(b<sup>d</sup>)</span>
+            <span class="tag space">Space: O(b<sup>d</sup>)</span>
+          </div>
+          <span class="arrow">→</span>
         </a>
-      </main>
-      <main class="posts">
-        <a class="post-link" href="search_uninformed_dfs.html">
-          2) Depth-First Search
+
+        <a class="algo-card" href="search_uninformed_dfs.html">
+          <span class="card-num">02</span>
+          <span class="card-title">Depth-First Search</span>
+          <span class="card-desc">Explores as deep as possible before backtracking. Low memory usage.</span>
+          <div class="card-tags">
+            <span class="tag">Not Complete</span>
+            <span class="tag">Not Optimal</span>
+            <span class="tag time">Time: O(b<sup>m</sup>)</span>
+            <span class="tag space">Space: O(b·m)</span>
+          </div>
+          <span class="arrow">→</span>
         </a>
-      </main>
-      <main class="posts">
-        <a class="post-link" href="search_uninformed_dls.html">
-          3) Depth-Limited Search
+
+        <a class="algo-card" href="search_uninformed_dls.html">
+          <span class="card-num">03</span>
+          <span class="card-title">Depth-Limited Search</span>
+          <span class="card-desc">DFS with a depth limit ℓ. Prevents infinite loops in infinite spaces.</span>
+          <div class="card-tags">
+            <span class="tag">Not Complete</span>
+            <span class="tag">Not Optimal</span>
+            <span class="tag time">Time: O(b<sup>ℓ</sup>)</span>
+            <span class="tag space">Space: O(b·ℓ)</span>
+          </div>
+          <span class="arrow">→</span>
         </a>
-      </main>
-      <main class="posts">
-        <a class="post-link" href="search_uninformed_ids.html">
-          4) Iterative Deepening Depth First Search
+
+        <a class="algo-card" href="search_uninformed_ids.html">
+          <span class="card-num">04</span>
+          <span class="card-title">Iterative Deepening DFS</span>
+          <span class="card-desc">Runs DLS repeatedly with increasing depth. Best of BFS + DFS.</span>
+          <div class="card-tags">
+            <span class="tag complete">Complete ✓</span>
+            <span class="tag optimal">Optimal ✓</span>
+            <span class="tag time">Time: O(b<sup>d</sup>)</span>
+            <span class="tag space">Space: O(b·d)</span>
+          </div>
+          <span class="arrow">→</span>
         </a>
-      </main>
-      <main class="posts">
-        <a class="post-link" href="search_uninformed_ucs.html">
-          5) Uniform Cost Search
+
+        <a class="algo-card" href="search_uninformed_ucs.html">
+          <span class="card-num">05</span>
+          <span class="card-title">Uniform Cost Search</span>
+          <span class="card-desc">Expands the node with the lowest path cost g(n). Optimal for weighted paths.</span>
+          <div class="card-tags">
+            <span class="tag complete">Complete ✓</span>
+            <span class="tag optimal">Optimal ✓</span>
+            <span class="tag time">Time: O(b<sup>1+⌊C*/ε⌋</sup>)</span>
+            <span class="tag space">Space: O(b<sup>1+⌊C*/ε⌋</sup>)</span>
+          </div>
+          <span class="arrow">→</span>
         </a>
-      </main>
-      <a href="../Search/search_ai.html">← Back to Search Topics</a>
-    </article>
-    <script src="../theme.js"></script>
-  </body>
+
+        <a class="algo-card" href="search_bidirectional.html">
+          <span class="card-num">06</span>
+          <span class="card-title">Bidirectional Search</span>
+          <span class="card-desc">Two simultaneous searches meet in the middle. Dramatic reduction in nodes explored.</span>
+          <div class="card-tags">
+            <span class="tag complete">Complete ✓</span>
+            <span class="tag optimal">Optimal ✓</span>
+            <span class="tag time">Time: O(b<sup>d/2</sup>)</span>
+            <span class="tag space">Space: O(b<sup>d/2</sup>)</span>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ── Comparison ─────────────────────────────── -->
+    <section id="comparison">
+      <h2>Comparison Table</h2>
+      <p>Quick reference for all five algorithms — very useful for GATE MCQs:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Algorithm</th>
+            <th>Complete?</th>
+            <th>Optimal?</th>
+            <th>Time</th>
+            <th>Space</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>BFS</strong></td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td style="color:var(--green)">✓ Yes*</td>
+            <td>O(b<sup>d</sup>)</td>
+            <td>O(b<sup>d</sup>)</td>
+          </tr>
+          <tr>
+            <td><strong>DFS</strong></td>
+            <td style="color:var(--red)">✗ No</td>
+            <td style="color:var(--red)">✗ No</td>
+            <td>O(b<sup>m</sup>)</td>
+            <td>O(b·m)</td>
+          </tr>
+          <tr>
+            <td><strong>DLS</strong></td>
+            <td style="color:var(--red)">✗ No</td>
+            <td style="color:var(--red)">✗ No</td>
+            <td>O(b<sup>ℓ</sup>)</td>
+            <td>O(b·ℓ)</td>
+          </tr>
+          <tr>
+            <td><strong>IDDFS</strong></td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td style="color:var(--green)">✓ Yes*</td>
+            <td>O(b<sup>d</sup>)</td>
+            <td>O(b·d)</td>
+          </tr>
+          <tr>
+            <td><strong>UCS</strong></td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>O(b<sup>1+⌊C*/ε⌋</sup>)</td>
+            <td>O(b<sup>1+⌊C*/ε⌋</sup>)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-top:8px;">
+        * Optimal when all step costs are equal &nbsp;·&nbsp;
+        b = branching factor &nbsp;·&nbsp; d = depth of shallowest goal &nbsp;·&nbsp;
+        m = max depth &nbsp;·&nbsp; ℓ = depth limit &nbsp;·&nbsp;
+        C* = optimal cost &nbsp;·&nbsp; ε = min step cost
+      </p>
+    </section>
+
+    <!-- ── When to use ────────────────────────────── -->
+    <section id="when-to-use">
+      <h2>When to Use Which?</h2>
+
+      <table>
+        <thead>
+          <tr><th>Situation</th><th>Best Algorithm</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Shallowest solution needed, memory not a concern</td>
+            <td><strong>BFS</strong></td>
+            <td>Guaranteed shortest path (unweighted)</td>
+          </tr>
+          <tr>
+            <td>Memory is very limited</td>
+            <td><strong>DFS</strong></td>
+            <td>Only O(b·m) space — much better than BFS</td>
+          </tr>
+          <tr>
+            <td>Search space is infinite, need to avoid loops</td>
+            <td><strong>DLS</strong></td>
+            <td>Sets a hard depth limit to prevent infinite traversal</td>
+          </tr>
+          <tr>
+            <td>Need BFS optimality with DFS memory</td>
+            <td><strong>IDDFS</strong></td>
+            <td>Best of both worlds — preferred in practice</td>
+          </tr>
+          <tr>
+            <td>Edge costs are different (weighted graph)</td>
+            <td><strong>UCS</strong></td>
+            <td>Finds minimum cost path, not just minimum depth</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Bottom nav ─────────────────────────────── -->
+    <div class="bottom-nav">
+      <a class="nav-btn" href="search_ai.html">← Back to Search</a>
+      <a class="nav-btn next" href="search_informed.html">Informed Search →</a>
+    </div>
+
+  </article>
+
+  <!-- ── TOC Sidebar ─────────────────────────────── -->
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol id="toc-list">
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#algorithms">Algorithms</a></li>
+      <li class="toc-sub"><a href="#algorithms">BFS</a></li>
+      <li class="toc-sub"><a href="#algorithms">DFS</a></li>
+      <li class="toc-sub"><a href="#algorithms">DLS</a></li>
+      <li class="toc-sub"><a href="#algorithms">IDDFS</a></li>
+      <li class="toc-sub"><a href="#algorithms">UCS</a></li>
+      <li><a href="#comparison">Comparison Table</a></li>
+      <li><a href="#when-to-use">When to Use</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  /* Reading progress */
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (scrollTop / docH) * 100 : 0) + '%';
+  });
+
+  /* Active TOC highlight */
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.toc-sidebar a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
 </html>

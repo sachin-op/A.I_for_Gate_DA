@@ -1,110 +1,80 @@
 <!doctype html>
-<html>
-
+<html lang="en">
 <head>
-  <title>Introduction to Propositional Logic</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Propositional Logic — GATE DA</title>
   <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
-  <article>
-    <h1>Introduction to Propositional Logic</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <p class="date">Published on: 6 Feb 2026</p>
 
-    <section>
+<!-- Reading progress bar -->
+<div id="reading-progress"></div>
+
+<!-- Top navigation breadcrumb -->
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="logic.html">Logic</a>
+    <span>›</span>
+    <span>Propositional Logic</span>
+  </div>
+  <div class="top-nav-right">
+    <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+  </div>
+</div>
+
+<!-- Main layout: article + TOC -->
+<div class="page-wrap">
+
+  <!-- ── Article ─────────────────────────────────── -->
+  <article>
+
+    <h1>Introduction to Propositional Logic</h1>
+
+    <!-- Meta row -->
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Logic</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~18 min read</span>
+      </div>
+      <span class="read-time">Published: 6 Feb 2026</span>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
       <p>
         Propositional Logic is a branch of logic that deals with propositions
         and their relationships using logical connectives.
         <u>A proposition is a declarative statement that is either
-          <strong>True</strong>or <strong>False</strong>, but not both.</u>
+        <strong>True</strong> or <strong>False</strong>, but not both.</u>
       </p>
     </section>
 
-    <section>
+    <!-- ── 1. Logical Connectives ─────────────────── -->
+    <section id="connectives">
       <h2>Logical Connectives</h2>
-      <!-- <p>Propositions can be combined using logical operators:</p>
-
-        <div style="display: flex; gap: 40px; align-items: flex-start">
-          <table border="1" cellpadding="8" style="border-collapse: collapse">
-            <tr>
-              <th>Symbol</th>
-              <th>Name</th>
-              <th>Meaning</th>
-            </tr>
-            <tr>
-              <td>¬P</td>
-              <td>NOT</td>
-              <td>Negation</td>
-            </tr>
-            <tr>
-              <td>P ∧ Q</td>
-              <td>AND</td>
-              <td>True if both are true</td>
-            </tr>
-            <tr>
-              <td>P ∨ Q</td>
-              <td>OR</td>
-              <td>True if at least one is true</td>
-            </tr>
-            <tr>
-              <td>P → Q</td>
-              <td>Implication</td>
-              <td>If P then Q</td>
-            </tr>
-            <tr>
-              <td>P ↔ Q</td>
-              <td>Biconditional</td>
-              <td>P if and only if Q</td>
-            </tr>
-          </table> -->
       <p>Propositions can be combined using logical operators:</p>
 
-      <div style="display: flex; gap: 40px; align-items: flex-start">
-        <table border="1" cellpadding="8" style="border-collapse: collapse">
-          <tr>
-            <th>Symbol</th>
-            <th>Name</th>
-            <th>Precedence</th>
-            <th>Meaning</th>
-          </tr>
-          <tr>
-            <td>¬P</td>
-            <td>NOT</td>
-            <td>1 (Highest)</td>
-            <td>Negation</td>
-          </tr>
-          <tr>
-            <td>P ∧ Q</td>
-            <td>AND</td>
-            <td>2</td>
-            <td>True if both are true</td>
-          </tr>
-          <tr>
-            <td>P ∨ Q</td>
-            <td>OR</td>
-            <td>3</td>
-            <td>True if at least one is true</td>
-          </tr>
-          <tr>
-            <td>P → Q</td>
-            <td>Implication</td>
-            <td>4</td>
-            <td>If P then Q</td>
-          </tr>
-          <tr>
-            <td>P ↔ Q</td>
-            <td>Biconditional</td>
-            <td>5 (Lowest)</td>
-            <td>P if and only if Q</td>
-          </tr>
+      <div style="display:flex; gap:36px; align-items:flex-start; flex-wrap:wrap;">
+        <table>
+          <thead>
+            <tr><th>Symbol</th><th>Name</th><th>Precedence</th><th>Meaning</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>¬P</td><td>NOT</td><td>1 (Highest)</td><td>Negation</td></tr>
+            <tr><td>P ∧ Q</td><td>AND</td><td>2</td><td>True if both are true</td></tr>
+            <tr><td>P ∨ Q</td><td>OR</td><td>3</td><td>True if at least one is true</td></tr>
+            <tr><td>P → Q</td><td>Implication</td><td>4</td><td>If P then Q</td></tr>
+            <tr><td>P ↔ Q</td><td>Biconditional</td><td>5 (Lowest)</td><td>P if and only if Q</td></tr>
+          </tbody>
         </table>
+
         <div>
-          <p style="font-size: 40px; text-align: center">⬇</p>
-          <p>
-            <strong>The standard order of precedence (from highest to
-              lowest):</strong>
-          </p>
+          <p style="font-size:2rem; text-align:center; color:var(--text-muted);">⬇</p>
+          <p><strong>Precedence order (highest → lowest):</strong></p>
           <ol>
             <li>¬ (NOT)</li>
             <li>∧ (AND)</li>
@@ -116,129 +86,54 @@
       </div>
     </section>
 
-    <section>
+    <!-- ── 2. Truth Table ─────────────────────────── -->
+    <section id="truth-table">
       <h2>Truth Table</h2>
-
-      <table border="1" cellpadding="8" style="border-collapse: collapse">
-        <tr style="font-weight: bold">
-          <td>P</td>
-          <td>Q</td>
-          <td>¬P</td>
-          <td>P ∧ Q</td>
-          <td>P ∨ Q</td>
-          <td>P → Q</td>
-          <td>P ↔ Q</td>
-        </tr>
-        <tr>
-          <td>T</td>
-          <td>T</td>
-          <td>F</td>
-          <td>T</td>
-          <td>T</td>
-          <td>T</td>
-          <td>T</td>
-        </tr>
-        <tr>
-          <td>T</td>
-          <td>F</td>
-          <td>F</td>
-          <td>F</td>
-          <td>T</td>
-          <td>F</td>
-          <td>F</td>
-        </tr>
-        <tr>
-          <td>F</td>
-          <td>T</td>
-          <td>T</td>
-          <td>F</td>
-          <td>T</td>
-          <td>T</td>
-          <td>F</td>
-        </tr>
-        <tr>
-          <td>F</td>
-          <td>F</td>
-          <td>T</td>
-          <td>F</td>
-          <td>F</td>
-          <td>T</td>
-          <td>T</td>
-        </tr>
+      <table>
+        <thead>
+          <tr><th>P</th><th>Q</th><th>¬P</th><th>P ∧ Q</th><th>P ∨ Q</th><th>P → Q</th><th>P ↔ Q</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>T</td><td>T</td><td>F</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+          <tr><td>T</td><td>F</td><td>F</td><td>F</td><td>T</td><td>F</td><td>F</td></tr>
+          <tr><td>F</td><td>T</td><td>T</td><td>F</td><td>T</td><td>T</td><td>F</td></tr>
+          <tr><td>F</td><td>F</td><td>T</td><td>F</td><td>F</td><td>T</td><td>T</td></tr>
+        </tbody>
       </table>
     </section>
 
-    <section>
+    <!-- ── 3. Implication ─────────────────────────── -->
+    <section id="implication">
       <h2>Understanding Implication (P → Q)</h2>
 
       <p><strong>Implication</strong> is a logical statement of the form:</p>
-
-      <p style="font-size: 20px"><strong>P → Q</strong></p>
-
-      <p>It is read as: <strong>“If P, then Q.”</strong></p>
+      <code class="formula-block amber">P → Q &nbsp;&nbsp; read as: "If P, then Q"</code>
 
       <h3>Terminology</h3>
       <ul>
-        <li>
-          <strong>P</strong> is called the <strong>Antecedent</strong> (the
-          condition / premise)
-        </li>
-        <li>
-          <strong>Q</strong> is called the <strong>Consequent</strong> (the
-          result / conclusion)
-        </li>
+        <li><strong>P</strong> — Antecedent (the condition / premise)</li>
+        <li><strong>Q</strong> — Consequent (the result / conclusion)</li>
       </ul>
-
-      <p><strong>Antecedent → Consequent</strong></p>
 
       <h3>Key Idea</h3>
-      <p>The implication <strong>P → Q</strong> is false only when:</p>
-      <ul>
-        <li>Antecedent (P) = True</li>
-        <li>Consequent (Q) = False</li>
-      </ul>
-      <p>In every other case, the implication is considered true.</p>
-      <p>Here are example:-</p>
-      <table border="1" cellpadding="8" style="border-collapse: collapse">
-        <tr style="font-weight: bold">
-          <td>Antecedent (P)</td>
-          <td>Consequent (Q)</td>
-          <td>P → Q</td>
-        </tr>
-        <tr>
-          <td>T</td>
-          <td>T</td>
-          <td>T</td>
-        </tr>
-        <tr>
-          <td>T</td>
-          <td>F</td>
-          <td>F</td>
-        </tr>
-        <tr>
-          <td>F</td>
-          <td>T</td>
-          <td>T</td>
-        </tr>
-        <tr>
-          <td>F</td>
-          <td>F</td>
-          <td>T</td>
-        </tr>
+      <p>The implication <strong>P → Q</strong> is <strong>false only when</strong> P = True and Q = False. In every other case it is true.</p>
+
+      <table>
+        <thead>
+          <tr><th>Antecedent (P)</th><th>Consequent (Q)</th><th>P → Q</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>T</td><td>T</td><td>T</td></tr>
+          <tr><td>T</td><td>F</td><td>F</td></tr>
+          <tr><td>F</td><td>T</td><td>T</td></tr>
+          <tr><td>F</td><td>F</td><td>T</td></tr>
+        </tbody>
       </table>
 
       <h2>1. Logical Equivalence</h2>
-      <p>
-        Two propositions are logically equivalent (P ≡ Q) if they have
-        identical truth tables.
-      </p>
-      <p style="font-size: 18px">
-        <strong>P → Q ≡ ¬P ∨ Q</strong>
-      </p>
-
-      <p>
-        This means: “If P then Q” is logically equivalent to “Not P OR Q”.
-      </p>
+      <p>Two propositions are logically equivalent (P ≡ Q) if they have identical truth tables.</p>
+      <code class="formula-block">P → Q &nbsp;≡&nbsp; ¬P ∨ Q</code>
+      <p>This means: "If P then Q" is logically equivalent to "Not P OR Q".</p>
 
       <h3>Intuition</h3>
       <ul>
@@ -247,1276 +142,429 @@
       </ul>
 
       <h3>Example</h3>
-      <p>
-        Let:<br />
-        P: “It is raining”<br />
-        Q: “The ground is wet”
-      </p>
-
-      <p><strong>P → Q</strong></p>
-
-      <p>“If it is raining, then the ground is wet.”</p>
-
-      <ul>
-        <li>Antecedent = It is raining</li>
-        <li>Consequent = The ground is wet</li>
-      </ul>
+      <p>Let P: "It is raining" &nbsp;·&nbsp; Q: "The ground is wet"</p>
+      <p><strong>P → Q</strong> = "If it is raining, then the ground is wet."</p>
     </section>
-    <section>
-      <h3>Here are Example of Some Important Logical Equivalence Laws </h3>
 
-      <h3>1. De Morgan’s Laws</h3>
+    <!-- ── 4. Equivalence Laws ────────────────────── -->
+    <section id="equiv-laws">
+      <h3>Important Logical Equivalence Laws</h3>
 
-      <p style="font-size: 18px">¬(P ∧ Q) ≡ ¬P ∨ ¬Q</p>
-
-      <p style="font-size: 18px">¬(P ∨ Q) ≡ ¬P ∧ ¬Q</p>
-
+      <h3>1. De Morgan's Laws</h3>
+      <code class="formula-block">¬(P ∧ Q) ≡ ¬P ∨ ¬Q</code>
+      <code class="formula-block">¬(P ∨ Q) ≡ ¬P ∧ ¬Q</code>
       <p><strong>Example:</strong></p>
-
-      <p style="font-size: 18px">¬(A ∧ B) ≡ ¬A ∨ ¬B</p>
-
+      <code class="formula-block amber">¬(A ∧ B) ≡ ¬A ∨ ¬B</code>
       <hr />
 
       <h3>2. Contrapositive Law</h3>
-
-      <p style="font-size: 18px">P → Q ≡ ¬Q → ¬P</p>
-
-      <p><strong>Example:</strong></p>
-
-      <p>“If it rains then roads are wet”</p>
-
-      <p style="font-size: 18px">R → W ≡ ¬W → ¬R</p>
-
+      <code class="formula-block">P → Q ≡ ¬Q → ¬P</code>
+      <p><strong>Example:</strong> "If it rains then roads are wet"</p>
+      <code class="formula-block amber">R → W ≡ ¬W → ¬R</code>
       <hr />
 
       <h3>3. Distributive Laws</h3>
-
-      <p style="font-size: 18px">P ∨ (Q ∧ R) ≡ (P ∨ Q) ∧ (P ∨ R)</p>
-
-      <p style="font-size: 18px">P ∧ (Q ∨ R) ≡ (P ∧ Q) ∨ (P ∧ R)</p>
-
-      <p><strong>Example:</strong></p>
-
-      <p style="font-size: 18px">A ∨ (B ∧ C) ≡ (A ∨ B) ∧ (A ∨ C)</p>
-
+      <code class="formula-block">P ∨ (Q ∧ R) ≡ (P ∨ Q) ∧ (P ∨ R)</code>
+      <code class="formula-block">P ∧ (Q ∨ R) ≡ (P ∧ Q) ∨ (P ∧ R)</code>
       <hr />
 
       <h3>4. Double Negation Law</h3>
-
-      <p style="font-size: 18px">¬(¬P) ≡ P</p>
-
-      <p><strong>Example:</strong></p>
-
-      <p style="font-size: 18px">¬(¬A) ≡ A</p>
-
+      <code class="formula-block">¬(¬P) ≡ P</code>
       <hr />
 
-      <h3>Combined Example (Using Multiple Laws)</h3>
-
-      <p><strong>Simplify:</strong></p>
-
-      <p style="font-size: 18px">¬(P → Q)</p>
-
-      <p><strong>Step 1: Remove implication</strong></p>
-
-      <p style="font-size: 18px">P → Q ≡ ¬P ∨ Q</p>
-
-      <p><strong>Step 2: Apply negation</strong></p>
-
-      <p style="font-size: 18px">¬(¬P ∨ Q)</p>
-
-      <p><strong>Step 3: Apply De Morgan’s Law</strong></p>
-
-      <p style="font-size: 18px">¬(¬P) ∧ ¬Q</p>
-
-      <p><strong>Step 4: Apply Double Negation</strong></p>
-
-      <p style="font-size: 18px">P ∧ ¬Q</p>
-
-      <h3>Final Result:</h3>
-
-      <p style="font-size: 20px; font-weight: bold">¬(P → Q) ≡ P ∧ ¬Q</p>
+      <h3>Combined Example — Simplify ¬(P → Q)</h3>
+      <p><strong>Step 1:</strong> Remove implication</p>
+      <code class="formula-block">P → Q ≡ ¬P ∨ Q</code>
+      <p><strong>Step 2:</strong> Apply negation</p>
+      <code class="formula-block">¬(¬P ∨ Q)</code>
+      <p><strong>Step 3:</strong> Apply De Morgan's Law</p>
+      <code class="formula-block">¬(¬P) ∧ ¬Q</code>
+      <p><strong>Step 4:</strong> Apply Double Negation</p>
+      <code class="formula-block amber">∴ &nbsp; ¬(P → Q) ≡ P ∧ ¬Q</code>
     </section>
-    <section>
-      <h2>1.1 Inference Rules</h2>
 
-      <p>
-        Inference rules allow us to derive new truths without constructing full truth tables.
-        They are fundamental tools in logical reasoning and AI theorem proving.
-      </p>
+    <!-- ── 5. Inference Rules ──────────────────────── -->
+    <section id="inference">
+      <h2>1.1 Inference Rules</h2>
+      <p>Inference rules allow us to derive new truths without constructing full truth tables. They are fundamental tools in logical reasoning and AI theorem proving.</p>
 
       <hr>
 
       <h3>1. Modus Ponens</h3>
-
-      <p>
-        If an implication is true and its premise is true, then the conclusion must also be true.
-      </p>
-
-      <p><strong>Form:</strong></p>
-
-      <div style="font-family: monospace; font-size:18px; margin-bottom:30px;">
-        P → Q , P <br>
-        ───────── <br>
-        ∴ Q
+      <p>If an implication is true and its premise is true, then the conclusion must also be true.</p>
+      <div class="inference-box">
+        P → Q &nbsp;,&nbsp; P<br>
+        ─────────────<br>
+        ∴ &nbsp;Q
       </div>
-
-
-
-
-      <p><strong>Explanation:</strong></p>
-      <p>
-        If “P implies Q” is true and P is true, then Q must be true.
-      </p>
-
-      <p><strong>Example:</strong></p>
-
-      <p>
-        P: It is raining<br>
-        Q: The ground is wet
-      </p>
-
-      <p style="font-size:18px;">
-        P → Q , P ⇒ Q
-      </p>
-
-      <p>
-        If it is raining, then the ground is wet.
-        It is raining.
-        Therefore, the ground is wet.
-      </p>
-
+      <p><strong>Example:</strong> P: It is raining &nbsp;·&nbsp; Q: The ground is wet</p>
+      <code class="formula-block">P → Q , P &nbsp;⇒&nbsp; Q</code>
+      <p>If it is raining and we know "rain → wet ground", therefore the ground is wet.</p>
       <hr>
 
       <h3>2. Resolution (The AI Rule)</h3>
-
-      <p>
-        Resolution is widely used in automated theorem proving and logic-based AI systems.
-      </p>
-
-      <p><strong>Form:</strong></p>
-
-
-      <div style="font-family: monospace; font-size:18px;">
-        P ∨ Q , ¬P ∨ R <br>
-        ─────────────── <br>
-        ∴ Q ∨ R
+      <p>Resolution is widely used in automated theorem proving and logic-based AI systems.</p>
+      <div class="inference-box">
+        P ∨ Q &nbsp;,&nbsp; ¬P ∨ R<br>
+        ───────────────────<br>
+        ∴ &nbsp;Q ∨ R
       </div>
-
-
-
       <p><strong>Logic Behind Resolution:</strong></p>
-
       <ul>
-        <li>If P is true, then from ¬P ∨ R, R must be true.</li>
-        <li>If P is false, then from P ∨ Q, Q must be true.</li>
+        <li>If P is true → from ¬P ∨ R, R must be true.</li>
+        <li>If P is false → from P ∨ Q, Q must be true.</li>
       </ul>
-
-      <p>
-        Thus, in either case, <strong>Q ∨ R</strong> is true.
-      </p>
-
-      <p><strong>Example:</strong></p>
-
-      <p>
-        P: It is sunny<br>
-        Q: We will go to the park<br>
-        R: We will stay indoors
-      </p>
-
-      <p style="font-size:18px;">
-        P ∨ Q , ¬P ∨ R ⇒ Q ∨ R
-      </p>
-
-      <p>
-        Meaning: Either we go to the park or stay indoors depending on whether it is sunny.
-      </p>
-
+      <p>Thus in either case, <strong>Q ∨ R</strong> is true.</p>
     </section>
-    <section>
 
+    <!-- ── 6. Translation ─────────────────────────── -->
+    <section id="translation">
       <h2>1.2 Translation Examples</h2>
-
-      <p>
-        These examples show how English sentences are converted into propositional logic using symbols.
-        This skill is very important for GATE problems where statements must be modeled logically before solving.
-      </p>
-
-      <p><strong>Let:</strong></p>
-      <p>
-        p: Alice is smart <br>
-        q: Alice is honest
-      </p>
-
+      <p>Converting English sentences into propositional logic — very important for GATE problems.</p>
+      <p><strong>Let:</strong> p = "Alice is smart" &nbsp;·&nbsp; q = "Alice is honest"</p>
       <hr>
 
-      <h3>1. “Alice is not smart but honest.”</h3>
-
-      <p style="font-size:18px;"><strong>⇒ ¬p ∧ q</strong></p>
-
-      <p><strong>Explanation:</strong></p>
-      <p>
-        “but” in logic behaves like AND (∧).
-        So the sentence means: Alice is not smart AND she is honest.
-      </p>
-
+      <h3>1. "Alice is not smart but honest."</h3>
+      <code class="formula-block amber">⇒ ¬p ∧ q</code>
+      <p>"but" in logic behaves like AND (∧). So: not smart AND honest.</p>
       <hr>
 
-      <h3>2. “If Alice is smart, then she is not honest.”</h3>
-
-      <p style="font-size:18px;"><strong>⇒ p → ¬q</strong></p>
-
-      <p><strong>Explanation:</strong></p>
-      <p>
-        This is a conditional statement.
-        It says whenever p is true, q must be false.
-        Only the case p = True and q = True violates this condition.
-      </p>
-
+      <h3>2. "If Alice is smart, then she is not honest."</h3>
+      <code class="formula-block amber">⇒ p → ¬q</code>
+      <p>Whenever p is true, q must be false. Only p=T, q=T violates this.</p>
       <hr>
 
-      <h3>3. “Either Alice is smart, or she is not smart but honest.”</h3>
-
-      <p style="font-size:18px;"><strong>⇒ p ∨ (¬p ∧ q)</strong></p>
-
-      <p><strong>Explanation:</strong></p>
-      <p>
-        The word “either…or…” translates to OR (∨).
-        The second part “not smart but honest” becomes (¬p ∧ q).
-      </p>
-
-      <p>
-        So the full statement allows two possibilities:
-      </p>
-
-      <ul>
-        <li>Alice is smart, OR</li>
-        <li>She is not smart but still honest.</li>
-      </ul>
-
+      <h3>3. "Either Alice is smart, or she is not smart but honest."</h3>
+      <code class="formula-block amber">⇒ p ∨ (¬p ∧ q)</code>
       <hr>
 
-      <h3>4. “Alice is either smart or honest, but Alice is not honest if she is smart.”</h3>
-
-      <p style="font-size:18px;"><strong>⇒ (p ∨ q) ∧ (p → ¬q)</strong></p>
-
-      <p><strong>Explanation:</strong></p>
-
-      <p>This combines two statements using AND (∧):</p>
-
-      <ul>
-        <li>Alice is smart or honest → (p ∨ q)</li>
-        <li>If she is smart, then she is not honest → (p → ¬q)</li>
-      </ul>
-
-      <p>Both conditions must hold simultaneously.</p>
-
+      <h3>4. "Alice is either smart or honest, but not honest if smart."</h3>
+      <code class="formula-block amber">⇒ (p ∨ q) ∧ (p → ¬q)</code>
       <hr>
 
-      <h3>5. “That Alice is smart is necessary and sufficient for Alice to be honest.”</h3>
-
-      <p style="font-size:18px;">
-        <strong>⇒ (p → q) ∧ (q → p) ≡ p ↔ q</strong>
-      </p>
-
-      <p><strong>Explanation:</strong></p>
-
-      <p>
-        “Necessary and sufficient” means both directions are true:
-      </p>
-
-      <ul>
-        <li>If smart then honest (p → q)</li>
-        <li>If honest then smart (q → p)</li>
-      </ul>
-
-      <p>
-        Together, they form a biconditional: <strong>p ↔ q</strong>
-        So Alice is smart exactly when she is honest.
-      </p>
-
+      <h3>5. "Smart is necessary and sufficient for honest."</h3>
+      <code class="formula-block amber">⇒ (p → q) ∧ (q → p) &nbsp;≡&nbsp; p ↔ q</code>
       <hr>
 
-      <h3>Necessary vs. Sufficient (Conceptual Insight)</h3>
-
-      <p><strong>Using:</strong></p>
-      <p>
-        p: Alice is smart <br>
-        q: Alice is honest
-      </p>
-
-      <h4>Sufficient Condition</h4>
-
-      <p style="font-size:18px;"><strong>p → q</strong></p>
-
-      <p>
-        “Alice being smart is sufficient for being honest.”
-        Meaning: (Being smart guarantees being honest).  Whenever p happens, q is guaranteed.
-        But q might still happen without p.
-      </p>
-
-      <h4>Necessary Condition</h4>
-
-      <p style="font-size:18px;"><strong>q → p</strong></p>
-
-      <p>
-        “Alice being smart is necessary for being honest.”
-        Meaning: (You can’t be honest unless you are also smart). To be honest, Alice must be smart.
-        Without p, q cannot be true.
-      </p>
-
-      <hr>
-
-      <h3>Key Memory Trick</h3>
-
-      <ul>
-        <li><strong>Sufficient:</strong> p guarantees q</li>
-        <li><strong>Necessary:</strong> q requires p</li>
-      </ul>
-
+      <h3>Necessary vs. Sufficient</h3>
+      <table>
+        <thead><tr><th>Type</th><th>Form</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Sufficient</td><td>p → q</td><td>p guarantees q</td></tr>
+          <tr><td>Necessary</td><td>q → p</td><td>q requires p</td></tr>
+        </tbody>
+      </table>
     </section>
-    <section>
-  <hr>
 
-  <h2>2. Types of Propositions</h2>
-
-
-
-  <h3>1. Tautology (Valid)</h3>
-
-  <p>
-    A compound proposition that is always <strong>True</strong> for all possible truth values of its variables.
-  </p>
-
-  <ul>
-    <li><strong>Example:</strong> Law of Excluded Middle (P ∨ ¬P)</li>
-    <li><strong>Key Property:</strong> Also called a Valid sentence.</li>
-  </ul>
-
-  <p><strong>Explanation:</strong></p>
-  <p>
-    No matter whether P is True or False, (P ∨ ¬P) is always True.
-  </p>
-
-  <p>
-    If P = T → True ∨ False = True <br>
-    If P = F → False ∨ True = True
-  </p>
-
-  <p>
-    So it can never be false → hence called <strong>Tautology</strong>.
-  </p>
-
-  <hr>
-
-  <h3>2. Contradiction (Unsatisfiable)</h3>
-
-  <p>
-    A compound proposition that is always <strong>False</strong> for all possible truth values.
-  </p>
-
-  <ul>
-    <li><strong>Example:</strong> Law of Contradiction (P ∧ ¬P)</li>
-    <li><strong>Key Property:</strong> Also called Unsatisfiable.</li>
-  </ul>
-
-  <p><strong>Explanation:</strong></p>
-
-  <p>
-    (P ∧ ¬P) requires P to be both True and False at the same time, which is impossible.
-  </p>
-
-  <p>
-    If P = T → True ∧ False = False <br>
-    If P = F → False ∧ True = False
-  </p>
-
-  <p>
-    So it is always False → hence <strong>Contradiction</strong>.
-  </p>
-
-  <hr>
-
-  <h3>3. Contingency</h3>
-
-  <p>
-    A proposition that is neither a tautology nor a contradiction.
-  </p>
-
-  <ul>
-    <li>It is True in some cases and False in others.</li>
-    <li><strong>Example:</strong> Implication (P → Q)</li>
-  </ul>
-
-  <p><strong>Explanation:</strong></p>
-
-  <p>
-    Implication depends on values of P and Q.
-    Sometimes it becomes True, sometimes False → so mixed result → <strong>Contingency</strong>.
-  </p>
-
-</section>
-<hr>
-
-<section>
-
-  <h2>2.1 Satisfiability vs. Validity</h2>
-
-  <h3>Satisfiable</h3>
-
-  <p>
-    A proposition is <strong>Satisfiable</strong> if there exists at least one row in the truth table where the result is True.
-  </p>
-
-  <p><strong>Explanation:</strong></p>
-
-  <p>
-    Even if a formula is False in many cases, as long as it is True in at least one case, it is Satisfiable.
-  </p>
-
-  <ul>
-    <li>Tautologies are always Satisfiable (because always True).</li>
-    <li>Contingencies are also Satisfiable (True in some rows).</li>
-    <li>Only Contradictions are Not Satisfiable.</li>
-  </ul>
-
-  <hr>
-
-  <h3>Unsatisfiable</h3>
-
-  <p>
-    A proposition is <strong>Unsatisfiable</strong> if there is no row where the result is True (i.e., it is always False).
-  </p>
-
-  <ul>
-    <li>Unsatisfiable ≡ Contradiction</li>
-  </ul>
-
-  <p><strong>Explanation:</strong></p>
-
-  <p>
-    Since contradiction never becomes True in any situation, it is completely unsatisfiable.
-  </p>
-
-  <hr>
-<!-- 
-  <h3>Summary Truth Tables</h3>
-
-  <table border="1" cellpadding="8" style="border-collapse: collapse; text-align:center;">
-    <tr style="font-weight:bold;">
-      <td>P</td>
-      <td>Q</td>
-      <td>(P ∨ ¬P)</td>
-      <td>(P ∧ ¬P)</td>
-      <td>(P → Q)</td>
-    </tr>
-    <tr>
-      <td>T</td>
-      <td>T</td>
-      <td>T</td>
-      <td>F</td>
-      <td>T</td>
-    </tr>
-    <tr>
-      <td>T</td>
-      <td>F</td>
-      <td>T</td>
-      <td>F</td>
-      <td>F</td>
-    </tr>
-    <tr>
-      <td>F</td>
-      <td>T</td>
-      <td>T</td>
-      <td>F</td>
-      <td>T</td>
-    </tr>
-    <tr>
-      <td>F</td>
-      <td>F</td>
-      <td>T</td>
-      <td>F</td>
-      <td>T</td>
-    </tr>
-  </table>
-
-  <hr>
-
-  <h3>Status:</h3>
-
-  <ul>
-    <li><strong>Always True → Tautology</strong></li>
-    <li><strong>Always False → Contradiction</strong></li>
-    <li><strong>Mixed → Contingency</strong></li>
-  </ul>
-
-  <hr>
-
-  <h3>Sat?</h3>
-
-  <ul>
-    <li><strong>Tautology → Satisfiable</strong></li>
-    <li><strong>Contradiction → Unsatisfiable</strong></li>
-    <li><strong>Contingency → Satisfiable</strong></li>
-  </ul> -->
-
-  <h3>Summary Truth Tables</h3>
-
-<table border="1" cellpadding="8" style="border-collapse: collapse; text-align:center; width:100%;">
-  
-  <tr style="font-weight:bold;">
-    <td>P</td>
-    <td>Q</td>
-    <td>(P ∨ ¬P)</td>
-    <td>(P ∧ ¬P)</td>
-    <td>(P → Q)</td>
-  </tr>
-
-  <tr>
-    <td>T</td>
-    <td>T</td>
-    <td>T</td>
-    <td>F</td>
-    <td>T</td>
-  </tr>
-
-  <tr>
-    <td>T</td>
-    <td>F</td>
-    <td>T</td>
-    <td>F</td>
-    <td>F</td>
-  </tr>
-
-  <tr>
-    <td>F</td>
-    <td>T</td>
-    <td>T</td>
-    <td>F</td>
-    <td>T</td>
-  </tr>
-
-  <tr>
-    <td>F</td>
-    <td>F</td>
-    <td>T</td>
-    <td>F</td>
-    <td>T</td>
-  </tr>
-
-  <!-- Status Row -->
-   <tr style="font-weight:bold; background-color:#f2f2f2;">
-    <td colspan="2">Status</td>
-    <td>Tautology (Always True)</td>
-    <td>Contradiction (Always False)</td>
-    <td>Contingency (Mixed)</td>
-  </tr>
-
-  <!-- Satisfiability Row -->
-  <tr style="font-weight:bold; background-color:#f9f9f9;">
-    <td colspan="2">Satisfiable?</td>
-    <td>Satisfiable</td>
-    <td>Unsatisfiable</td>
-    <td>Satisfiable</td>
-  </tr>
-
-</table>
-</section>
-<section>
-
-  <h2>3. General Logical Equivalences</h2>
-
-  <p>
-    These laws help us simplify complex logical expressions without using truth tables.
-    Very important for proofs, simplification, and GATE questions.
-  </p>
-
-  <h3>Table 1: Standard Logical Laws Summary</h3>
-
-  <table border="1" cellpadding="10" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th>Law Name</th>
-        <th>Logical Form</th>
-        <th>Explanation</th>
-      </tr>
-    </thead>
-    <tbody>
-
-      <tr>
-        <td><strong>Identity Laws</strong></td>
-        <td>
-          p ∧ T ≡ p <br>
-          p ∨ F ≡ p
-        </td>
-        <td>
-          AND with True keeps value same.<br>
-          OR with False keeps value same.
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>Domination Laws</strong></td>
-        <td>
-          p ∨ T ≡ T <br>
-          p ∧ F ≡ F
-        </td>
-        <td>
-          OR with True → always True.<br>
-          AND with False → always False.
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>Idempotent Laws</strong></td>
-        <td>
-          p ∨ p ≡ p <br>
-          p ∧ p ≡ p
-        </td>
-        <td>
-          Repeating the same proposition does not change anything.
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>Double Negation Law</strong></td>
-        <td>
-          ¬(¬p) ≡ p
-        </td>
-        <td>
-          Negating twice returns the original statement.
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>Commutative Laws</strong></td>
-        <td>
-          p ∨ q ≡ q ∨ p <br>
-          p ∧ q ≡ q ∧ p
-        </td>
-        <td>
-          Order does not matter in OR and AND.
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>Associative Laws</strong></td>
-        <td>
-          (p ∨ q) ∨ r ≡ p ∨ (q ∨ r) <br>
-          (p ∧ q) ∧ r ≡ p ∧ (q ∧ r)
-        </td>
-        <td>
-          Grouping does not affect result when only ORs or only ANDs are present.
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>Distributive Laws</strong></td>
-        <td>
-          p ∨ (q ∧ r) ≡ (p ∨ q) ∧ (p ∨ r) <br>
-          p ∧ (q ∨ r) ≡ (p ∧ q) ∨ (p ∧ r)
-        </td>
-        <td>
-          Similar to algebra distribution:<br>
-          a(b + c) = ab + ac
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>De Morgan’s Laws</strong></td>
-        <td>
-          ¬(p ∨ q) ≡ ¬p ∧ ¬q <br>
-          ¬(p ∧ q) ≡ ¬p ∨ ¬q
-        </td>
-        <td>
-          Negation moves inside and operator flips:<br>
-          OR ↔ AND
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>Absorption Laws</strong></td>
-        <td>
-          p ∨ (p ∧ q) ≡ p <br>
-          p ∧ (p ∨ q) ≡ p
-        </td>
-        <td>
-          Extra part becomes useless because p already determines the value.
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>Negation Laws</strong></td>
-        <td>
-          p ∨ ¬p ≡ T <br>
-          p ∧ ¬p ≡ F
-        </td>
-        <td>
-          Either p is true or not true → always True (Tautology).<br>
-          Both cannot be true together → always False (Contradiction).
-        </td>
-      </tr>
-
-    </tbody>
-  </table>
-
-</section>
-<section>
-
-  <h2>4. Logical Equivalences Involving Conditional Statements</h2>
-
-  <h3>Quick Meaning Summary of Basic Laws</h3>
-
-  <table border="1" cellpadding="8" cellspacing="0" width="100%">
-    <tr>
-      <th>Law</th>
-      <th>Short Meaning</th>
-    </tr>
-    <tr><td>Identity</td><td>Keep same value</td></tr>
-    <tr><td>Domination</td><td>Forced True or False</td></tr>
-    <tr><td>Idempotent</td><td>Repetition removed</td></tr>
-    <tr><td>Double Negation</td><td>Cancels negation</td></tr>
-    <tr><td>Commutative</td><td>Order swap allowed</td></tr>
-    <tr><td>Associative</td><td>Regrouping allowed</td></tr>
-    <tr><td>Distributive</td><td>Distribute ∧ / ∨</td></tr>
-    <tr><td>De Morgan</td><td>Push negation inside</td></tr>
-    <tr><td>Absorption</td><td>Remove redundant term</td></tr>
-    <tr><td>Negation</td><td>Opposite pair gives T or F</td></tr>
-  </table>
-
-
-</section>
-<section>
-
-  <h3>Table 2: Logical Equivalences Involving Conditional Statements</h3>
-
-  <p>
-    These rules are very important to simplify implications (p → q).
-  </p>
-
-  <table border="1" cellpadding="10" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th>Logical Equivalence</th>
-        <th>Explanation</th>
-      </tr>
-    </thead>
-    <tbody>
-
-      <tr>
-        <td><strong>p → q ≡ ¬p ∨ q</strong></td>
-        <td>
-          Implication means: if p is False OR q is True, the statement holds.
-          This is the most important conversion rule.
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>p → q ≡ ¬q → ¬p</strong> (Contrapositive)</td>
-        <td>
-          “If p then q” is logically equivalent to
-          “If not q then not p”.
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>p ∨ q ≡ ¬p → q</strong></td>
-        <td>
-          OR can be rewritten as an implication form.
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>p ∧ q ≡ ¬(p → ¬q)</strong></td>
-        <td>
-          AND means both must be True,
-          so implication to False must be False.
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>¬(p → q) ≡ p ∧ ¬q</strong></td>
-        <td>
-          Implication is False only when
-          p is True and q is False.
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>(p → q) ∧ (p → r) ≡ p → (q ∧ r)</strong></td>
-        <td>
-          If p implies both q and r separately,
-          then p implies (q AND r).
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>(p → r) ∧ (q → r) ≡ (p ∨ q) → r</strong></td>
-        <td>
-          If both p and q individually imply r,
-          then (p OR q) together implies r.
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>(p → q) ∨ (p → r) ≡ p → (q ∨ r)</strong></td>
-        <td>
-          If p leads to either q or r,
-          then p implies (q OR r).
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>(p → r) ∨ (q → r) ≡ (p ∧ q) → r</strong></td>
-        <td>
-          If either p or q implies r,
-          then if both p and q happen, r must happen.
-        </td>
-      </tr>
-
-    </tbody>
-  </table>
-
-  <h3> Most Important Rules to Memorize</h3>
-
-  <ul>
-    <li><strong>p → q ≡ ¬p ∨ q</strong></li>
-    <li><strong>Contrapositive: p → q ≡ ¬q → ¬p</strong></li>
-    <li><strong>¬(p → q) ≡ p ∧ ¬q</strong></li>
-  </ul>
-
-  <p>
-    These three rules appear most frequently in exams.
-  </p>
-
-</section>
-<hr>
-<section>
-
-  <h3> Logical Reasoning Practice Questions</h3>
-
-
-
-  <h4>Question 1</h4>
-  <p>
-    Which of the following is logically equivalent to:
-    <br><br>
-    ¬(p ∧ q)
-  </p>
-
-  <ol type="A">
-    <li>¬p ∧ ¬q</li>
-    <li>¬p ∨ ¬q</li>
-    <li>p ∨ q</li>
-    <li>¬(p → q)</li>
-  </ol>
-
-  <details>
-    <summary><strong>Show Answer</strong></summary>
-    <p><strong>Answer: B</strong></p>
-    <p>By De Morgan’s Law: ¬(p ∧ q) ≡ ¬p ∨ ¬q</p>
-  </details>
-
-  <hr>
-
-  <h4>Question 2</h4>
-  <p>
-    If p → q is True and p is False, then q must be:
-  </p>
-
-  <ol type="A">
-    <li>True</li>
-    <li>False</li>
-    <li>Cannot be determined</li>
-    <li>Always False</li>
-  </ol>
-
-  <details>
-    <summary><strong>Show Answer</strong></summary>
-    <p><strong>Answer: C</strong></p>
-    <p>If p is False, implication is automatically True regardless of q.</p>
-  </details>
-
-  <hr>
-
-  <h4>Question 3</h4>
-  <p>
-    Which of the following is a contradiction?
-  </p>
-
-  <ol type="A">
-    <li>p ∨ ¬p</li>
-    <li>p ∧ ¬p</li>
-    <li>p → p</li>
-    <li>¬(p ∧ ¬p)</li>
-  </ol>
-
-  <details>
-    <summary><strong>Show Answer</strong></summary>
-    <p><strong>Answer: B</strong></p>
-  </details>
-
-  <hr>
-
-  <h4>Question 4</h4>
-  <p>
-    The negation of (p → q) is:
-  </p>
-
-  <ol type="A">
-    <li>¬p ∨ q</li>
-    <li>p ∧ ¬q</li>
-    <li>¬q ∨ p</li>
-    <li>¬p ∧ q</li>
-  </ol>
-
-  <details>
-    <summary><strong>Show Answer</strong></summary>
-    <p><strong>Answer: B</strong></p>
-  </details>
-
-  <hr>
-
-  <h4>Question 5 (Transitivity)</h4>
-  <p>
-    Given:
-    <br>
-    p → q <br>
-    q → r <br><br>
-    Which must be true?
-  </p>
-
-  <ol type="A">
-    <li>p → r</li>
-    <li>r → p</li>
-    <li>p ∧ r</li>
-    <li>q → p</li>
-  </ol>
-
-  <details>
-    <summary><strong>Show Answer</strong></summary>
-    <p><strong>Answer: A</strong></p>
-  </details>
-
-  <hr>
-
-  <h4>Question 6</h4>
-  <p>
-    Which of the following is logically equivalent to:
-    <br><br>
-    (p → q) ∧ (p → r)
-  </p>
-
-  <ol type="A">
-    <li>p → (q ∧ r)</li>
-    <li>(p ∧ q) → r</li>
-    <li>(p ∨ q) → r</li>
-    <li>p → (q ∨ r)</li>
-  </ol>
-
-  <details>
-    <summary><strong>Show Answer</strong></summary>
-    <p><strong>Answer: A</strong></p>
-  </details>
-
-  <hr>
-
-  <h4>Question 7</h4>
-  <p>
-    Which of the following is logically equivalent to:
-    <br><br>
-    (p → r) ∧ (q → r)
-  </p>
-
-  <ol type="A">
-    <li>(p ∧ q) → r</li>
-    <li>(p ∨ q) → r</li>
-    <li>p → (q ∧ r)</li>
-    <li>¬p ∧ ¬q</li>
-  </ol>
-
-  <details>
-    <summary><strong>Show Answer</strong></summary>
-    <p><strong>Answer: B</strong></p>
-  </details>
-
-  <hr>
-
-  <h4>Question 8 (Assertion–Reason)</h4>
-  <p><strong>Assertion (A):</strong> p ∨ ¬p is a tautology.</p>
-  <p><strong>Reason (R):</strong> Either p is True or p is False.</p>
-
-  <ol type="A">
-    <li>Both A and R are true and R explains A</li>
-    <li>Both A and R are true but R does not explain A</li>
-    <li>A is true, R is false</li>
-    <li>A is false, R is true</li>
-  </ol>
-
-  <details>
-    <summary><strong>Show Answer</strong></summary>
-    <p><strong>Answer: A</strong></p>
-  </details>
-
-  <hr>
-
-  <h4>Question 9</h4>
-  <p>
-    Which expression is logically equivalent to:
-    <br><br>
-    p ∨ q
-  </p>
-
-  <ol type="A">
-    <li>¬p → q</li>
-    <li>p → q</li>
-    <li>¬q → p</li>
-    <li>p ∧ q</li>
-  </ol>
-
-  <details>
-    <summary><strong>Show Answer</strong></summary>
-    <p><strong>Answer: A</strong></p>
-  </details>
-
-  <hr>
-
-  <h4>Question 10 (Satisfiability)</h4>
-  <p>
-    Which of the following is satisfiable but NOT a tautology?
-  </p>
-
-  <ol type="A">
-    <li>p ∨ ¬p</li>
-    <li>p ∧ ¬p</li>
-    <li>p → q</li>
-    <li>¬(p ∨ ¬p)</li>
-  </ol>
-
-  <details>
-    <summary><strong>Show Answer</strong></summary>
-    <p><strong>Answer: C</strong></p>
-    <p>p → q is True in some cases and False in others → Contingency.</p>
-  </details>
-
-</section>
-<hr>
-<section>
-<h2>5. Concept of a Model </h2>
-
-<p>
-In propositional logic (used in AI), we separate two important concepts:
-</p>
-
-<ul>
-  <li><strong>Syntax</strong> → The logical sentences we write (like P, Q, P → Q).</li>
-  <li><strong>Semantics</strong> → What those sentences actually mean in the real world.</li>
-</ul>
-
-<p>
-A <strong>model</strong> is basically a <em>possible world</em> where every proposition has a fixed truth value (True or False).
-</p>
-
-<p>
-So, a model answers the question:
-</p>
-
-<blockquote>
-“In this imagined world, which statements are true and which are false?”
-</blockquote>
-
-<hr>
-
-<h3>What is a Model?</h3>
-
-<p>
-A model assigns truth values to all propositional symbols.
-</p>
-
-<p><strong>Example:</strong></p>
-
-<p>
-Let:<br>
-P = “It is raining”<br>
-Q = “It is Tuesday”
-</p>
-
-<p>One possible model:</p>
-
-<pre>
-P = True
-Q = False
-</pre>
-
-<p>
-This represents a world where it is raining but it is not Tuesday.
-</p>
-
-<p>Another possible model:</p>
-
-<pre>
-P = False
-Q = True
-</pre>
-
-<p>
-Now it is Tuesday but not raining.
-</p>
-<p>
-Thus, models represent different possible situations of reality.
-</p>
-
-<hr>
-
-<h3>Why Models Matter in AI Logic</h3>
-
-<p>
-AI systems reason about the world using logic. To check whether a logical sentence is correct, we test it in <strong>all possible models</strong>.
-</p>
-
-<ul>
-  <li>If a sentence is true in every model → it is <strong>Logically Valid (Tautology)</strong>.</li>
-  <li>If it is false in every model → it is a <strong>Contradiction</strong>.</li>
-  <li>If it is true in some models and false in others → it is a <strong>Contingency</strong>.</li>
-</ul>
-
-<p>
-This is why models are the foundation of logical reasoning.
-</p>
-
-<hr>
-
-<h3>Exponential Growth of Models</h3>
-
-<p>
-If there are <strong>n</strong> propositions, then the number of possible worlds (models) is:
-</p>
-
-<p><strong>2<sup>n</sup></strong></p>
-
-<p>
-Because each proposition can independently be either True or False.
-</p>
-
-<p><strong>Example:</strong></p>
-
-<ul>
-  <li>1 proposition → 2 models</li>
-  <li>2 propositions → 4 models</li>
-  <li>3 propositions → 8 models</li>
-</ul>
-
-<p>
-As the number of propositions increases, reasoning becomes computationally harder due to exponential growth.
-</p>
-
-<hr>
-
-<h2>5.1  Knowledge Base (KB) — Explained</h2>
-
-<p>
-A <strong>Knowledge Base (KB)</strong> is like the brain of an AI agent.
-</p>
-
-<p>It stores:</p>
-
-<ul>
-  <li>Facts (e.g., P is true)</li>
-  <li>Rules (e.g., If P then Q)</li>
-</ul>
-
-<p>
-Using this stored knowledge, the agent can derive new conclusions through logical inference.
-</p>
-
-<p><strong>Example:</strong></p>
-
-<pre>
-KB contains:
+    <!-- ── 7. Types of Propositions ───────────────── -->
+    <section id="proposition-types">
+      <hr>
+      <h2>2. Types of Propositions</h2>
+
+      <h3>1. Tautology (Valid)</h3>
+      <p>Always <strong>True</strong> for all possible truth values.</p>
+      <code class="formula-block">P ∨ ¬P &nbsp;≡&nbsp; T &nbsp;&nbsp; (Law of Excluded Middle)</code>
+      <hr>
+
+      <h3>2. Contradiction (Unsatisfiable)</h3>
+      <p>Always <strong>False</strong> for all possible truth values.</p>
+      <code class="formula-block">P ∧ ¬P &nbsp;≡&nbsp; F &nbsp;&nbsp; (Law of Contradiction)</code>
+      <hr>
+
+      <h3>3. Contingency</h3>
+      <p>Neither always true nor always false — True in some cases, False in others.</p>
+      <code class="formula-block">P → Q &nbsp;&nbsp; (depends on P and Q)</code>
+    </section>
+
+    <!-- ── 8. Satisfiability ───────────────────────── -->
+    <section id="satisfiability">
+      <h2>2.1 Satisfiability vs. Validity</h2>
+
+      <h3>Satisfiable</h3>
+      <p>A proposition is <strong>Satisfiable</strong> if there is at least one row in the truth table where the result is True.</p>
+      <ul>
+        <li>Tautologies → always Satisfiable</li>
+        <li>Contingencies → Satisfiable (True in some rows)</li>
+        <li>Contradictions → <strong>Not Satisfiable</strong></li>
+      </ul>
+
+      <hr>
+
+      <h3>Summary Table</h3>
+      <table>
+        <thead>
+          <tr><th>P</th><th>Q</th><th>P ∨ ¬P</th><th>P ∧ ¬P</th><th>P → Q</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>T</td><td>T</td><td>T</td><td>F</td><td>T</td></tr>
+          <tr><td>T</td><td>F</td><td>T</td><td>F</td><td>F</td></tr>
+          <tr><td>F</td><td>T</td><td>T</td><td>F</td><td>T</td></tr>
+          <tr><td>F</td><td>F</td><td>T</td><td>F</td><td>T</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td colspan="2"><strong>Status</strong></td><td>Tautology</td><td>Contradiction</td><td>Contingency</td></tr>
+          <tr><td colspan="2"><strong>Satisfiable?</strong></td><td>✓ Yes</td><td>✗ No</td><td>✓ Yes</td></tr>
+        </tfoot>
+      </table>
+    </section>
+
+    <!-- ── 9. Logical Equivalence Laws ───────────── -->
+    <section id="general-laws">
+      <h2>3. General Logical Equivalences</h2>
+      <p>These laws simplify complex logical expressions without truth tables. Essential for GATE.</p>
+
+      <table>
+        <thead><tr><th>Law Name</th><th>Logical Form</th><th>Explanation</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Identity</strong></td><td>p ∧ T ≡ p &nbsp;·&nbsp; p ∨ F ≡ p</td><td>AND with True / OR with False keeps value same.</td></tr>
+          <tr><td><strong>Domination</strong></td><td>p ∨ T ≡ T &nbsp;·&nbsp; p ∧ F ≡ F</td><td>OR with True → always True. AND with False → always False.</td></tr>
+          <tr><td><strong>Idempotent</strong></td><td>p ∨ p ≡ p &nbsp;·&nbsp; p ∧ p ≡ p</td><td>Repeating same proposition changes nothing.</td></tr>
+          <tr><td><strong>Double Negation</strong></td><td>¬(¬p) ≡ p</td><td>Negating twice returns original.</td></tr>
+          <tr><td><strong>Commutative</strong></td><td>p ∨ q ≡ q ∨ p</td><td>Order does not matter in OR and AND.</td></tr>
+          <tr><td><strong>Associative</strong></td><td>(p ∨ q) ∨ r ≡ p ∨ (q ∨ r)</td><td>Grouping does not affect result.</td></tr>
+          <tr><td><strong>Distributive</strong></td><td>p ∨ (q ∧ r) ≡ (p ∨ q) ∧ (p ∨ r)</td><td>Like algebra: a(b+c) = ab+ac.</td></tr>
+          <tr><td><strong>De Morgan's</strong></td><td>¬(p ∨ q) ≡ ¬p ∧ ¬q</td><td>Negation moves inside, operator flips.</td></tr>
+          <tr><td><strong>Absorption</strong></td><td>p ∨ (p ∧ q) ≡ p</td><td>Extra part becomes useless.</td></tr>
+          <tr><td><strong>Negation</strong></td><td>p ∨ ¬p ≡ T &nbsp;·&nbsp; p ∧ ¬p ≡ F</td><td>Always True (Tautology) / Always False (Contradiction).</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── 10. Conditional Equivalences ──────────── -->
+    <section id="conditional-equiv">
+      <h2>4. Equivalences Involving Conditionals</h2>
+
+      <table>
+        <thead><tr><th>Logical Equivalence</th><th>Explanation</th></tr></thead>
+        <tbody>
+          <tr><td><strong>p → q ≡ ¬p ∨ q</strong></td><td>Most important conversion rule.</td></tr>
+          <tr><td><strong>p → q ≡ ¬q → ¬p</strong> (Contrapositive)</td><td>"If p then q" ≡ "If not q then not p".</td></tr>
+          <tr><td><strong>p ∨ q ≡ ¬p → q</strong></td><td>OR rewritten as implication.</td></tr>
+          <tr><td><strong>p ∧ q ≡ ¬(p → ¬q)</strong></td><td>AND means both must be True.</td></tr>
+          <tr><td><strong>¬(p → q) ≡ p ∧ ¬q</strong></td><td>Implication False only when p=T, q=F.</td></tr>
+          <tr><td><strong>(p→q) ∧ (p→r) ≡ p→(q∧r)</strong></td><td>p implies both q and r.</td></tr>
+          <tr><td><strong>(p→r) ∧ (q→r) ≡ (p∨q)→r</strong></td><td>Both p and q individually imply r.</td></tr>
+          <tr><td><strong>(p→q) ∨ (p→r) ≡ p→(q∨r)</strong></td><td>p leads to either q or r.</td></tr>
+          <tr><td><strong>(p→r) ∨ (q→r) ≡ (p∧q)→r</strong></td><td>Either p or q implies r.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Most Important — Memorize These</h3>
+      <code class="formula-block amber">p → q ≡ ¬p ∨ q</code>
+      <code class="formula-block amber">p → q ≡ ¬q → ¬p &nbsp;&nbsp; (Contrapositive)</code>
+      <code class="formula-block amber">¬(p → q) ≡ p ∧ ¬q</code>
+    </section>
+
+    <!-- ── 11. Models ──────────────────────────────── -->
+    <section id="models">
+      <h2>5. Concept of a Model</h2>
+      <p>In propositional logic (used in AI), we separate two important concepts:</p>
+      <ul>
+        <li><strong>Syntax</strong> → The logical sentences we write (like P, Q, P → Q).</li>
+        <li><strong>Semantics</strong> → What those sentences actually mean in the real world.</li>
+      </ul>
+      <p>A <strong>model</strong> is a possible world where every proposition has a fixed truth value.</p>
+
+      <blockquote>"In this imagined world, which statements are true and which are false?"</blockquote>
+
+      <h3>Example</h3>
+      <pre>Model 1: P = True, Q = False   → raining, not Tuesday
+Model 2: P = False, Q = True   → Tuesday, not raining</pre>
+
+      <h3>Exponential Growth of Models</h3>
+      <p>With <strong>n</strong> propositions → <strong>2<sup>n</sup></strong> possible models.</p>
+      <ul>
+        <li>1 proposition → 2 models</li>
+        <li>2 propositions → 4 models</li>
+        <li>3 propositions → 8 models</li>
+      </ul>
+
+      <h2>5.1 Knowledge Base (KB)</h2>
+      <p>A <strong>Knowledge Base (KB)</strong> stores facts and rules that an AI agent uses to derive new conclusions.</p>
+      <pre>KB contains:
 P → Q
 P
+─────
+∴ Q</pre>
 
-∴ Q
-</pre>
+      <h2>5.2 Entailment ( |= )</h2>
+      <blockquote>If α is true in all possible models, then β must also be true in those models.</blockquote>
+      <code class="formula-block">α |= β</code>
 
-<p>
-Even though Q was not directly stored, it is logically derived.
-</p>
+      <h3>Entailment vs Implication</h3>
+      <table>
+        <thead><tr><th></th><th>Implication (P → Q)</th><th>Entailment (α |= β)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Level</strong></td><td>Formula inside the language</td><td>Meta-level relation between sentences</td></tr>
+          <tr><td><strong>Meaning</strong></td><td>A rule written in logic</td><td>Truth preserved across ALL possible worlds</td></tr>
+        </tbody>
+      </table>
+    </section>
 
-<hr>
+    <!-- ── Practice Questions ─────────────────────── -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
 
-<h2>5.2 Entailment ( |= ) </h2>
+      <h4><span class="q-num">Q1</span> Which is logically equivalent to ¬(p ∧ q)?</h4>
+      <ol type="A">
+        <li>¬p ∧ ¬q</li><li>¬p ∨ ¬q</li><li>p ∨ q</li><li>¬(p → q)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — ¬p ∨ ¬q</strong></p>
+        <p>By De Morgan's Law: ¬(p ∧ q) ≡ ¬p ∨ ¬q</p>
+      </details>
+      <hr>
 
-<p>
-Entailment means:
-</p>
+      <h4><span class="q-num">Q2</span> If p → q is True and p is False, then q must be:</h4>
+      <ol type="A">
+        <li>True</li><li>False</li><li>Cannot be determined</li><li>Always False</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Cannot be determined</strong></p>
+        <p>If p is False, implication is automatically True regardless of q.</p>
+      </details>
+      <hr>
 
-<blockquote>
-If α is true in all possible models, then β must also be true in those models.
-</blockquote>
+      <h4><span class="q-num">Q3</span> Which of the following is a contradiction?</h4>
+      <ol type="A">
+        <li>p ∨ ¬p</li><li>p ∧ ¬p</li><li>p → p</li><li>¬(p ∧ ¬p)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — p ∧ ¬p</strong></p>
+        <p>Requires P to be both True and False simultaneously — impossible.</p>
+      </details>
+      <hr>
 
-<p>
-Notation: <strong>α |= β</strong>
-</p>
+      <h4><span class="q-num">Q4</span> The negation of (p → q) is:</h4>
+      <ol type="A">
+        <li>¬p ∨ q</li><li>p ∧ ¬q</li><li>¬q ∨ p</li><li>¬p ∧ q</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — p ∧ ¬q</strong></p>
+      </details>
+      <hr>
 
-<p>
-This is stronger than simple implication.
-</p>
+      <h4><span class="q-num">Q5</span> Given p → q and q → r, which must be true?</h4>
+      <ol type="A">
+        <li>p → r</li><li>r → p</li><li>p ∧ r</li><li>q → p</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: A — p → r</strong></p>
+        <p>Hypothetical Syllogism / Transitivity of implication.</p>
+      </details>
+      <hr>
 
-<p><strong>Example:</strong></p>
+      <h4><span class="q-num">Q6</span> Which is equivalent to (p → q) ∧ (p → r)?</h4>
+      <ol type="A">
+        <li>p → (q ∧ r)</li><li>(p ∧ q) → r</li><li>(p ∨ q) → r</li><li>p → (q ∨ r)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: A — p → (q ∧ r)</strong></p>
+      </details>
+      <hr>
 
-<p>
-α: “It is Tuesday in January”<br>
-β: “It is January”
-</p>
+      <h4><span class="q-num">Q7</span> Which is equivalent to (p → r) ∧ (q → r)?</h4>
+      <ol type="A">
+        <li>(p ∧ q) → r</li><li>(p ∨ q) → r</li><li>p → (q ∧ r)</li><li>¬p ∧ ¬q</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — (p ∨ q) → r</strong></p>
+      </details>
+      <hr>
 
-<p>
-Whenever α is true, β must be true.  
-Therefore, α entails β.
-</p>
+      <h4><span class="q-num">Q8</span> Assertion: p ∨ ¬p is a tautology. &nbsp; Reason: Either p is True or p is False.</h4>
+      <ol type="A">
+        <li>Both true and R explains A</li><li>Both true but R does not explain A</li>
+        <li>A true, R false</li><li>A false, R true</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: A</strong></p>
+      </details>
+      <hr>
 
-<hr>
+      <h4><span class="q-num">Q9</span> Which expression is logically equivalent to p ∨ q?</h4>
+      <ol type="A">
+        <li>¬p → q</li><li>p → q</li><li>¬q → p</li><li>p ∧ q</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: A — ¬p → q</strong></p>
+      </details>
+      <hr>
 
-<h3>Entailment vs Implication — Important Difference</h3>
+      <h4><span class="q-num">Q10</span> Which is satisfiable but NOT a tautology?</h4>
+      <ol type="A">
+        <li>p ∨ ¬p</li><li>p ∧ ¬p</li><li>p → q</li><li>¬(p ∨ ¬p)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — p → q</strong></p>
+        <p>True in some cases, False in others → Contingency → Satisfiable but not Tautology.</p>
+      </details>
+    </section>
 
-<p>Students often confuse these two concepts:</p>
+    <!-- ── Bottom navigation ───────────────────────── -->
+    <div class="bottom-nav">
+      <a class="nav-btn" href="logic.html">← Back to Logic</a>
+      <a class="nav-btn next" href="predicate_logic.html">Predicate Logic →</a>
+    </div>
 
-<ul>
-  <li>
-    <strong>Implication (P → Q)</strong>:  
-    A logical formula inside the language.  
-    It expresses a relationship between P and Q.
-  </li>
-  <li>
-    <strong>Entailment (α |= β)</strong>:  
-    A meta-level relation between two sentences.  
-    It means that in every possible model where α holds, β must also hold.
-  </li>
-</ul>
-
-<p>
-So:
-</p>
-
-<ul>
-  <li>Implication is about a single logical formula.</li>
-  <li>Entailment is about truth across all possible models.</li>
-</ul>
-
-<p>
-Think of it like this:
-</p>
-
-<ul>
-  <li><strong>Implication</strong> = A rule written in logic.</li>
-  <li><strong>Entailment</strong> = A guarantee that the rule preserves truth in every possible world.</li>
-</ul>
-</section>
-
-
-
-    <a href="logic.html">← Back to Logic Topic</a>
   </article>
-  <script src="../theme.js"></script>
+
+  <!-- ── TOC Sidebar ─────────────────────────────── -->
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol id="toc-list">
+      <li><a href="#connectives">Logical Connectives</a></li>
+      <li><a href="#truth-table">Truth Table</a></li>
+      <li><a href="#implication">Implication</a></li>
+      <li class="toc-sub"><a href="#equiv-laws">Equivalence Laws</a></li>
+      <li><a href="#inference">Inference Rules</a></li>
+      <li class="toc-sub"><a href="#translation">Translation</a></li>
+      <li><a href="#proposition-types">Types of Propositions</a></li>
+      <li class="toc-sub"><a href="#satisfiability">Satisfiability</a></li>
+      <li><a href="#general-laws">General Equivalences</a></li>
+      <li><a href="#conditional-equiv">Conditional Equiv.</a></li>
+      <li><a href="#models">Models &amp; KB</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+
+</div><!-- /.page-wrap -->
+
+<script src="../theme.js"></script>
+<script>
+  /* ── Reading progress bar ───────────────────────── */
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (scrollTop / docH) * 100 : 0) + '%';
+  });
+
+  /* ── Active TOC highlight ───────────────────────── */
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.toc-sidebar a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
 </body>
 </html>

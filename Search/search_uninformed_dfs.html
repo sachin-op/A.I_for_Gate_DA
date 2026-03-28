@@ -1,35 +1,276 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Depth-First Search</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Depth-First Search — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="search_ai.html">Search</a>
+    <span>›</span>
+    <a href="search_uninformed.html">Uninformed Search</a>
+    <span>›</span>
+    <span>DFS</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Depth-First Search</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <p>Published on: 6 Feb 2026</p>
-    <p>
-      Depth-First Search (DFS) is a fundamental algorithm used to explore and traverse graphs and trees.
-      It explores as far as possible along each branch before backtracking, making it a powerful tool for various applications.
-    </p>  
-    <h2>How DFS Works</h2>
-    <p>
-      DFS starts at a given node (called the root) and explores as far as possible along each branch before backtracking. It uses a stack data structure (either explicitly or through recursion) to keep track of the nodes to be explored.
-    </p>
-    <h2>DFS Algorithm Steps</h2>
-    <ol>
-      <li>Start at the root node and mark it as visited.</li>  
-      <li>Push the current node onto the stack.</li>
-      <li>Explore all unvisited neighbors of the current node.</li>
-      <li>Mark the neighbor as visited.</li>
-      <li>Push the neighbor onto the stack.</li>
-      <li>Repeat steps 2-5 for all unvisited neighbors of the current node.</li>
-      <li>Backtrack by popping the current node off the stack.</li>
-    </ol>
-    <a href="../Search/search_uninformed.html">← Back to Uninformed Search Topics</a>
+
+    <h1>Depth-First Search (DFS)</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Uninformed Search</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~8 min read</span>
+      </div>
+    </div>
+
+    <!-- Intro -->
+    <section id="intro">
+      <p>
+        <strong>Depth-First Search (DFS)</strong> is an uninformed search algorithm that
+        explores as <strong>deep as possible</strong> along each branch before backtracking.
+        It uses a <strong>Stack (LIFO)</strong> as its data structure — or equivalently,
+        recursion via the call stack.
+      </p>
+
+      <div class="info-box">
+        <strong>Core Idea:</strong> Expand the deepest unexpanded node first.
+        DFS dives all the way down one path before trying another.
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works">
+      <h2>How DFS Works</h2>
+      <ol>
+        <li>Start with the initial state on the stack.</li>
+        <li>Pop the top node and check if it is the goal.</li>
+        <li>If yes → return the solution.</li>
+        <li>If no → push all its children to the <strong>top</strong> of the stack.</li>
+        <li>Repeat until goal is found or stack is empty.</li>
+      </ol>
+
+      <h3>Data Structure Used</h3>
+      <p><strong>Stack (LIFO)</strong> — Last In, First Out. DFS can also be implemented recursively (implicit stack).</p>
+    </section>
+
+    <!-- Example -->
+    <section id="example">
+      <h2>Example</h2>
+      <pre>
+         A          ← Start
+        / \
+       B   C
+      / \ / \
+     D  E F  G      ← Goal = G
+      </pre>
+      <p><strong>DFS Order:</strong> A → B → D → E → C → F → G</p>
+      <p>DFS goes deep into the left branch first (A→B→D), backtracks, then explores E, then the right branch (C→F→G).</p>
+    </section>
+
+    <!-- Properties -->
+    <section id="properties">
+      <h2>Properties of DFS</h2>
+
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Complete?</td><td style="color:var(--red)">✗ No</td><td>Can get stuck in infinite loops (infinite depth paths)</td></tr>
+          <tr><td>Optimal?</td><td style="color:var(--red)">✗ No</td><td>May find a deeper solution when a shallower one exists</td></tr>
+          <tr><td>Time Complexity</td><td>O(b<sup>m</sup>)</td><td>b = branching factor, m = maximum depth of the tree</td></tr>
+          <tr><td>Space Complexity</td><td>O(b·m)</td><td>Only stores the current path — much better than BFS</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Why not complete -->
+    <section id="incompleteness">
+      <h2>Why DFS is Not Complete</h2>
+      <p>
+        DFS can enter an <strong>infinite loop</strong> if the search space has cycles or
+        infinite depth paths. For example:
+      </p>
+      <pre>
+  A → B → C → D → E → F → ... (infinite)
+      </pre>
+      <p>
+        DFS will keep going deeper forever and never explore other branches.
+        This can be fixed by:
+      </p>
+      <ul>
+        <li>Maintaining a <strong>visited set</strong> to avoid revisiting nodes</li>
+        <li>Using <strong>Depth-Limited Search (DLS)</strong> to cap the depth</li>
+      </ul>
+
+      <div class="info-box">
+        <strong>Fix:</strong> In finite state spaces with a visited set, DFS becomes complete.
+        In infinite state spaces, it remains incomplete.
+      </div>
+    </section>
+
+    <!-- Space Advantage -->
+    <section id="space-advantage">
+      <h2>Space Advantage Over BFS</h2>
+      <p>DFS only needs to store the <strong>current path from root to the frontier node</strong>.</p>
+
+      <table>
+        <thead>
+          <tr><th>Algorithm</th><th>Space Complexity</th><th>b=10, d=10</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>BFS</strong></td><td>O(b<sup>d</sup>)</td><td>~10 billion nodes</td></tr>
+          <tr><td><strong>DFS</strong></td><td>O(b·m)</td><td>~100 nodes</td></tr>
+        </tbody>
+      </table>
+
+      <p>This massive memory advantage makes DFS preferred when memory is limited.</p>
+    </section>
+
+    <!-- Advantages & Disadvantages -->
+    <section id="pros-cons">
+      <h2>Advantages & Disadvantages</h2>
+
+      <h3>✅ Advantages</h3>
+      <ul>
+        <li><strong>Very low memory usage</strong> — only O(b·m) space</li>
+        <li>Can find solutions quickly if the goal is on a deep left branch</li>
+        <li>Simple recursive implementation</li>
+      </ul>
+
+      <h3>❌ Disadvantages</h3>
+      <ul>
+        <li><strong>Not complete</strong> — can loop forever in infinite spaces</li>
+        <li><strong>Not optimal</strong> — may return a non-shortest solution</li>
+        <li>Worst case time O(b<sup>m</sup>) — if goal is on the far right branch</li>
+      </ul>
+    </section>
+
+    <!-- GATE Tips -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li>DFS uses a <strong>Stack (LIFO)</strong>. BFS uses a <strong>Queue (FIFO)</strong>.</li>
+        <li>DFS is <strong>neither complete nor optimal</strong> in the general case.</li>
+        <li>Space complexity O(b·m) is DFS's main advantage over BFS.</li>
+        <li>DFS is complete in <strong>finite</strong> spaces if revisited states are tracked.</li>
+        <li>Time complexity is O(b<sup>m</sup>) — worse than BFS O(b<sup>d</sup>) if m &gt;&gt; d.</li>
+      </ul>
+    </section>
+
+    <!-- Practice Questions -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> What data structure does DFS use?</h4>
+      <ol type="A">
+        <li>Queue (FIFO)</li>
+        <li>Priority Queue</li>
+        <li>Stack (LIFO)</li>
+        <li>Deque</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Stack (LIFO)</strong></p>
+        <p>DFS uses a LIFO stack (or recursion) to always expand the deepest node.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> DFS is not complete because:</h4>
+      <ol type="A">
+        <li>It uses too much memory</li>
+        <li>It can enter infinite loops in infinite depth spaces</li>
+        <li>It does not explore all nodes</li>
+        <li>It is slower than BFS</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — It can enter infinite loops</strong></p>
+        <p>Without a depth limit or visited set, DFS may go infinitely deep on one branch.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> What is the space complexity of DFS?</h4>
+      <ol type="A">
+        <li>O(b<sup>d</sup>)</li>
+        <li>O(b·m)</li>
+        <li>O(d)</li>
+        <li>O(1)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — O(b·m)</strong></p>
+        <p>DFS only stores the current path nodes plus siblings at each level — b nodes per level × m levels.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q4</span> DFS is complete when:</h4>
+      <ol type="A">
+        <li>The search space is infinite</li>
+        <li>The branching factor is 1</li>
+        <li>The search space is finite and revisited states are tracked</li>
+        <li>All step costs are equal</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Finite space with visited states tracked</strong></p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="search_uninformed_bfs.html">← BFS</a>
+      <a class="nav-btn next" href="search_uninformed_dls.html">DLS →</a>
+    </div>
+
   </article>
-  <script src="../theme.js"></script>
+
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#how-it-works">How DFS Works</a></li>
+      <li><a href="#example">Example</a></li>
+      <li><a href="#properties">Properties</a></li>
+      <li><a href="#incompleteness">Why Not Complete</a></li>
+      <li><a href="#space-advantage">Space Advantage</a></li>
+      <li><a href="#pros-cons">Pros & Cons</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>

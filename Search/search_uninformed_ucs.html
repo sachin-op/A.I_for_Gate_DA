@@ -1,17 +1,305 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Uniform Cost Search</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uniform Cost Search — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="search_ai.html">Search</a>
+    <span>›</span>
+    <a href="search_uninformed.html">Uninformed Search</a>
+    <span>›</span>
+    <span>UCS</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Uniform Cost Search</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <p>Published on: 6 Feb 2026</p>
-    <a href="../Search/search_uninformed.html">← Back to Uninformed Search Topics</a>
+
+    <h1>Uniform Cost Search (UCS)</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Uninformed Search</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~9 min read</span>
+      </div>
+    </div>
+
+    <!-- Intro -->
+    <section id="intro">
+      <p>
+        <strong>Uniform Cost Search (UCS)</strong> is an uninformed search algorithm that
+        finds the <strong>minimum cost path</strong> to the goal. Unlike BFS which expands
+        by depth level, UCS expands the node with the <strong>lowest path cost g(n)</strong>
+        using a <strong>Priority Queue</strong>.
+      </p>
+
+      <div class="info-box">
+        <strong>Core Idea:</strong> Always expand the frontier node with the smallest
+        cumulative path cost g(n). UCS is the uninformed version of Dijkstra's algorithm.
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works">
+      <h2>How UCS Works</h2>
+      <ol>
+        <li>Insert the start node with cost g = 0 into a <strong>min-priority queue</strong>.</li>
+        <li>Remove the node with the <strong>lowest g(n)</strong> from the queue.</li>
+        <li>If it is the goal → return the solution.</li>
+        <li>Otherwise → expand it and add children with updated costs g(child) = g(parent) + cost(edge).</li>
+        <li>If a child is already in the frontier with higher cost → update its cost.</li>
+        <li>Repeat until goal is found or queue is empty.</li>
+      </ol>
+
+      <h3>Data Structure Used</h3>
+      <p><strong>Min-Priority Queue</strong> — ordered by cumulative path cost g(n).</p>
+
+      <h3>Key Formula</h3>
+      <pre>g(n) = total cost from start node to node n</pre>
+    </section>
+
+    <!-- Example -->
+    <section id="example">
+      <h2>Example</h2>
+      <pre>
+        A
+       / \
+      1   4
+     /     \
+    B       C
+     \     /
+      2   1
+       \ /
+        D (Goal)
+      </pre>
+
+      <table>
+        <thead>
+          <tr><th>Step</th><th>Expand</th><th>g(n)</th><th>Frontier (sorted)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>A</td><td>0</td><td>B(1), C(4)</td></tr>
+          <tr><td>2</td><td>B</td><td>1</td><td>C(4), D(3)</td></tr>
+          <tr><td>3</td><td>D</td><td>3</td><td>✓ Goal Found! Cost = 3</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Path found:</strong> A → B → D with total cost <strong>3</strong></p>
+      <p>Note: A → C → D would cost 4+1 = 5. UCS correctly finds the cheaper path.</p>
+    </section>
+
+    <!-- Properties -->
+    <section id="properties">
+      <h2>Properties of UCS</h2>
+
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Complete?</td><td style="color:var(--green)">✓ Yes*</td><td>Complete if every step cost ε > 0</td></tr>
+          <tr><td>Optimal?</td><td style="color:var(--green)">✓ Yes</td><td>Always finds minimum cost path</td></tr>
+          <tr><td>Time Complexity</td><td>O(b<sup>1+⌊C*/ε⌋</sup>)</td><td>C* = optimal cost, ε = min step cost</td></tr>
+          <tr><td>Space Complexity</td><td>O(b<sup>1+⌊C*/ε⌋</sup>)</td><td>All frontier nodes stored</td></tr>
+        </tbody>
+      </table>
+
+      <p>* Incomplete if step costs can be 0 or negative (infinite loops possible).</p>
+    </section>
+
+    <!-- UCS vs BFS -->
+    <section id="ucs-vs-bfs">
+      <h2>UCS vs BFS</h2>
+
+      <table>
+        <thead>
+          <tr><th>Property</th><th>BFS</th><th>UCS</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Data Structure</td><td>Queue (FIFO)</td><td>Min-Priority Queue</td></tr>
+          <tr><td>Expansion Order</td><td>By depth level</td><td>By cumulative cost g(n)</td></tr>
+          <tr><td>Optimal?</td><td>Only equal costs</td><td>Always (positive costs)</td></tr>
+          <tr><td>When equal costs?</td><td>Identical to UCS</td><td>Identical to BFS</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Key Insight:</strong> BFS is a special case of UCS where all edge costs = 1.
+        When costs are equal, UCS and BFS explore nodes in exactly the same order.
+      </div>
+    </section>
+
+    <!-- Condition for completeness -->
+    <section id="completeness">
+      <h2>Condition for Completeness</h2>
+      <p>UCS is complete only when <strong>every step cost ε > 0</strong>. If any step cost is 0 or negative:</p>
+      <ul>
+        <li>Zero cost edges → UCS may loop on zero-cost cycles forever</li>
+        <li>Negative costs → UCS cannot guarantee finding the optimal path</li>
+      </ul>
+      <p>For negative costs, use <strong>Bellman-Ford</strong> instead.</p>
+    </section>
+
+    <!-- Advantages & Disadvantages -->
+    <section id="pros-cons">
+      <h2>Advantages & Disadvantages</h2>
+
+      <h3>✅ Advantages</h3>
+      <ul>
+        <li><strong>Always optimal</strong> — finds minimum cost path (positive costs)</li>
+        <li>Complete when step costs are positive</li>
+        <li>Works correctly for <strong>weighted graphs</strong> unlike BFS</li>
+      </ul>
+
+      <h3>❌ Disadvantages</h3>
+      <ul>
+        <li>High memory — stores all frontier nodes like BFS</li>
+        <li>Slow — explores in all directions, not just toward the goal</li>
+        <li>No heuristic to guide search — use <strong>A*</strong> for guided optimal search</li>
+      </ul>
+    </section>
+
+    <!-- GATE Tips -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li>UCS uses a <strong>min-priority queue</strong> ordered by g(n).</li>
+        <li>UCS is <strong>complete and optimal</strong> when all step costs ε > 0.</li>
+        <li>BFS is a <strong>special case</strong> of UCS with all costs = 1.</li>
+        <li>UCS expands nodes in order of <strong>increasing path cost</strong>, not depth.</li>
+        <li>UCS is essentially <strong>Dijkstra's algorithm</strong> applied to AI search.</li>
+        <li>A* = UCS + heuristic h(n). When h(n) = 0, A* becomes UCS.</li>
+        <li>Time complexity notation: C* = optimal solution cost, ε = minimum step cost.</li>
+      </ul>
+    </section>
+
+    <!-- Practice Questions -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> What data structure does UCS use?</h4>
+      <ol type="A">
+        <li>Stack (LIFO)</li>
+        <li>Queue (FIFO)</li>
+        <li>Min-Priority Queue</li>
+        <li>Max-Priority Queue</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Min-Priority Queue</strong></p>
+        <p>UCS orders frontier nodes by cumulative path cost g(n) — lowest cost first.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> UCS is optimal because:</h4>
+      <ol type="A">
+        <li>It explores all nodes at each depth before going deeper</li>
+        <li>It always expands the node with the lowest cumulative cost g(n)</li>
+        <li>It uses a heuristic to guide the search</li>
+        <li>It avoids revisiting nodes</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B</strong></p>
+        <p>Expanding the minimum g(n) node first guarantees the first time we reach the goal, it is via the optimal path.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> When does UCS become equivalent to BFS?</h4>
+      <ol type="A">
+        <li>When the branching factor b = 1</li>
+        <li>When all step costs are equal</li>
+        <li>When the depth d is very large</li>
+        <li>When a heuristic is added</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — When all step costs are equal</strong></p>
+        <p>With equal costs, g(n) is proportional to depth — so UCS and BFS expand nodes in the same order.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q4</span> UCS may fail (not complete) when:</h4>
+      <ol type="A">
+        <li>The branching factor is too large</li>
+        <li>Step costs include zeros (zero-cost cycles possible)</li>
+        <li>The goal is at a very deep level</li>
+        <li>The graph is undirected</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Zero step costs</strong></p>
+        <p>Zero-cost cycles can cause UCS to loop indefinitely without making progress.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q5</span> What is the relationship between UCS and A*?</h4>
+      <ol type="A">
+        <li>A* is a special case of UCS with h(n) = 0</li>
+        <li>UCS is a special case of A* with h(n) = 0</li>
+        <li>They are completely different algorithms</li>
+        <li>UCS is faster than A* always</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — UCS is A* with h(n) = 0</strong></p>
+        <p>A* uses f(n) = g(n) + h(n). When h(n) = 0, f(n) = g(n) — which is exactly UCS.</p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="search_uninformed_ids.html">← IDDFS</a>
+      <a class="nav-btn next" href="search_bidirectional.html"> Bidirectional →</a>
+    </div>
+
   </article>
-  <script src="../theme.js"></script>
+
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#how-it-works">How UCS Works</a></li>
+      <li><a href="#example">Example</a></li>
+      <li><a href="#properties">Properties</a></li>
+      <li><a href="#ucs-vs-bfs">UCS vs BFS</a></li>
+      <li><a href="#completeness">Completeness</a></li>
+      <li><a href="#pros-cons">Pros & Cons</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>
