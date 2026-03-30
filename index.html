@@ -5,426 +5,478 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GATE DA — AI Notes</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Roadmap layout overrides for index page ── */
+
+    .site-header {
+      padding: 24px 28px 20px;
+    }
+
+    /* remove dot background, keep it plain */
+    body.index-page {
+      background-image: none;
+    }
+
+    /* ── Roadmap wrapper ── */
+    .roadmap-wrap {
+      max-width: 680px;
+      margin: 36px auto 80px;
+      padding: 0 24px;
+      position: relative;
+    }
+
+    .roadmap-label {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      padding-left: 48px;
+    }
+
+    /* vertical line */
+    .roadmap-line {
+      position: absolute;
+      left: 42px;
+      top: 52px;
+      bottom: 40px;
+      width: 1px;
+      background: var(--border-md);
+    }
+
+    /* ── Section ── */
+    .rm-section {
+      position: relative;
+      margin-bottom: 44px;
+    }
+
+    /* node circle on the line */
+    .rm-node {
+      position: absolute;
+      left: 0;
+      top: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--bg-body);
+      border: 2px solid var(--amber);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--amber);
+      z-index: 1;
+    }
+
+    /* section content indented past the line */
+    .rm-content {
+      padding-left: 48px;
+    }
+
+    /* section title link */
+    .rm-section-title {
+      font-family: var(--font-ui);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .rm-section-title:hover {
+      color: var(--amber);
+    }
+
+    /* ── Sub-group inside a section ── */
+    .rm-group {
+      margin-bottom: 16px;
+    }
+
+    .rm-group-label {
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--teal);
+      margin-bottom: 6px;
+    }
+
+    /* ── Topic row ── */
+    .rm-topic {
+      display: block;
+      text-decoration: none;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rm-topic:last-of-type {
+      border-bottom: none;
+    }
+
+    .rm-topic-name {
+      font-family: var(--font-ui);
+      font-size: 0.93rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .rm-topic-name::before {
+      content: "→";
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .rm-topic:hover .rm-topic-name {
+      color: var(--amber);
+    }
+
+    .rm-topic:hover .rm-topic-name::before {
+      color: var(--amber);
+    }
+
+    /* subtopic keyword chips */
+    .rm-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding-left: 20px;
+      margin-top: 5px;
+    }
+
+    .rm-chip {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 7px;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── PYQ row ── */
+    .rm-pyq {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      margin-top: 10px;
+      padding: 6px 0;
+      border-top: 1px dashed var(--border);
+    }
+
+    .rm-pyq-text {
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--amber);
+    }
+
+    .rm-pyq-arrow {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    .rm-pyq:hover .rm-pyq-text {
+      color: var(--text-primary);
+    }
+
+    .rm-pyq:hover .rm-pyq-arrow {
+      color: var(--amber);
+    }
+
+    /* ── mobile ── */
+    @media (max-width: 600px) {
+      .roadmap-wrap {
+        padding: 0 18px;
+        margin-top: 28px;
+      }
+
+      .roadmap-line {
+        left: 38px;
+        top: 48px;
+      }
+
+      .rm-node {
+        width: 16px;
+        height: 16px;
+        font-size: 0.55rem;
+      }
+
+      .rm-content {
+        padding-left: 40px;
+      }
+
+      .roadmap-label {
+        padding-left: 40px;
+      }
+
+      .rm-section-title {
+        font-size: 0.95rem;
+      }
+
+      .rm-topic-name {
+        font-size: 0.88rem;
+      }
+
+      .rm-chips {
+        gap: 5px;
+      }
+
+      .rm-chip {
+        font-size: 0.64rem;
+        padding: 2px 6px;
+      }
+    }
+  </style>
 </head>
 <body class="index-page">
 
-<!-- ── Header ─────────────────────────────────────────────── -->
+<!-- ── Header ── -->
 <header class="site-header">
   <div class="header-left">
     <h1>📘 GATE DA — <em>Artificial Intelligence</em></h1>
-    <p>GATE DA AI · Master Syllabus</p>
+    <p>GATE DA AI · Syllabus</p>
   </div>
-  <!-- <div class="header-right">
-    <div class="streak-card">
-      <div class="streak-fire">🔥</div>
-      <div class="streak-info">
-        <div class="streak-num" id="streakNum">0</div>
-        <div class="streak-label">Day Streak</div>
-        <div class="streak-dots" id="streakDots"></div>
-      </div>
-    </div> -->
+  <div class="header-right">
     <div class="controls">
       <button class="ctrl-btn" onclick="toggleTheme()">☀ Light</button>
-      <!-- <button class="ctrl-btn" onclick="resetProgress()">↺ Reset</button> -->
     </div>
   </div>
 </header>
 
-<!-- ── Stats ──────────────────────────────────────────────── -->
-<div class="stats-row">
-  <div class="stat-card amber">
-    <div class="stat-val" id="statDone">0</div>
-    <div class="stat-label">Topics Done</div>
-  </div>
-  <div class="stat-card teal">
-    <div class="stat-val" id="statTotal">0</div>
-    <div class="stat-label">Total Topics</div>
-  </div>
-  <div class="stat-card green">
-    <div class="stat-val" id="statPct">0%</div>
-    <div class="stat-label">Complete</div>
-  </div>
-</div>
+<!-- ── Roadmap ── -->
+<div class="roadmap-wrap">
+  <div class="roadmap-line"></div>
+  <div class="roadmap-label">Syllabus Overview</div>
 
-<!-- ── Overall Progress ───────────────────────────────────── -->
-<div class="overall-progress">
-  <div class="prog-header">
-    <span>Syllabus Progress</span>
-    <span id="progLabel">0 / 0 topics</span>
-  </div>
-  <div class="prog-track-lg">
-    <div class="prog-fill-lg" id="progFill" style="width:0%"></div>
-  </div>
-</div>
+  <!-- 01 · Search -->
+  <div class="rm-section">
+    <div class="rm-node">01</div>
+    <div class="rm-content">
+      <a class="rm-section-title" href="Search/search_ai.html">Search</a>
 
-<!-- ── Today Banner ─────────────────────────────────────────
-<div class="today-banner">
-  <div class="today-inner" id="todayBanner">
-    <div class="today-icon">📅</div>
-    <div class="today-text">
-      <strong>Start today's session</strong>
-      <span id="todayMsg">Check off topics as you study them — it builds your streak!</span>
-    </div>
-  </div>
-</div> -->
-
-<!-- ── Syllabus ───────────────────────────────────────────── -->
-<div class="syllabus-wrap">
-  <div class="section-label">Syllabus Topics</div>
-
-  <!-- ── 1. Search ──────────────────────────────────────── -->
-  <div class="topic-group open" id="g1">
-    <div class="group-header">
-      <span class="group-num">01</span>
-      <a class="group-title-link" href="Search/search_ai.html">Search</a>
-      <div class="group-prog">
-        <div class="group-prog-fill" id="g1-prog" style="width:0%"></div>
+      <div class="rm-group">
+        <div class="rm-group-label">a) Uninformed Search</div>
+        <a class="rm-topic" href="Search/search_uninformed.html">
+          <div class="rm-topic-name">Uninformed Search</div>
+          <div class="rm-chips">
+            <span class="rm-chip">BFS</span>
+            <span class="rm-chip">DFS</span>
+            <span class="rm-chip">Depth-Limited</span>
+            <span class="rm-chip">Iterative Deepening</span>
+            <span class="rm-chip">UCS</span>
+            <span class="rm-chip">Bidirectional</span>
+          </div>
+        </a>
       </div>
-      <span class="group-meta" id="g1-meta">0 / 3</span>
-      <button class="group-chevron-btn" onclick="toggleGroup('g1')">▶</button>
-    </div>
-    <div class="subtopics">
 
-      <div class="sub-label">a) Uninformed Search</div>
-      <div class="topic-row" id="row-s1">
-        <input type="checkbox" class="topic-check" id="chk-s1" onchange="markTopic('s1',this)">
-        <a class="topic-link" href="Search/search_uninformed.html">Uninformed Search</a>
-        <span class="last-tag" id="tag-s1" style="display:none"></span>
+      <div class="rm-group">
+        <div class="rm-group-label">b) Informed Search</div>
+        <a class="rm-topic" href="Search/search_informed.html">
+          <div class="rm-topic-name">Informed Search</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Heuristics</span>
+            <span class="rm-chip">Greedy Best-First</span>
+            <span class="rm-chip">A*</span>
+            <span class="rm-chip">Admissibility</span>
+            <span class="rm-chip">Consistency</span>
+          </div>
+        </a>
       </div>
-      <div class="leaf-row">BFS · DFS · Depth-Limited · Iterative Deepening · UCS · Bidirectional</div>
 
-      <div class="sub-label">b) Informed Search</div>
-      <div class="topic-row" id="row-s2">
-        <input type="checkbox" class="topic-check" id="chk-s2" onchange="markTopic('s2',this)">
-        <a class="topic-link" href="Search/search_informed.html">Informed Search</a>
-        <span class="last-tag" id="tag-s2" style="display:none"></span>
+      <div class="rm-group">
+        <div class="rm-group-label">c) Adversarial Search</div>
+        <a class="rm-topic" href="Search/search_adversarial.html">
+          <div class="rm-topic-name">Adversarial Search</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Minimax</span>
+            <span class="rm-chip">Alpha-Beta Pruning</span>
+            <span class="rm-chip">Evaluation Functions</span>
+          </div>
+        </a>
       </div>
-      <div class="leaf-row">Heuristics · Greedy Best-First · A* · Admissibility · Consistency</div>
 
-      <div class="sub-label">c) Adversarial Search</div>
-      <div class="topic-row" id="row-s3">
-        <input type="checkbox" class="topic-check" id="chk-s3" onchange="markTopic('s3',this)">
-        <a class="topic-link" href="Search/search_adversarial.html">Adversarial Search</a>
-        <span class="last-tag" id="tag-s3" style="display:none"></span>
-      </div>
-      <div class="leaf-row">Minimax · Alpha-Beta Pruning · Evaluation Functions</div>
-
-      <div class="pyq-divider"></div>
-      <a class="pyq-row" href="Search/pyq_search.html">
-        <span>📝 PYQ — Search</span>
-        <span class="pyq-arrow">→</span>
+      <a class="rm-pyq" href="Search/pyq_search.html">
+        <span class="rm-pyq-text">📝 PYQ — Search</span>
+        <span class="rm-pyq-arrow">→</span>
       </a>
-
     </div>
   </div>
 
-  <!-- ── 2. Logic ───────────────────────────────────────── -->
-  <div class="topic-group" id="g2">
-    <div class="group-header">
-      <span class="group-num">02</span>
-      <a class="group-title-link" href="Logic/logic.html">Logic</a>
-      <div class="group-prog">
-        <div class="group-prog-fill" id="g2-prog" style="width:0%"></div>
-      </div>
-      <span class="group-meta" id="g2-meta">0 / 2</span>
-      <button class="group-chevron-btn" onclick="toggleGroup('g2')">▶</button>
-    </div>
-    <div class="subtopics">
+  <!-- 02 · Logic -->
+  <div class="rm-section">
+    <div class="rm-node">02</div>
+    <div class="rm-content">
+      <a class="rm-section-title" href="Logic/logic.html">Logic</a>
 
-      <div class="sub-label">a) Propositional Logic</div>
-      <div class="topic-row" id="row-l1">
-        <input type="checkbox" class="topic-check" id="chk-l1" onchange="markTopic('l1',this)">
-        <a class="topic-link" href="Logic/propositional_logic.html">Propositional Logic</a>
-        <span class="last-tag" id="tag-l1" style="display:none"></span>
+      <div class="rm-group">
+        <div class="rm-group-label">a) Propositional Logic</div>
+        <a class="rm-topic" href="Logic/propositional_logic.html">
+          <div class="rm-topic-name">Propositional Logic</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Syntax</span>
+            <span class="rm-chip">Semantics</span>
+            <span class="rm-chip">Truth Tables</span>
+            <span class="rm-chip">Logical Equivalence</span>
+            <span class="rm-chip">Inference Rules</span>
+          </div>
+        </a>
       </div>
-      <div class="leaf-row">Syntax · Semantics · Truth Tables · Logical Equivalence · Inference Rules</div>
 
-      <div class="sub-label">b) Predicate Logic</div>
-      <div class="topic-row" id="row-l2">
-        <input type="checkbox" class="topic-check" id="chk-l2" onchange="markTopic('l2',this)">
-        <a class="topic-link" href="Logic/predicate_logic.html">Predicate Logic</a>
-        <span class="last-tag" id="tag-l2" style="display:none"></span>
+      <div class="rm-group">
+        <div class="rm-group-label">b) Predicate Logic</div>
+        <a class="rm-topic" href="Logic/predicate_logic.html">
+          <div class="rm-topic-name">Predicate Logic</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Predicates</span>
+            <span class="rm-chip">Quantifiers (∀, ∃)</span>
+            <span class="rm-chip">Unification</span>
+            <span class="rm-chip">Interpretation</span>
+          </div>
+        </a>
       </div>
-      <div class="leaf-row">Predicates · Quantifiers (∀, ∃) · Unification · Interpretation</div>
 
-      <div class="pyq-divider"></div>
-      <a class="pyq-row" href="Logic/pyq_logic.html">
-        <span>📝 PYQ — Logic</span>
-        <span class="pyq-arrow">→</span>
+      <a class="rm-pyq" href="Logic/pyq_logic.html">
+        <span class="rm-pyq-text">📝 PYQ — Logic</span>
+        <span class="rm-pyq-arrow">→</span>
       </a>
-
     </div>
   </div>
 
-  <!-- ── 3. Reasoning ───────────────────────────────────── -->
-  <div class="topic-group" id="g3">
-    <div class="group-header">
-      <span class="group-num">03</span>
-      <a class="group-title-link" href="Reasoning/reasoning.html">Reasoning</a>
-      <div class="group-prog">
-        <div class="group-prog-fill" id="g3-prog" style="width:0%"></div>
-      </div>
-      <span class="group-meta" id="g3-meta">0 / 1</span>
-      <button class="group-chevron-btn" onclick="toggleGroup('g3')">▶</button>
-    </div>
-    <div class="subtopics">
+  <!-- 03 · Reasoning -->
+  <div class="rm-section">
+    <div class="rm-node">03</div>
+    <div class="rm-content">
+      <a class="rm-section-title" href="Reasoning/reasoning.html">Reasoning</a>
 
-      <div class="sub-label">a) Logical Reasoning</div>
-      <div class="topic-row" id="row-r1">
-        <input type="checkbox" class="topic-check" id="chk-r1" onchange="markTopic('r1',this)">
-        <a class="topic-link" href="Reasoning/logical_reasoning.html">Logical Reasoning</a>
-        <span class="last-tag" id="tag-r1" style="display:none"></span>
+      <div class="rm-group">
+        <div class="rm-group-label">a) Logical Reasoning</div>
+        <a class="rm-topic" href="Reasoning/logical_reasoning.html">
+          <div class="rm-topic-name">Logical Reasoning</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Inference Rules</span>
+            <span class="rm-chip">Resolution</span>
+            <span class="rm-chip">Forward Chaining</span>
+            <span class="rm-chip">Backward Chaining</span>
+          </div>
+        </a>
       </div>
-      <div class="leaf-row">Inference Rules · Resolution · Forward Chaining · Backward Chaining</div>
 
-      <div class="pyq-divider"></div>
-      <a class="pyq-row" href="Reasoning/pyq_reasoning.html">
-        <span>📝 PYQ — Reasoning</span>
-        <span class="pyq-arrow">→</span>
+      <a class="rm-pyq" href="Reasoning/pyq_reasoning.html">
+        <span class="rm-pyq-text">📝 PYQ — Reasoning</span>
+        <span class="rm-pyq-arrow">→</span>
       </a>
-
     </div>
   </div>
 
-  <!-- ── 4. Reasoning Under Uncertainty ────────────────── -->
-  <div class="topic-group" id="g4">
-    <div class="group-header">
-      <span class="group-num">04</span>
-      <a class="group-title-link" href="Reasoning_Under_Uncertainty/ruuncertainty.html">Reasoning Under Uncertainty</a>
-      <div class="group-prog">
-        <div class="group-prog-fill" id="g4-prog" style="width:0%"></div>
-      </div>
-      <span class="group-meta" id="g4-meta">0 / 5</span>
-      <button class="group-chevron-btn" onclick="toggleGroup('g4')">▶</button>
-    </div>
-    <div class="subtopics">
+  <!-- 04 · Reasoning Under Uncertainty -->
+  <div class="rm-section">
+    <div class="rm-node">04</div>
+    <div class="rm-content">
+      <a class="rm-section-title" href="Reasoning_Under_Uncertainty/ruuncertainty.html">Reasoning Under Uncertainty</a>
 
-      <div class="sub-label">a) Probability Basics</div>
-      <div class="topic-row" id="row-u1">
-        <input type="checkbox" class="topic-check" id="chk-u1" onchange="markTopic('u1',this)">
-        <a class="topic-link" href="Reasoning_Under_Uncertainty/prob_basics.html">Probability Basics</a>
-        <span class="last-tag" id="tag-u1" style="display:none"></span>
+      <div class="rm-group">
+        <div class="rm-group-label">a) Probability Basics</div>
+        <a class="rm-topic" href="Reasoning_Under_Uncertainty/prob_basics.html">
+          <div class="rm-topic-name">Probability Basics</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Random Variables</span>
+            <span class="rm-chip">Conditional Probability</span>
+            <span class="rm-chip">Bayes' Theorem</span>
+          </div>
+        </a>
       </div>
-      <div class="leaf-row">Random Variables · Conditional Probability · Bayes' Theorem</div>
 
-      <div class="sub-label">b) Conditional Independence</div>
-      <div class="topic-row" id="row-u2">
-        <input type="checkbox" class="topic-check" id="chk-u2" onchange="markTopic('u2',this)">
-        <a class="topic-link" href="Reasoning_Under_Uncertainty/cond_indep.html">Conditional Independence</a>
-        <span class="last-tag" id="tag-u2" style="display:none"></span>
+      <div class="rm-group">
+        <div class="rm-group-label">b) Conditional Independence</div>
+        <a class="rm-topic" href="Reasoning_Under_Uncertainty/cond_indep.html">
+          <div class="rm-topic-name">Conditional Independence</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Definition</span>
+            <span class="rm-chip">Graphical Representation</span>
+          </div>
+        </a>
       </div>
-      <div class="leaf-row">Definition · Graphical Representation</div>
 
-      <div class="sub-label">c) Representation</div>
-      <div class="topic-row" id="row-u3">
-        <input type="checkbox" class="topic-check" id="chk-u3" onchange="markTopic('u3',this)">
-        <a class="topic-link" href="Reasoning_Under_Uncertainty/represent.html">Representation</a>
-        <span class="last-tag" id="tag-u3" style="display:none"></span>
+      <div class="rm-group">
+        <div class="rm-group-label">c) Representation</div>
+        <a class="rm-topic" href="Reasoning_Under_Uncertainty/represent.html">
+          <div class="rm-topic-name">Representation</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Bayesian Networks</span>
+            <span class="rm-chip">CPTs</span>
+          </div>
+        </a>
       </div>
-      <div class="leaf-row">Bayesian Networks · Conditional Probability Tables (CPTs)</div>
 
-      <div class="sub-label">d) Exact Inference</div>
-      <div class="topic-row" id="row-u4">
-        <input type="checkbox" class="topic-check" id="chk-u4" onchange="markTopic('u4',this)">
-        <a class="topic-link" href="Reasoning_Under_Uncertainty/exact_infer.html">Exact Inference</a>
-        <span class="last-tag" id="tag-u4" style="display:none"></span>
+      <div class="rm-group">
+        <div class="rm-group-label">d) Exact Inference</div>
+        <a class="rm-topic" href="Reasoning_Under_Uncertainty/exact_infer.html">
+          <div class="rm-topic-name">Exact Inference</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Variable Elimination</span>
+          </div>
+        </a>
       </div>
-      <div class="leaf-row">Variable Elimination Algorithm</div>
 
-      <div class="sub-label">e) Approximate Inference</div>
-      <div class="topic-row" id="row-u5">
-        <input type="checkbox" class="topic-check" id="chk-u5" onchange="markTopic('u5',this)">
-        <a class="topic-link" href="Reasoning_Under_Uncertainty/approx_infer.html">Approximate Inference</a>
-        <span class="last-tag" id="tag-u5" style="display:none"></span>
+      <div class="rm-group">
+        <div class="rm-group-label">e) Approximate Inference</div>
+        <a class="rm-topic" href="Reasoning_Under_Uncertainty/approx_infer.html">
+          <div class="rm-topic-name">Approximate Inference</div>
+          <div class="rm-chips">
+            <span class="rm-chip">Prior Sampling</span>
+            <span class="rm-chip">Rejection Sampling</span>
+            <span class="rm-chip">Likelihood Weighting</span>
+            <span class="rm-chip">Gibbs Sampling</span>
+          </div>
+        </a>
       </div>
-      <div class="leaf-row">Prior Sampling · Rejection Sampling · Likelihood Weighting · Gibbs Sampling</div>
 
-      <div class="pyq-divider"></div>
-      <a class="pyq-row" href="Reasoning_Under_Uncertainty/pyq_uncertainty.html">
-        <span>📝 PYQ — Reasoning Under Uncertainty</span>
-        <span class="pyq-arrow">→</span>
+      <a class="rm-pyq" href="Reasoning_Under_Uncertainty/pyq_uncertainty.html">
+        <span class="rm-pyq-text">📝 PYQ — Reasoning Under Uncertainty</span>
+        <span class="rm-pyq-arrow">→</span>
       </a>
-
     </div>
   </div>
 
 </div>
 
-<!-- ── Footer ─────────────────────────────────────────────── -->
+<!-- ── Footer ── -->
 <footer class="site-footer">
   GATE DA · AI Notes &nbsp;·&nbsp; Built with 💛 for consistent daily study
 </footer>
 
 <script>
-const GROUPS = {
-  g1: { topics: ['s1','s2','s3'] },
-  g2: { topics: ['l1','l2'] },
-  g3: { topics: ['r1'] },
-  g4: { topics: ['u1','u2','u3','u4','u5'] }
-};
-
-const ALL_TOPICS = Object.values(GROUPS).flatMap(g => g.topics);
-
-function load() {
-  try { return JSON.parse(localStorage.getItem('gate_ai') || '{}'); } catch { return {}; }
-}
-
-function save(d) {
-  try { localStorage.setItem('gate_ai', JSON.stringify(d)); } catch {}
-}
-
-function todayStr() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function calcStreak(data) {
-  const dates = (data.studyDays || []).slice().sort();
-  if (!dates.length) return 0;
-  let streak = 0;
-  let cur = new Date(); cur.setHours(0,0,0,0);
-  for (let i = dates.length - 1; i >= 0; i--) {
-    const d = new Date(dates[i] + 'T00:00:00');
-    const diff = Math.round((cur - d) / 86400000);
-    if (diff === 0 || diff === 1) { streak++; cur = d; }
-    else break;
+  function toggleTheme() {
+    document.body.classList.toggle('light');
+    let stored = {};
+    try { stored = JSON.parse(localStorage.getItem('gate_ai') || '{}'); } catch {}
+    stored.theme = document.body.classList.contains('light') ? 'light' : 'dark';
+    try { localStorage.setItem('gate_ai', JSON.stringify(stored)); } catch {}
+    document.querySelectorAll('.ctrl-btn')[0].textContent =
+      document.body.classList.contains('light') ? '🌙 Dark' : '☀ Light';
   }
-  return streak;
-}
 
-function markStudiedToday(data) {
-  const today = todayStr();
-  if (!data.studyDays) data.studyDays = [];
-  if (!data.studyDays.includes(today)) data.studyDays.push(today);
-  return data;
-}
-
-function render() {
-  const data = load();
-  const done = data.done || [];
-  const total = ALL_TOPICS.length;
-  const doneCount = done.length;
-  const pct = total ? Math.round(doneCount / total * 100) : 0;
-
-  document.getElementById('statDone').textContent  = doneCount;
-  document.getElementById('statTotal').textContent = total;
-  document.getElementById('statPct').textContent   = pct + '%';
-  document.getElementById('progLabel').textContent = `${doneCount} / ${total} topics`;
-  document.getElementById('progFill').style.width  = pct + '%';
-
-  ALL_TOPICS.forEach(id => {
-    const chk = document.getElementById('chk-' + id);
-    const row = document.getElementById('row-' + id);
-    const tag = document.getElementById('tag-' + id);
-    if (!chk) return;
-    const isDone = done.includes(id);
-    chk.checked = isDone;
-    isDone ? row.classList.add('completed') : row.classList.remove('completed');
-    if (isDone && data.dates && data.dates[id]) {
-      tag.textContent = data.dates[id];
-      tag.style.display = 'inline';
-    } else {
-      tag.style.display = 'none';
+  window.addEventListener('DOMContentLoaded', () => {
+    let stored = {};
+    try { stored = JSON.parse(localStorage.getItem('gate_ai') || '{}'); } catch {}
+    if (stored.theme === 'light') {
+      document.body.classList.add('light');
+      document.querySelectorAll('.ctrl-btn')[0].textContent = '🌙 Dark';
     }
   });
-
-  Object.entries(GROUPS).forEach(([gid, g]) => {
-    const gDone = g.topics.filter(t => done.includes(t)).length;
-    const gPct  = Math.round(gDone / g.topics.length * 100);
-    const bar  = document.getElementById(gid + '-prog');
-    const meta = document.getElementById(gid + '-meta');
-    if (bar)  bar.style.width  = gPct + '%';
-    if (meta) meta.textContent = `${gDone} / ${g.topics.length}`;
-  });
-
-  const streak = calcStreak(data);
-  document.getElementById('streakNum').textContent = streak;
-
-  const dots = document.getElementById('streakDots');
-  dots.innerHTML = '';
-  const today = new Date(); today.setHours(0,0,0,0);
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(today); d.setDate(d.getDate() - i);
-    const ds = d.toISOString().slice(0, 10);
-    const sp = document.createElement('span');
-    if ((data.studyDays || []).includes(ds)) sp.classList.add('done');
-    dots.appendChild(sp);
-  }
-
-  const banner = document.getElementById('todayBanner');
-  const studiedToday = (data.studyDays || []).includes(todayStr());
-  if (studiedToday) {
-    document.getElementById('todayMsg').textContent =
-      `Great work! You've studied ${doneCount} topic${doneCount !== 1 ? 's' : ''} today. Keep going!`;
-    banner.style.borderColor = 'rgba(74,222,128,0.35)';
-    banner.style.background  = 'rgba(74,222,128,0.07)';
-    document.querySelector('.today-icon').textContent = '✅';
-  }
-
-  if (data.theme === 'light') document.body.classList.add('light');
-}
-
-function markTopic(id, chkEl) {
-  let data = load();
-  if (!data.done)  data.done  = [];
-  if (!data.dates) data.dates = {};
-
-  if (chkEl.checked) {
-    if (!data.done.includes(id)) data.done.push(id);
-    data.dates[id] = todayStr();
-    data = markStudiedToday(data);
-  } else {
-    data.done = data.done.filter(t => t !== id);
-    delete data.dates[id];
-  }
-
-  save(data);
-  render();
-
-  if (chkEl.checked) {
-    const row = chkEl.closest('.topic-row');
-    row.style.background = 'rgba(245,166,35,0.08)';
-    setTimeout(() => row.style.background = '', 600);
-  }
-}
-
-function toggleGroup(id) {
-  document.getElementById(id).classList.toggle('open');
-}
-
-function toggleTheme() {
-  document.body.classList.toggle('light');
-  let data = load();
-  data.theme = document.body.classList.contains('light') ? 'light' : 'dark';
-  save(data);
-  document.querySelectorAll('.ctrl-btn')[0].textContent =
-    document.body.classList.contains('light') ? '🌙 Dark' : '☀ Light';
-}
-
-function resetProgress() {
-  if (!confirm('Reset all progress and streak? This cannot be undone.')) return;
-  localStorage.removeItem('gate_ai');
-  render();
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  const data = load();
-  const done = data.done || [];
-
-  let anyOpen = false;
-  Object.entries(GROUPS).forEach(([gid, g]) => {
-    if (g.topics.some(t => done.includes(t))) {
-      document.getElementById(gid).classList.add('open');
-      anyOpen = true;
-    }
-  });
-  if (!anyOpen) document.getElementById('g1').classList.add('open');
-
-  render();
-
-  if (data.theme === 'light') {
-    document.querySelectorAll('.ctrl-btn')[0].textContent = '🌙 Dark';
-  }
-});
 </script>
 
 </body>
