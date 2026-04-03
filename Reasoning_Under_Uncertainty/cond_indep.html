@@ -1,17 +1,565 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Conditional Independence</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conditional Independence — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<!-- ── Top Nav ────────────────────────────────────── -->
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="ruuncertainty.html">Reasoning Under Uncertainty</a>
+    <span>›</span>
+    <span>Conditional Independence</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Conditional Independence</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <a href="ruuncertainty.html">← Back to Reasoning Under Uncertainty Topic</a>
+
+    <h1>Conditional Independence</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Reasoning Under Uncertainty</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~12 min read</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
+      <p>
+        <strong>Conditional Independence</strong> is one of the most important
+        concepts in probabilistic reasoning. It allows AI systems to represent
+        complex probability distributions <strong>compactly</strong> by exploiting
+        the independence structure between variables. Without it, reasoning in
+        large domains would be computationally impossible.
+      </p>
+
+      <div class="info-box">
+        <strong>Why it matters:</strong> For n binary random variables, a full joint
+        probability table needs 2<sup>n</sup> entries. With n = 30, that is over
+        1 billion entries. Conditional independence reduces this to a manageable size
+        — it is the key that makes Bayesian Networks practical.
+      </div>
+    </section>
+
+    <!-- ── Marginal Independence ──────────────────── -->
+    <section id="marginal-independence">
+      <h2>1. Marginal Independence (Quick Recap)</h2>
+      <p>
+        Two variables A and B are <strong>marginally independent</strong> if knowing
+        the value of one gives no information about the other.
+      </p>
+
+      <code class="formula-block">A ⊥ B &nbsp;&nbsp; ⟺ &nbsp;&nbsp; P(A|B) = P(A)</code>
+      <code class="formula-block">Equivalently: P(A, B) = P(A) × P(B)</code>
+
+      <p><strong>Example:</strong> Flipping two fair coins — the result of coin 1
+      does not affect coin 2.</p>
+      <pre>
+  P(H₁ | H₂) = P(H₁) = 0.5
+  P(H₁, H₂) = 0.5 × 0.5 = 0.25 ✓
+      </pre>
+
+      <div class="info-box">
+        <strong>Problem with Marginal Independence:</strong> In the real world, most
+        variables are NOT marginally independent — they are connected through other
+        variables. This is where <strong>conditional independence</strong> is needed.
+      </div>
+    </section>
+
+    <!-- ── Conditional Independence ──────────────── -->
+    <section id="conditional-independence">
+      <h2>2. Conditional Independence — Definition</h2>
+      <p>
+        Variables A and B are <strong>conditionally independent given C</strong>
+        if, once we know the value of C, knowing A gives no additional information
+        about B (and vice versa).
+      </p>
+
+      <code class="formula-block amber">A ⊥ B | C &nbsp;&nbsp; ⟺ &nbsp;&nbsp; P(A | B, C) = P(A | C)</code>
+
+      <p>Equivalently:</p>
+      <code class="formula-block">P(A, B | C) = P(A | C) × P(B | C)</code>
+
+      <h3>In Plain English</h3>
+      <p>
+        Once C is known, A and B become independent of each other.
+        C <strong>"explains away"</strong> the dependency between A and B.
+      </p>
+
+      <h3>Classic Example — Weather, Sprinkler, Wet Grass</h3>
+      <pre>
+  Variables:
+  ├── R = Rain
+  ├── S = Sprinkler
+  └── W = Wet Grass
+
+  Without knowing R:
+  S and W are NOT independent — both affect wet grass.
+  Knowing S is ON makes W more likely.
+
+  Given R = True (we know it's raining):
+  S and W ARE conditionally independent.
+  ─────────────────────────────────────
+  P(W | S, R) = P(W | R)
+
+  Reason: Once we know it's raining, knowing the sprinkler
+  status gives no extra information about wet grass — rain
+  already explains why the grass is wet.
+      </pre>
+
+      <div class="info-box">
+        <strong>"Explaining Away":</strong> If we observe that the grass is wet (W=True)
+        and we then learn it is raining (R=True), this <em>explains away</em> the
+        observation — we no longer need the sprinkler to explain the wet grass.
+        So P(S=ON | W=True, R=True) &lt; P(S=ON | W=True).
+        This is called the <strong>explaining away</strong> or <strong>intercausal reasoning</strong> effect.
+      </div>
+    </section>
+
+    <!-- ── Marginal vs Conditional ────────────────── -->
+    <section id="comparison">
+      <h2>3. Marginal vs Conditional Independence</h2>
+
+      <table>
+        <thead>
+          <tr><th></th><th>Marginal Independence</th><th>Conditional Independence</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Definition</strong></td>
+            <td>A ⊥ B</td>
+            <td>A ⊥ B | C</td>
+          </tr>
+          <tr>
+            <td><strong>Meaning</strong></td>
+            <td>A and B are always independent</td>
+            <td>A and B are independent once C is known</td>
+          </tr>
+          <tr>
+            <td><strong>Formula</strong></td>
+            <td>P(A, B) = P(A) × P(B)</td>
+            <td>P(A, B | C) = P(A | C) × P(B | C)</td>
+          </tr>
+          <tr>
+            <td><strong>Implies the other?</strong></td>
+            <td>✗ Not necessarily</td>
+            <td>✗ Not necessarily</td>
+          </tr>
+          <tr>
+            <td><strong>Common in practice?</strong></td>
+            <td>Rare — most variables interact</td>
+            <td>Very common — most interactions go through shared causes</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Important:</strong> Marginal independence does NOT imply conditional
+        independence, and conditional independence does NOT imply marginal independence.
+        They are separate properties.
+      </div>
+
+      <h3>Counter-Example</h3>
+      <pre>
+  Coin flips: C1, C2 (fair, independent coins)
+  Let S = C1 + C2 (sum of outcomes, 0 or 1 or 2)
+
+  C1 and C2 are marginally independent: P(C1,C2) = P(C1)×P(C2)
+
+  But given S = 1:
+  If C1 = 1, then C2 must = 0 (since sum = 1)
+  → C1 and C2 are NOT conditionally independent given S.
+
+  Marginal independence ⟹ Conditional independence is FALSE.
+      </pre>
+    </section>
+
+    <!-- ── Why it matters ─────────────────────────── -->
+    <section id="why-it-matters">
+      <h2>4. Why Conditional Independence Matters</h2>
+
+      <h3>4.1 Reducing Complexity</h3>
+      <p>
+        The full joint distribution for n binary variables requires
+        <strong>2<sup>n</sup> − 1</strong> numbers. Conditional independence
+        lets us factor this into smaller, manageable pieces.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>n variables</th><th>Full joint table</th><th>With CI structure</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>5</td><td>31 numbers</td><td>~10 numbers</td></tr>
+          <tr><td>10</td><td>1,023 numbers</td><td>~30 numbers</td></tr>
+          <tr><td>30</td><td>~1 billion numbers</td><td>~100 numbers</td></tr>
+        </tbody>
+      </table>
+
+      <h3>4.2 Factoring the Joint Distribution</h3>
+      <p>
+        Using conditional independence, the full joint distribution can be
+        <strong>factored</strong> into a product of simpler conditional distributions.
+      </p>
+
+      <code class="formula-block">P(X₁, X₂, ..., Xₙ) = Π P(Xᵢ | Parents(Xᵢ))</code>
+
+      <p>
+        Each variable only depends on its <strong>parent variables</strong> — not
+        on all other variables. This is exactly what a <strong>Bayesian Network</strong>
+        encodes.
+      </p>
+
+      <h3>Example — Naive Bayes Classifier</h3>
+      <p>
+        The <strong>Naive Bayes</strong> classifier assumes all features F₁, F₂, ..., Fₙ
+        are <strong>conditionally independent given the class C</strong>:
+      </p>
+
+      <code class="formula-block amber">P(F₁, F₂, ..., Fₙ | C) = Π P(Fᵢ | C)</code>
+
+      <p>
+        This "naive" assumption dramatically reduces the number of parameters needed.
+        Despite being an approximation, Naive Bayes works very well in practice
+        (spam filters, text classification).
+      </p>
+
+      <pre>
+  Spam classification:
+  Features: word1, word2, ..., word1000
+
+  Without CI: 2^1000 entries in P(words | spam) — impossible!
+
+  With Naive Bayes (CI assumption):
+  P(words | spam) = P(w1|spam) × P(w2|spam) × ... × P(w1000|spam)
+  → Only 1000 numbers needed! ✓
+      </pre>
+    </section>
+
+    <!-- ── Graphical Representation ───────────────── -->
+    <section id="graphical">
+      <h2>5. Graphical Representation</h2>
+      <p>
+        Conditional independence relationships are naturally represented using
+        <strong>graphical models</strong> — specifically <strong>Bayesian Networks</strong>
+        (Directed Acyclic Graphs).
+      </p>
+
+      <h3>How Graphs Encode CI</h3>
+      <p>
+        In a Bayesian Network graph:
+      </p>
+      <ul>
+        <li>Each <strong>node</strong> is a random variable</li>
+        <li>Each <strong>directed edge</strong> X → Y means X is a direct cause of Y</li>
+        <li>The <strong>absence of an edge</strong> encodes conditional independence</li>
+        <li>Each node is conditionally independent of its <strong>non-descendants</strong>
+        given its <strong>parents</strong></li>
+      </ul>
+
+      <h3>Three Fundamental Structures</h3>
+      <p>In a Bayesian Network, there are three basic connection patterns. Each
+      has different conditional independence properties:</p>
+
+      <table>
+        <thead>
+          <tr><th>Structure</th><th>Diagram</th><th>CI Property</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Chain</strong></td>
+            <td>A → B → C</td>
+            <td>A ⊥ C | B &nbsp; (A and C are CI given B)</td>
+          </tr>
+          <tr>
+            <td><strong>Fork (Common Cause)</strong></td>
+            <td>A ← B → C</td>
+            <td>A ⊥ C | B &nbsp; (A and C are CI given B)</td>
+          </tr>
+          <tr>
+            <td><strong>Collider (Common Effect)</strong></td>
+            <td>A → B ← C</td>
+            <td>A ⊥ C (marginally) but A NOT ⊥ C | B</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Chain — A → B → C</h3>
+      <pre>
+  Example: Season → Rain → Wet Grass
+
+  Without knowing Rain (B):
+  Season and Wet Grass are NOT independent
+  (rainy season → rain → wet grass)
+
+  Given Rain (B) is known:
+  Season ⊥ Wet Grass | Rain   ✓
+  (knowing it's raining, season tells us nothing extra about grass)
+      </pre>
+
+      <h3>Fork — A ← B → C (Common Cause)</h3>
+      <pre>
+  Example: Fire ← Alarm → Evacuation
+  (Alarm causes both Fire detection and Evacuation)
+
+  Without knowing Alarm (B):
+  Fire and Evacuation are correlated
+  (both caused by Alarm)
+
+  Given Alarm (B) is known:
+  Fire ⊥ Evacuation | Alarm   ✓
+  (knowing alarm state, fire status tells nothing about evacuation)
+      </pre>
+
+      <h3>Collider — A → B ← C (Common Effect)</h3>
+      <pre>
+  Example: Rain → Wet Grass ← Sprinkler
+
+  Without knowing Wet Grass (B):
+  Rain ⊥ Sprinkler   ✓ (marginally independent — separate causes)
+
+  Given Wet Grass (B) is known:
+  Rain NOT ⊥ Sprinkler | Wet Grass
+  (if grass is wet and it's not raining → sprinkler must be ON)
+  This is the EXPLAINING AWAY effect!
+      </pre>
+
+      <div class="info-box">
+        <strong>Key Rule for Collider:</strong> Observing a collider node (or its
+        descendant) <strong>activates</strong> the path between its parents —
+        creating a dependency. This is the opposite of Chain and Fork where
+        observing the middle node <strong>blocks</strong> the path.
+      </div>
+
+      <h3>d-Separation</h3>
+      <p>
+        <strong>d-Separation</strong> is the algorithm used to read conditional
+        independence from a Bayesian Network graph. Two sets of variables X and Y
+        are d-separated by a set Z if every path between X and Y is <strong>blocked</strong> by Z.
+      </p>
+
+      <p>A path is blocked by Z if:</p>
+      <ul>
+        <li>The path contains a <strong>chain</strong> A → B → C or <strong>fork</strong> A ← B → C where <strong>B ∈ Z</strong></li>
+        <li>The path contains a <strong>collider</strong> A → B ← C where <strong>B ∉ Z</strong> and no descendant of B ∈ Z</li>
+      </ul>
+
+      <p>If X and Y are d-separated by Z in the graph → <strong>X ⊥ Y | Z</strong></p>
+    </section>
+
+    <!-- ── Markov Condition ───────────────────────── -->
+    <section id="markov">
+      <h2>6. Markov Condition</h2>
+      <p>
+        The <strong>Markov Condition</strong> (Local Markov Property) states that
+        in a Bayesian Network, each variable is conditionally independent of all
+        its <strong>non-descendants</strong> given its <strong>parents</strong>.
+      </p>
+
+      <code class="formula-block">Xᵢ ⊥ NonDescendants(Xᵢ) | Parents(Xᵢ)</code>
+
+      <p>
+        This is the fundamental assumption that allows a Bayesian Network to
+        <strong>factorize</strong> the full joint distribution:
+      </p>
+
+      <code class="formula-block amber">P(X₁, ..., Xₙ) = Π<sub>i</sub> P(Xᵢ | Parents(Xᵢ))</code>
+    </section>
+
+    <!-- ── GATE Tips ──────────────────────────────── -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li><strong>Definition:</strong> A ⊥ B | C means P(A, B | C) = P(A | C) × P(B | C).</li>
+        <li>Marginal independence ≠ Conditional independence — they are separate properties.</li>
+        <li><strong>Chain A→B→C</strong>: A ⊥ C | B. Observing B blocks the path.</li>
+        <li><strong>Fork A←B→C</strong>: A ⊥ C | B. Observing the common cause B blocks the path.</li>
+        <li><strong>Collider A→B←C</strong>: A ⊥ C (marginally) but NOT when B is observed. Observing B activates the path.</li>
+        <li><strong>Explaining away</strong>: Observing a collider creates dependency between its parents.</li>
+        <li><strong>Markov Condition</strong>: Each node is CI of non-descendants given parents.</li>
+        <li>CI is why Bayesian Networks are efficient — 2<sup>n</sup> entries reduced to manageable size.</li>
+        <li><strong>Naive Bayes</strong> assumes all features are CI given the class label.</li>
+        <li>d-Separation: Chain and Fork — observing middle node <strong>blocks</strong> path. Collider — observing collider <strong>activates</strong> path.</li>
+      </ul>
+    </section>
+
+    <!-- ── Practice Questions ─────────────────────── -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> A ⊥ B | C means:</h4>
+      <ol type="A">
+        <li>P(A, B) = P(A) × P(B)</li>
+        <li>P(A, B | C) = P(A | C) × P(B | C)</li>
+        <li>P(A | C) = P(B | C)</li>
+        <li>P(A | B, C) = P(B | C)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — P(A, B | C) = P(A | C) × P(B | C)</strong></p>
+        <p>Conditional independence given C means A and B become independent once C is observed.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> In the structure A → B → C, which conditional independence holds?</h4>
+      <ol type="A">
+        <li>A ⊥ B | C</li>
+        <li>A ⊥ C | B</li>
+        <li>B ⊥ C | A</li>
+        <li>None of the above</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — A ⊥ C | B</strong></p>
+        <p>In a chain A → B → C, observing B blocks the path between A and C. A and C are conditionally independent given B.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> In the structure A → B ← C (collider), which statement is TRUE?</h4>
+      <ol type="A">
+        <li>A ⊥ C always</li>
+        <li>A ⊥ C | B</li>
+        <li>A and C are marginally independent but NOT conditionally independent given B</li>
+        <li>A and C are always dependent</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Marginally independent, NOT CI given B</strong></p>
+        <p>For a collider, A and C are marginally independent. But observing B (the collider) activates the path, creating dependence between A and C.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q4</span> The "explaining away" effect occurs when:</h4>
+      <ol type="A">
+        <li>A chain node is observed</li>
+        <li>A fork node is observed</li>
+        <li>A collider node is observed</li>
+        <li>Any node is observed</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — A collider node is observed</strong></p>
+        <p>Observing the collider (common effect) creates a dependency between its parents — one parent "explains away" the other.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q5</span> The Markov Condition in a Bayesian Network states:</h4>
+      <ol type="A">
+        <li>Each node is independent of all other nodes</li>
+        <li>Each node is CI of its non-descendants given its parents</li>
+        <li>Each node depends only on its children</li>
+        <li>All nodes are marginally independent</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — CI of non-descendants given parents</strong></p>
+        <p>The Markov Condition is the fundamental property that allows Bayesian Networks to factorize the joint distribution.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q6</span> Naive Bayes classifier assumes:</h4>
+      <ol type="A">
+        <li>All features are marginally independent</li>
+        <li>All features are conditionally independent given the class</li>
+        <li>All features are dependent on each other</li>
+        <li>Only two features can exist</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Conditionally independent given the class</strong></p>
+        <p>Naive Bayes assumes P(F₁,...,Fₙ | C) = Π P(Fᵢ | C) — all features are CI given the class label C.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q7</span> In the fork structure A ← B → C, A and C are:</h4>
+      <ol type="A">
+        <li>Always independent regardless of B</li>
+        <li>Conditionally independent given B, but correlated marginally</li>
+        <li>Always dependent even given B</li>
+        <li>Marginally independent and conditionally independent given B</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — CI given B, correlated marginally</strong></p>
+        <p>The common cause B creates a correlation between A and C. Once B is observed, this correlation disappears — A ⊥ C | B.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q8</span> Why does conditional independence make Bayesian Networks efficient?</h4>
+      <ol type="A">
+        <li>It eliminates the need for probability</li>
+        <li>It reduces 2<sup>n</sup> parameters to a manageable number by factorizing the joint distribution</li>
+        <li>It allows exact inference in O(1) time</li>
+        <li>It makes all variables independent</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Reduces 2<sup>n</sup> to manageable size</strong></p>
+        <p>Each node only needs a conditional probability table given its parents — far fewer parameters than the full joint distribution.</p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="prob_basics.html">← Probability Basics</a>
+      <a class="nav-btn next" href="represent.html">Representation →</a>
+    </div>
+
   </article>
-  <script src="../theme.js"></script>
+
+  <!-- ── TOC Sidebar ─────────────────────────────── -->
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#marginal-independence">Marginal Independence</a></li>
+      <li><a href="#conditional-independence">CI Definition</a></li>
+      <li><a href="#comparison">Marginal vs Conditional</a></li>
+      <li><a href="#why-it-matters">Why It Matters</a></li>
+      <li class="toc-sub"><a href="#why-it-matters">Reducing Complexity</a></li>
+      <li class="toc-sub"><a href="#why-it-matters">Naive Bayes</a></li>
+      <li><a href="#graphical">Graphical Representation</a></li>
+      <li class="toc-sub"><a href="#graphical">Chain</a></li>
+      <li class="toc-sub"><a href="#graphical">Fork</a></li>
+      <li class="toc-sub"><a href="#graphical">Collider</a></li>
+      <li class="toc-sub"><a href="#graphical">d-Separation</a></li>
+      <li><a href="#markov">Markov Condition</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>
-

@@ -1,17 +1,430 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Exact Inference</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exact Inference — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="ruuncertainty.html">Reasoning Under Uncertainty</a>
+    <span>›</span>
+    <span>Exact Inference</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Exact Inference</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <a href="ruuncertainty.html">← Back to Reasoning Under Uncertainty Topic</a>
+
+    <h1>Exact Inference</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Reasoning Under Uncertainty</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~15 min read</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
+      <p>
+        <strong>Exact Inference</strong> in a Bayesian Network computes the
+        <strong>exact posterior probability</strong> of query variables given
+        observed evidence. The most important exact inference algorithm is
+        <strong>Variable Elimination</strong>.
+      </p>
+
+      <div class="info-box">
+        <strong>The Core Problem:</strong> Given a Bayesian Network and some observed
+        evidence e, compute P(X | e) — the probability distribution over
+        query variable X given what we have observed.
+        <br><br>
+        Example: Given the burglary network and evidence that John called (J=T)
+        and Mary called (M=T), compute P(Burglary | J=T, M=T).
+      </div>
+    </section>
+
+    <!-- ── Inference by Enumeration ──────────────── -->
+    <section id="enumeration">
+      <h2>1. Inference by Enumeration</h2>
+      <p>
+        The simplest exact inference method — sum over all possible values of
+        hidden variables.
+      </p>
+
+      <h3>General Formula</h3>
+      <code class="formula-block amber">P(X | e) = α × Σ<sub>hidden</sub> P(X, e, hidden)</code>
+
+      <p>Where α is a normalizing constant to make probabilities sum to 1.</p>
+
+      <h3>Steps</h3>
+      <ol>
+        <li>Fix the query variable X and evidence variables e</li>
+        <li>Sum the joint probability over all combinations of hidden variables</li>
+        <li>Normalize so probabilities sum to 1</li>
+      </ol>
+
+      <h3>Example — Simple 3-node network</h3>
+      <pre>
+  Network:  B → A → J   (simplified burglary network)
+
+  Query: P(B=T | J=T)
+
+  P(B=T | J=T) = α × Σ_A P(B=T) × P(A|B=T) × P(J=T|A)
+               = α × [P(B=T)×P(A=T|B=T)×P(J=T|A=T)
+                    + P(B=T)×P(A=F|B=T)×P(J=T|A=F)]
+
+  With values:
+  P(B=T) = 0.001
+  P(A=T|B=T) = 0.94,  P(A=F|B=T) = 0.06
+  P(J=T|A=T) = 0.90,  P(J=T|A=F) = 0.05
+
+  = α × [0.001×0.94×0.90 + 0.001×0.06×0.05]
+  = α × [0.000846 + 0.000003]
+  = α × 0.000849
+      </pre>
+
+      <div class="info-box">
+        <strong>Problem with Enumeration:</strong> For a network with n variables,
+        each hidden variable doubles the sum — O(2<sup>n</sup>) time.
+        For large networks this is completely infeasible.
+        <strong>Variable Elimination</strong> solves this by reusing computations.
+      </div>
+    </section>
+
+    <!-- ── Variable Elimination ───────────────────── -->
+    <section id="variable-elimination">
+      <h2>2. Variable Elimination Algorithm</h2>
+      <p>
+        <strong>Variable Elimination (VE)</strong> is an efficient exact inference
+        algorithm that avoids redundant computation by summing out hidden variables
+        one at a time using <strong>factors</strong>.
+      </p>
+
+      <h3>Key Idea</h3>
+      <p>
+        Instead of summing over all hidden variables at once (exponential),
+        VE <strong>pushes sums inside products</strong> — eliminating one variable
+        at a time and caching intermediate results as factors.
+      </p>
+
+      <code class="formula-block">Σ_Z [ f₁(Z,X) × f₂(Z,Y) ] = f₃(X,Y) &nbsp; (Z eliminated)</code>
+
+      <h3>What is a Factor?</h3>
+      <p>
+        A <strong>factor</strong> f(X₁, ..., Xₖ) is a function that maps
+        assignments of variables to non-negative real numbers. CPTs are factors.
+        When we multiply and marginalize factors we produce new factors.
+      </p>
+
+      <h3>Two Operations on Factors</h3>
+      <table>
+        <thead>
+          <tr><th>Operation</th><th>Symbol</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Factor Product</strong></td>
+            <td>f₁ × f₂</td>
+            <td>Multiply two factors — new factor contains all variables from both</td>
+          </tr>
+          <tr>
+            <td><strong>Marginalization</strong></td>
+            <td>Σ_Z f</td>
+            <td>Sum out variable Z from a factor — removes Z from the factor's scope</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Variable Elimination Algorithm</h3>
+      <ol>
+        <li>Start with all CPTs as initial factors</li>
+        <li>Set observed evidence — fix evidence variables to observed values</li>
+        <li>For each <strong>hidden variable</strong> Z (in elimination order):
+          <ul>
+            <li>Collect all factors that mention Z</li>
+            <li>Multiply them together → new factor</li>
+            <li>Sum out (marginalize) Z → eliminate Z from the factor</li>
+          </ul>
+        </li>
+        <li>Multiply all remaining factors</li>
+        <li><strong>Normalize</strong> the result to get a valid probability distribution</li>
+      </ol>
+
+      <h3>Worked Example — Variable Elimination</h3>
+      <p>
+        Network: B → A → J (Burglary → Alarm → JohnCalls)
+      </p>
+      <p>Query: P(B | J=T). Hidden variable: A.</p>
+
+      <pre>
+  Initial factors:
+  f₁(B)     = P(B)           [prior on Burglary]
+  f₂(A,B)   = P(A|B)         [CPT for Alarm]
+  f₃(J,A)   = P(J|A)         [CPT for JohnCalls]
+
+  Step 1: Set evidence J=T
+  f₃ becomes f₃(A) = P(J=T|A):
+    f₃(A=T) = 0.90
+    f₃(A=F) = 0.05
+
+  Step 2: Eliminate hidden variable A
+    Collect factors containing A: f₂(A,B) and f₃(A)
+    Multiply: f₄(A,B) = f₂(A,B) × f₃(A)
+
+    f₄(A=T, B=T) = P(A=T|B=T) × P(J=T|A=T) = 0.94 × 0.90 = 0.846
+    f₄(A=T, B=F) = P(A=T|B=F) × P(J=T|A=T) = 0.05 × 0.90 = 0.045
+    f₄(A=F, B=T) = P(A=F|B=T) × P(J=T|A=F) = 0.06 × 0.05 = 0.003
+    f₄(A=F, B=F) = P(A=F|B=F) × P(J=T|A=F) = 0.95 × 0.05 = 0.0475
+
+    Marginalize out A (sum over A):
+    f₅(B=T) = f₄(A=T,B=T) + f₄(A=F,B=T) = 0.846 + 0.003 = 0.849
+    f₅(B=F) = f₄(A=T,B=F) + f₄(A=F,B=F) = 0.045 + 0.0475 = 0.0925
+
+  Step 3: Multiply remaining factors
+    f₆(B) = f₁(B) × f₅(B)
+
+    f₆(B=T) = P(B=T) × f₅(B=T) = 0.001 × 0.849 = 0.000849
+    f₆(B=F) = P(B=F) × f₅(B=F) = 0.999 × 0.0925 = 0.09243
+
+  Step 4: Normalize
+    Total = 0.000849 + 0.09243 = 0.093279
+    P(B=T | J=T) = 0.000849 / 0.093279 ≈ 0.0091 ≈ 0.91%
+    P(B=F | J=T) = 0.09243 / 0.093279 ≈ 0.9909 ≈ 99.09%
+      </pre>
+
+      <p>
+        Even when John calls, there is only ~0.91% chance of burglary —
+        because burglary is very rare (0.1% prior).
+      </p>
+    </section>
+
+    <!-- ── Complexity ─────────────────────────────── -->
+    <section id="complexity">
+      <h2>3. Complexity of Variable Elimination</h2>
+
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Time (best case)</td>
+            <td>Polynomial in n</td>
+            <td>For singly connected networks (polytrees)</td>
+          </tr>
+          <tr>
+            <td>Time (worst case)</td>
+            <td>O(n × 2<sup>w</sup>)</td>
+            <td>w = treewidth of the network</td>
+          </tr>
+          <tr>
+            <td>Space</td>
+            <td>O(n × 2<sup>w</sup>)</td>
+            <td>Storing intermediate factors</td>
+          </tr>
+          <tr>
+            <td>Complete?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Always finds the exact answer</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Treewidth:</strong> The treewidth w of a Bayesian Network determines
+        the cost of exact inference. Singly-connected networks (polytrees) have
+        treewidth 1 — polynomial time. Multiply-connected networks have higher
+        treewidth — can be exponential in the worst case.
+      </div>
+
+      <h3>Elimination Ordering Matters</h3>
+      <p>
+        The order in which variables are eliminated affects the size of intermediate
+        factors and therefore the efficiency. Finding the optimal elimination
+        ordering is NP-hard, but good heuristics exist:
+      </p>
+      <ul>
+        <li><strong>Min-degree ordering</strong> — eliminate the variable with fewest connections first</li>
+        <li><strong>Min-fill ordering</strong> — eliminate the variable that creates fewest new edges</li>
+      </ul>
+    </section>
+
+    <!-- ── Polytree Algorithm ─────────────────────── -->
+    <section id="polytree">
+      <h2>4. Belief Propagation (Polytrees)</h2>
+      <p>
+        For <strong>singly connected networks (polytrees)</strong> — networks where
+        there is at most one undirected path between any two nodes — exact inference
+        can be done in <strong>linear time</strong> using the
+        <strong>Belief Propagation</strong> (message passing) algorithm.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Network Type</th><th>Algorithm</th><th>Complexity</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Singly connected (polytree)</td>
+            <td>Belief Propagation</td>
+            <td>O(n) — linear in number of nodes</td>
+          </tr>
+          <tr>
+            <td>Multiply connected</td>
+            <td>Variable Elimination</td>
+            <td>O(n × 2<sup>w</sup>) — exponential in treewidth</td>
+          </tr>
+          <tr>
+            <td>Multiply connected (large)</td>
+            <td>Approximate Inference</td>
+            <td>Trade accuracy for speed</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── GATE Tips ──────────────────────────────── -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li>Variable Elimination = <strong>push sums inside products</strong> to avoid redundant computation.</li>
+        <li>Two operations: <strong>Factor Product</strong> (multiply) and <strong>Marginalization</strong> (sum out).</li>
+        <li>Always <strong>normalize</strong> at the end — multiply by α to get valid probabilities.</li>
+        <li>Elimination order affects efficiency — bad order = larger intermediate factors.</li>
+        <li>P(X | e) = α × Σ<sub>hidden</sub> P(X, e, hidden) — basic enumeration formula.</li>
+        <li>Polytree (singly connected) → exact inference in <strong>linear time O(n)</strong>.</li>
+        <li>Multiply connected networks → Variable Elimination, worst case exponential in treewidth w.</li>
+        <li>In GATE problems — apply VE step by step: fix evidence → eliminate hidden vars → normalize.</li>
+        <li>Exact inference is <strong>complete</strong> — always gives the right answer (but may be slow).</li>
+      </ul>
+    </section>
+
+    <!-- ── Practice Questions ─────────────────────── -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> What does Variable Elimination do at each step?</h4>
+      <ol type="A">
+        <li>Removes a variable from the network entirely</li>
+        <li>Multiplies factors containing a hidden variable, then sums it out</li>
+        <li>Samples values for hidden variables randomly</li>
+        <li>Applies Bayes' Theorem to each node independently</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Multiply then sum out</strong></p>
+        <p>For each hidden variable: collect all factors mentioning it, multiply them, then marginalize (sum out) that variable.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> The normalizing constant α in P(X|e) = α × f(X) ensures:</h4>
+      <ol type="A">
+        <li>All probabilities are greater than 1</li>
+        <li>The distribution sums to 1</li>
+        <li>All variables are independent</li>
+        <li>Evidence is removed from the computation</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Distribution sums to 1</strong></p>
+        <p>α = 1 / Σ_X f(X). It normalizes the unnormalized result into a valid probability distribution.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> For a polytree Bayesian Network, exact inference runs in:</h4>
+      <ol type="A">
+        <li>O(2<sup>n</sup>)</li>
+        <li>O(n²)</li>
+        <li>O(n) — linear time</li>
+        <li>O(n × 2<sup>w</sup>)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — O(n) linear time</strong></p>
+        <p>Singly connected networks (polytrees) allow Belief Propagation which runs in linear time.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q4</span> Variable Elimination is better than simple enumeration because:</h4>
+      <ol type="A">
+        <li>It gives approximate answers faster</li>
+        <li>It reuses intermediate computations (factors) instead of recomputing</li>
+        <li>It eliminates the need for CPTs</li>
+        <li>It works only on polytrees</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Reuses intermediate computations</strong></p>
+        <p>By pushing sums inside products, VE avoids repeating the same multiplications. Enumeration recomputes everything from scratch.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q5</span> What determines the worst-case complexity of Variable Elimination?</h4>
+      <ol type="A">
+        <li>Number of root nodes</li>
+        <li>Number of evidence variables</li>
+        <li>Treewidth of the network</li>
+        <li>Number of leaf nodes</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Treewidth</strong></p>
+        <p>VE complexity is O(n × 2<sup>w</sup>) where w is the treewidth. Networks with low treewidth allow efficient exact inference.</p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="represent.html">← Representation</a>
+      <a class="nav-btn next" href="approx_infer.html">Approximate Inference →</a>
+    </div>
+
   </article>
-  <script src="../theme.js"></script>
+
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#enumeration">Inference by Enumeration</a></li>
+      <li><a href="#variable-elimination">Variable Elimination</a></li>
+      <li class="toc-sub"><a href="#variable-elimination">Factor Operations</a></li>
+      <li class="toc-sub"><a href="#variable-elimination">Worked Example</a></li>
+      <li><a href="#complexity">Complexity</a></li>
+      <li><a href="#polytree">Belief Propagation</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>
-

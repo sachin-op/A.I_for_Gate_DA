@@ -1,17 +1,639 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Approximate Inference</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Approximate Inference — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="ruuncertainty.html">Reasoning Under Uncertainty</a>
+    <span>›</span>
+    <span>Approximate Inference</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Approximate Inference</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <a href="ruuncertainty.html">← Back to Reasoning Under Uncertainty Topic</a>
+
+    <h1>Approximate Inference</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Reasoning Under Uncertainty</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~15 min read</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
+      <p>
+        Exact inference in large Bayesian Networks can be computationally
+        intractable — especially in densely connected networks where treewidth is high.
+        <strong>Approximate Inference</strong> uses <strong>sampling (Monte Carlo)</strong>
+        methods to estimate probabilities rather than computing them exactly.
+        The estimates improve as more samples are drawn.
+      </p>
+
+      <div class="info-box">
+        <strong>Trade-off:</strong> Approximate inference gives up guaranteed exact
+        answers in exchange for <strong>scalability</strong>. Given enough samples,
+        the estimates converge to the true probabilities. For large networks
+        where exact inference is impossible, this is the only practical option.
+      </div>
+
+      <h3>Why Sampling Works</h3>
+      <p>
+        By generating many random samples from the joint distribution and counting
+        how often certain events occur, we estimate probabilities empirically.
+        With N samples:
+      </p>
+      <code class="formula-block">P(X = x) ≈ (number of samples where X = x) / N</code>
+      <p>As N → ∞, the estimate converges to the true probability.</p>
+    </section>
+
+    <!-- ── Prior Sampling ─────────────────────────── -->
+    <section id="prior-sampling">
+      <h2>1. Prior Sampling</h2>
+      <p>
+        <strong>Prior Sampling</strong> is the simplest sampling method. It generates
+        samples from the <strong>prior distribution</strong> — ignoring any evidence —
+        by sampling each variable in topological order according to its CPT.
+      </p>
+
+      <h3>Algorithm</h3>
+      <ol>
+        <li>Order all variables in topological order (parents before children)</li>
+        <li>For each variable Xᵢ (in order):
+          <ul>
+            <li>Look up P(Xᵢ | parents already sampled)</li>
+            <li>Sample a value for Xᵢ from this distribution</li>
+          </ul>
+        </li>
+        <li>Record the complete assignment as one sample</li>
+        <li>Repeat N times to get N samples</li>
+        <li>Estimate P(query) by counting relevant samples</li>
+      </ol>
+
+      <h3>Example — Burglary Network</h3>
+      <pre>
+  Network: B → A → J
+
+  Topological order: B, A, J
+
+  Sample generation:
+  ─────────────────────────────────────
+  Step 1: Sample B from P(B)
+          P(B=T) = 0.001 → B = F  (most likely)
+
+  Step 2: Sample A from P(A | B=F)
+          P(A=T | B=F) = 0.001 → A = F
+
+  Step 3: Sample J from P(J | A=F)
+          P(J=T | A=F) = 0.05 → J = F
+
+  One sample: (B=F, A=F, J=F)
+  ─────────────────────────────────────
+  After 1000 samples, count how many have J=T to estimate P(J=T).
+      </pre>
+
+      <h3>Estimating Probabilities</h3>
+      <code class="formula-block">P(X = x) ≈ count(X = x) / N</code>
+
+      <h3>Properties</h3>
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Handles evidence?</td>
+            <td style="color:var(--red)">✗ No</td>
+            <td>Ignores evidence — samples from prior only</td>
+          </tr>
+          <tr>
+            <td>Consistent?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Converges to true probability as N → ∞</td>
+          </tr>
+          <tr>
+            <td>Efficiency</td>
+            <td>Poor with rare evidence</td>
+            <td>Most samples will be rejected when evidence is unlikely</td>
+          </tr>
+          <tr>
+            <td>Best for</td>
+            <td>Unconditional queries</td>
+            <td>Estimating P(X) without any evidence</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Rejection Sampling ─────────────────────── -->
+    <section id="rejection-sampling">
+      <h2>2. Rejection Sampling</h2>
+      <p>
+        <strong>Rejection Sampling</strong> extends Prior Sampling to handle evidence.
+        It generates samples as before, but <strong>rejects</strong> any sample
+        that is inconsistent with the observed evidence.
+      </p>
+
+      <h3>Algorithm</h3>
+      <ol>
+        <li>Generate a sample using Prior Sampling</li>
+        <li>Check if the sample is <strong>consistent with evidence</strong> e
+          <ul>
+            <li>If consistent → <strong>keep</strong> the sample</li>
+            <li>If inconsistent → <strong>reject</strong> the sample (discard it)</li>
+          </ul>
+        </li>
+        <li>Repeat until N consistent samples are collected</li>
+        <li>Estimate P(query | e) using only the kept samples</li>
+      </ol>
+
+      <h3>Example</h3>
+      <pre>
+  Query: P(B=T | J=T)   [given John called]
+
+  Generate samples, keep only those where J=T:
+
+  Sample 1: B=F, A=F, J=F  → REJECT (J≠T)
+  Sample 2: B=F, A=T, J=T  → KEEP
+  Sample 3: B=T, A=T, J=T  → KEEP
+  Sample 4: B=F, A=F, J=F  → REJECT
+  Sample 5: B=F, A=T, J=T  → KEEP
+
+  Kept samples: {(B=F,A=T,J=T), (B=T,A=T,J=T), (B=F,A=T,J=T)}
+  P(B=T | J=T) ≈ 1/3 ≈ 0.33
+
+  (This is a rough estimate — need many more samples for accuracy)
+      </pre>
+
+      <h3>Properties</h3>
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Handles evidence?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Conditions on evidence by rejecting inconsistent samples</td>
+          </tr>
+          <tr>
+            <td>Consistent?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Converges to true posterior as N → ∞</td>
+          </tr>
+          <tr>
+            <td>Efficiency</td>
+            <td>Poor for rare evidence</td>
+            <td>If P(e) is small, most samples are rejected — very wasteful</td>
+          </tr>
+          <tr>
+            <td>Rejection rate</td>
+            <td>1 − P(e)</td>
+            <td>High rejection rate when evidence is unlikely</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Problem:</strong> If evidence e is rare (e.g. P(J=T, M=T) ≈ 0.003),
+        then 99.7% of samples are rejected — extremely wasteful.
+        Likelihood Weighting fixes this.
+      </div>
+    </section>
+
+    <!-- ── Likelihood Weighting ───────────────────── -->
+    <section id="likelihood-weighting">
+      <h2>3. Likelihood Weighting</h2>
+      <p>
+        <strong>Likelihood Weighting</strong> fixes the inefficiency of Rejection
+        Sampling by <strong>never rejecting</strong> samples. Instead, it
+        <strong>fixes evidence variables</strong> to their observed values and
+        assigns each sample a <strong>weight</strong> based on the probability of
+        the evidence.
+      </p>
+
+      <h3>Algorithm</h3>
+      <ol>
+        <li>Initialize weight w = 1.0</li>
+        <li>For each variable in topological order:
+          <ul>
+            <li>If it is an <strong>evidence variable</strong>:
+              → fix it to observed value, multiply w by P(evidence_value | parents)
+            </li>
+            <li>If it is a <strong>non-evidence variable</strong>:
+              → sample normally from P(Xᵢ | parents)
+            </li>
+          </ul>
+        </li>
+        <li>Record sample with its weight w</li>
+        <li>Repeat N times</li>
+        <li>Estimate P(query | e) using <strong>weighted counts</strong></li>
+      </ol>
+
+      <h3>Estimate Formula</h3>
+      <code class="formula-block amber">P(X = x | e) ≈ Σ{w_s : X_s = x} / Σ w_s</code>
+      <p>Sum of weights where X = x, divided by total weight of all samples.</p>
+
+      <h3>Example</h3>
+      <pre>
+  Query: P(B | J=T)   Network: B → A → J
+
+  Sample generation:
+  ─────────────────────────────────────────────────────
+  Step 1: Sample B (non-evidence) from P(B)
+          B = F  (sampled)
+          w = 1.0
+
+  Step 2: Sample A (non-evidence) from P(A|B=F)
+          A = T  (sampled)
+          w = 1.0
+
+  Step 3: J is EVIDENCE (J=T)
+          Fix J = T
+          w = w × P(J=T | A=T) = 1.0 × 0.90 = 0.90
+
+  Sample: (B=F, A=T, J=T),  weight = 0.90
+  ─────────────────────────────────────────────────────
+
+  After many samples:
+  P(B=T | J=T) ≈ Σ(w where B=T) / Σ(all w)
+      </pre>
+
+      <h3>Properties</h3>
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Handles evidence?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Evidence variables fixed — no rejection</td>
+          </tr>
+          <tr>
+            <td>Rejects samples?</td>
+            <td style="color:var(--green)">✗ Never</td>
+            <td>All samples kept with a weight — no waste</td>
+          </tr>
+          <tr>
+            <td>Consistent?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Converges to true posterior</td>
+          </tr>
+          <tr>
+            <td>Efficiency</td>
+            <td>Better than Rejection Sampling</td>
+            <td>No samples wasted — all contribute with their weight</td>
+          </tr>
+          <tr>
+            <td>Best for</td>
+            <td>Most practical cases</td>
+            <td>Handles rare evidence well</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Limitation of Likelihood Weighting:</strong> When evidence is far
+        downstream in the network, the weights of samples that reach it may be
+        very low — causing high variance. Gibbs Sampling handles this better.
+      </div>
+    </section>
+
+    <!-- ── Gibbs Sampling ─────────────────────────── -->
+    <section id="gibbs-sampling">
+      <h2>4. Gibbs Sampling</h2>
+      <p>
+        <strong>Gibbs Sampling</strong> is a Markov Chain Monte Carlo (MCMC) method.
+        Instead of generating each sample independently, it starts with a random
+        assignment and makes small changes — sampling one variable at a time while
+        keeping all others fixed.
+      </p>
+
+      <h3>Algorithm</h3>
+      <ol>
+        <li>Fix evidence variables to their observed values</li>
+        <li>Initialize all non-evidence variables randomly</li>
+        <li>Repeat many times:
+          <ul>
+            <li>Pick a non-evidence variable Xᵢ at random</li>
+            <li>Sample a new value for Xᵢ from P(Xᵢ | all other variables)</li>
+            <li>Record the current full assignment as a sample</li>
+          </ul>
+        </li>
+        <li>Estimate P(query | e) by counting over all recorded samples</li>
+      </ol>
+
+      <h3>The Key Simplification</h3>
+      <p>
+        Instead of conditioning on ALL other variables (which would be expensive),
+        Gibbs uses the <strong>Markov Blanket</strong> — a node only depends on
+        its parents, children, and co-parents:
+      </p>
+      <code class="formula-block">P(Xᵢ | all others) = P(Xᵢ | MarkovBlanket(Xᵢ))</code>
+
+      <h3>Example</h3>
+      <pre>
+  Network: B → A → J, Query: P(B | J=T)
+  Evidence: J = T (fixed)
+
+  Initial state: B = F, A = T  (random)
+
+  Iteration 1:
+    Sample B from P(B | A=T) ∝ P(B) × P(A=T|B)
+    P(B=T | A=T) ∝ 0.001 × 0.94 = 0.00094
+    P(B=F | A=T) ∝ 0.999 × 0.001 = 0.000999
+    After normalizing → B = F  (sampled)
+    Record: (B=F, A=T)
+
+  Iteration 2:
+    Sample A from P(A | B=F, J=T)
+    ∝ P(A|B=F) × P(J=T|A)
+    P(A=T|B=F,J=T) ∝ 0.001 × 0.90 = 0.0009
+    P(A=F|B=F,J=T) ∝ 0.999 × 0.05 = 0.04995
+    After normalizing → A = F  (sampled)
+    Record: (B=F, A=F)
+
+  After many iterations, count B=T to estimate P(B=T|J=T)
+      </pre>
+
+      <h3>Properties</h3>
+      <table>
+        <thead>
+          <tr><th>Property</th><th>Value</th><th>Explanation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Handles evidence?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Evidence variables kept fixed throughout</td>
+          </tr>
+          <tr>
+            <td>Sample independence?</td>
+            <td style="color:var(--red)">✗ No</td>
+            <td>Each sample depends on the previous one (Markov Chain)</td>
+          </tr>
+          <tr>
+            <td>Consistent?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Converges to true posterior under mild conditions</td>
+          </tr>
+          <tr>
+            <td>Burn-in needed?</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Early samples (before convergence) are discarded</td>
+          </tr>
+          <tr>
+            <td>Best for</td>
+            <td>Large networks with complex evidence</td>
+            <td>Works well when LW weights are too low</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Comparison ─────────────────────────────── -->
+    <section id="comparison">
+      <h2>5. Comparison of All Four Methods</h2>
+
+      <table>
+        <thead>
+          <tr><th>Method</th><th>Handles Evidence</th><th>Rejects Samples</th><th>Independent Samples</th><th>Efficiency</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Prior Sampling</strong></td>
+            <td style="color:var(--red)">✗ No</td>
+            <td>N/A</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Good (for priors)</td>
+          </tr>
+          <tr>
+            <td><strong>Rejection Sampling</strong></td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td style="color:var(--red)">✓ Yes (wasteful)</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Poor (rare evidence)</td>
+          </tr>
+          <tr>
+            <td><strong>Likelihood Weighting</strong></td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td style="color:var(--green)">✗ Never</td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td>Good</td>
+          </tr>
+          <tr>
+            <td><strong>Gibbs Sampling</strong></td>
+            <td style="color:var(--green)">✓ Yes</td>
+            <td style="color:var(--green)">✗ Never</td>
+            <td style="color:var(--red)">✗ No (MCMC)</td>
+            <td>Very Good (large nets)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>When to Use Which</h3>
+      <table>
+        <thead>
+          <tr><th>Situation</th><th>Best Method</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>No evidence, just estimating priors</td><td>Prior Sampling</td></tr>
+          <tr><td>Evidence present, small network, common evidence</td><td>Rejection Sampling</td></tr>
+          <tr><td>Evidence present, rare evidence</td><td>Likelihood Weighting</td></tr>
+          <tr><td>Large complex network, hard evidence</td><td>Gibbs Sampling</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── GATE Tips ──────────────────────────────── -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li><strong>Prior Sampling</strong> — samples from prior, no evidence handling, each variable sampled in topological order.</li>
+        <li><strong>Rejection Sampling</strong> — generates prior samples, rejects those inconsistent with evidence. Wasteful when evidence is rare.</li>
+        <li><strong>Likelihood Weighting</strong> — fixes evidence variables, weights each sample by P(evidence | parents). Never rejects.</li>
+        <li>LW weight formula: w = Π P(eᵢ | Parents(eᵢ)) for all evidence variables eᵢ.</li>
+        <li><strong>Gibbs Sampling</strong> — MCMC method. Updates one variable at a time using Markov Blanket. Samples are NOT independent.</li>
+        <li>All four methods are <strong>consistent</strong> — converge to true probability as N → ∞.</li>
+        <li>Ordering from simplest to most practical: Prior → Rejection → Likelihood Weighting → Gibbs.</li>
+        <li>Gibbs requires a <strong>burn-in period</strong> — discard early samples before the chain mixes.</li>
+        <li>P(X=x | e) ≈ weighted_count(X=x) / total_weight — use this for LW estimate.</li>
+        <li>In GATE questions — identify which method is being described and trace through the algorithm step by step.</li>
+      </ul>
+    </section>
+
+    <!-- ── Practice Questions ─────────────────────── -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> Which sampling method NEVER rejects samples?</h4>
+      <ol type="A">
+        <li>Prior Sampling</li>
+        <li>Rejection Sampling</li>
+        <li>Likelihood Weighting</li>
+        <li>None — all methods reject sometimes</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Likelihood Weighting</strong></p>
+        <p>LW fixes evidence variables and weights samples instead of rejecting them. All samples are kept.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> In Rejection Sampling, a sample is rejected when:</h4>
+      <ol type="A">
+        <li>The weight of the sample is too low</li>
+        <li>The sample is inconsistent with observed evidence</li>
+        <li>A hidden variable gets an unlikely value</li>
+        <li>The query variable is False</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Inconsistent with evidence</strong></p>
+        <p>If an evidence variable's sampled value doesn't match the observed value, the whole sample is rejected.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> In Likelihood Weighting, the weight of a sample is:</h4>
+      <ol type="A">
+        <li>Always 1.0</li>
+        <li>Product of P(query variable values)</li>
+        <li>Product of P(evidence value | parents) for all evidence variables</li>
+        <li>1 / number of samples</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Product of P(evidence | parents)</strong></p>
+        <p>For each evidence variable eᵢ set to value vᵢ, multiply the weight by P(Eᵢ=vᵢ | Parents(Eᵢ)).</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q4</span> Gibbs Sampling differs from the other methods because:</h4>
+      <ol type="A">
+        <li>It only works on polytree networks</li>
+        <li>Consecutive samples are NOT independent — it is a Markov Chain method</li>
+        <li>It never converges to the true probability</li>
+        <li>It cannot handle evidence variables</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Markov Chain, samples are dependent</strong></p>
+        <p>In Gibbs Sampling, each state is generated by modifying the previous state — samples are correlated, unlike the other three methods.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q5</span> Which method is BEST when the evidence event is very rare (low probability)?</h4>
+      <ol type="A">
+        <li>Prior Sampling</li>
+        <li>Rejection Sampling</li>
+        <li>Likelihood Weighting</li>
+        <li>All methods perform equally</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Likelihood Weighting</strong></p>
+        <p>With rare evidence, Rejection Sampling wastes almost all samples. LW fixes evidence and weights — none are wasted.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q6</span> All four approximate inference methods share which property?</h4>
+      <ol type="A">
+        <li>They produce independent samples</li>
+        <li>They are consistent — converge to true probability as N → ∞</li>
+        <li>They handle evidence by rejection</li>
+        <li>They give exact answers for small networks</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Consistent</strong></p>
+        <p>All four sampling methods are consistent estimators — they converge to the correct probability with enough samples.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q7</span> Prior Sampling samples variables in which order?</h4>
+      <ol type="A">
+        <li>Random order</li>
+        <li>Reverse topological order</li>
+        <li>Topological order — parents before children</li>
+        <li>Alphabetical order</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Topological order</strong></p>
+        <p>We must sample parents before children so that CPT values P(Xᵢ | parents) can be used for sampling.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q8</span> What is the "burn-in period" in Gibbs Sampling?</h4>
+      <ol type="A">
+        <li>Time to initialize CPTs</li>
+        <li>The first N samples discarded before the chain has mixed properly</li>
+        <li>Time to compute Markov Blankets</li>
+        <li>The final samples used for the estimate</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Early samples discarded before mixing</strong></p>
+        <p>Before the Markov Chain reaches its stationary distribution, early samples may not represent the true posterior. These are discarded as "burn-in".</p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="exact_infer.html">← Exact Inference</a>
+      <a class="nav-btn next" href="../index.html">Home →</a>
+    </div>
+
   </article>
-  <script src="../theme.js"></script>
+
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#prior-sampling">Prior Sampling</a></li>
+      <li><a href="#rejection-sampling">Rejection Sampling</a></li>
+      <li><a href="#likelihood-weighting">Likelihood Weighting</a></li>
+      <li><a href="#gibbs-sampling">Gibbs Sampling</a></li>
+      <li><a href="#comparison">All Four Compared</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>
-

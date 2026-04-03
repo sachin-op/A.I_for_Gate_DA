@@ -1,17 +1,479 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Representation</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Representation — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<!-- ── Top Nav ────────────────────────────────────── -->
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="ruuncertainty.html">Reasoning Under Uncertainty</a>
+    <span>›</span>
+    <span>Representation</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Representation</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <a href="../Reasoning_Under_Uncertainty/ruuncertainty.html">← Back to Reasoning Under Uncertainty Topic</a>
+
+    <h1>Representation — Bayesian Networks</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Reasoning Under Uncertainty</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~15 min read</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
+      <p>
+        A <strong>Bayesian Network</strong> (also called Belief Network or Bayes Net)
+        is a compact, graphical representation of a joint probability distribution.
+        It exploits <strong>conditional independence</strong> to encode the full
+        joint distribution using far fewer parameters than a complete joint table.
+      </p>
+
+      <div class="info-box">
+        <strong>Core Idea:</strong> Instead of storing P(X₁, X₂, ..., Xₙ) — which
+        needs 2<sup>n</sup> entries — a Bayesian Network stores only
+        P(Xᵢ | Parents(Xᵢ)) for each variable. Each variable only depends on
+        a small number of parents, making the representation exponentially more compact.
+      </div>
+    </section>
+
+    <!-- ── What is a Bayesian Network ────────────── -->
+    <section id="bn-definition">
+      <h2>1. What is a Bayesian Network?</h2>
+      <p>A Bayesian Network consists of two components:</p>
+
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Graph Structure</strong></td>
+            <td>A Directed Acyclic Graph (DAG) where nodes = random variables and directed edges = direct causal relationships</td>
+          </tr>
+          <tr>
+            <td><strong>CPTs</strong></td>
+            <td>A Conditional Probability Table for each node — gives P(Xᵢ | Parents(Xᵢ))</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Properties of the Graph</h3>
+      <ul>
+        <li><strong>Directed</strong> — edges have direction (cause → effect)</li>
+        <li><strong>Acyclic</strong> — no cycles allowed (a variable cannot be its own ancestor)</li>
+        <li><strong>Nodes</strong> — each node is a random variable (discrete or continuous)</li>
+        <li><strong>Edges</strong> — X → Y means X directly influences Y</li>
+        <li><strong>No edge</strong> between X and Y means they are conditionally independent given their parents</li>
+      </ul>
+    </section>
+
+    <!-- ── Classic Example ────────────────────────── -->
+    <section id="example">
+      <h2>2. Classic Example — Burglary Network</h2>
+      <p>
+        This is the standard textbook Bayesian Network example. A burglar alarm
+        can be triggered by a burglary or an earthquake. If the alarm goes off,
+        John or Mary may call.
+      </p>
+
+      <h3>Network Structure</h3>
+      <pre>
+  Burglary (B)    Earthquake (E)
+       \               /
+        \             /
+         ↓           ↓
+           Alarm (A)
+           /       \
+          ↓         ↓
+      JohnCalls  MaryCalls
+        (J)         (M)
+      </pre>
+
+      <h3>Variables</h3>
+      <table>
+        <thead>
+          <tr><th>Variable</th><th>Parents</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B</strong></td><td>None (root)</td><td>Burglary occurred</td></tr>
+          <tr><td><strong>E</strong></td><td>None (root)</td><td>Earthquake occurred</td></tr>
+          <tr><td><strong>A</strong></td><td>B, E</td><td>Alarm goes off</td></tr>
+          <tr><td><strong>J</strong></td><td>A</td><td>John calls</td></tr>
+          <tr><td><strong>M</strong></td><td>A</td><td>Mary calls</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Joint Distribution Factorization</h3>
+      <p>Using the Markov Condition, the full joint factorizes as:</p>
+      <code class="formula-block amber">P(B,E,A,J,M) = P(B) × P(E) × P(A|B,E) × P(J|A) × P(M|A)</code>
+
+      <p>
+        Instead of 2<sup>5</sup> − 1 = 31 numbers for the full joint table,
+        we only need the CPT entries — a much smaller number.
+      </p>
+    </section>
+
+    <!-- ── CPTs ───────────────────────────────────── -->
+    <section id="cpts">
+      <h2>3. Conditional Probability Tables (CPTs)</h2>
+      <p>
+        Each node in a Bayesian Network has a <strong>Conditional Probability Table (CPT)</strong>
+        that specifies P(Xᵢ = true | combinations of parent values).
+      </p>
+
+      <h3>CPT for Root Nodes (no parents)</h3>
+      <p>Root nodes just have a prior probability — no conditioning needed.</p>
+
+      <table>
+        <thead>
+          <tr><th>P(B = true)</th><th>P(E = true)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0.001</td><td>0.002</td></tr>
+        </tbody>
+      </table>
+
+      <h3>CPT for Alarm (two parents: B, E)</h3>
+      <table>
+        <thead>
+          <tr><th>B</th><th>E</th><th>P(A = true | B, E)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>T</td><td>T</td><td>0.95</td></tr>
+          <tr><td>T</td><td>F</td><td>0.94</td></tr>
+          <tr><td>F</td><td>T</td><td>0.29</td></tr>
+          <tr><td>F</td><td>F</td><td>0.001</td></tr>
+        </tbody>
+      </table>
+
+      <h3>CPT for JohnCalls (one parent: A)</h3>
+      <table>
+        <thead>
+          <tr><th>A</th><th>P(J = true | A)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>T</td><td>0.90</td></tr>
+          <tr><td>F</td><td>0.05</td></tr>
+        </tbody>
+      </table>
+
+      <h3>CPT for MaryCalls (one parent: A)</h3>
+      <table>
+        <thead>
+          <tr><th>A</th><th>P(M = true | A)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>T</td><td>0.70</td></tr>
+          <tr><td>F</td><td>0.01</td></tr>
+        </tbody>
+      </table>
+
+      <h3>CPT Size</h3>
+      <p>For a node with k boolean parents, the CPT has <strong>2<sup>k</sup> rows</strong>.</p>
+      <table>
+        <thead>
+          <tr><th>Node</th><th>Parents</th><th>CPT rows</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>B</td><td>0</td><td>1</td></tr>
+          <tr><td>E</td><td>0</td><td>1</td></tr>
+          <tr><td>A</td><td>2 (B,E)</td><td>4</td></tr>
+          <tr><td>J</td><td>1 (A)</td><td>2</td></tr>
+          <tr><td>M</td><td>1 (A)</td><td>2</td></tr>
+          <tr><td><strong>Total</strong></td><td></td><td><strong>10 numbers</strong> (vs 31 for full joint)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Joint Distribution ─────────────────────── -->
+    <section id="joint">
+      <h2>4. Computing from a Bayesian Network</h2>
+
+      <h3>4.1 Computing a Specific Joint Probability</h3>
+      <p>
+        To compute P(B=T, E=F, A=T, J=T, M=T) using the factorization:
+      </p>
+      <pre>
+  P(B=T, E=F, A=T, J=T, M=T)
+  = P(B=T) × P(E=F) × P(A=T|B=T,E=F) × P(J=T|A=T) × P(M=T|A=T)
+  = 0.001  × 0.998  × 0.94            × 0.90        × 0.70
+  = 0.001 × 0.998 × 0.94 × 0.90 × 0.70
+  ≈ 0.000592
+      </pre>
+
+      <h3>4.2 Computing a Marginal Probability</h3>
+      <p>
+        To find P(B=T) (probability of burglary), we sum over all combinations
+        of other variables:
+      </p>
+      <code class="formula-block">P(B=T) = Σ_{E,A,J,M} P(B=T, E, A, J, M)</code>
+      <p>This is called <strong>marginalization</strong> — summing out unwanted variables.</p>
+
+      <h3>4.3 Computing a Conditional (Posterior) Probability</h3>
+      <p>
+        To find P(B=T | J=T, M=T) — burglary given both called:
+      </p>
+      <code class="formula-block">P(B=T | J=T, M=T) = P(B=T, J=T, M=T) / P(J=T, M=T)</code>
+      <p>
+        This is the main query in a Bayesian Network — compute posterior
+        probability of hidden variables given observed evidence.
+        Done using <strong>Exact Inference</strong> (Variable Elimination) or
+        <strong>Approximate Inference</strong> (Sampling).
+      </p>
+    </section>
+
+    <!-- ── Compactness ────────────────────────────── -->
+    <section id="compactness">
+      <h2>5. Why Bayesian Networks are Compact</h2>
+      <p>
+        If each node has at most <strong>k parents</strong>, the total number of
+        CPT entries across all n nodes is at most:
+      </p>
+      <code class="formula-block">n × 2<sup>k</sup></code>
+
+      <p>
+        Compare this to the full joint table which needs <strong>2<sup>n</sup></strong> entries:
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>n (variables)</th><th>k (max parents)</th><th>Full Joint (2<sup>n</sup>)</th><th>Bayes Net (n×2<sup>k</sup>)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>10</td><td>2</td><td>1,024</td><td>40</td></tr>
+          <tr><td>20</td><td>3</td><td>1,048,576</td><td>160</td></tr>
+          <tr><td>30</td><td>4</td><td>~1 billion</td><td>480</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Key Insight:</strong> A Bayesian Network is an exponentially more
+        compact representation than the full joint distribution, thanks to
+        conditional independence. This is what makes probabilistic reasoning
+        feasible in large domains.
+      </div>
+    </section>
+
+    <!-- ── Constructing a BN ───────────────────────── -->
+    <section id="construction">
+      <h2>6. How to Construct a Bayesian Network</h2>
+      <ol>
+        <li><strong>Identify variables</strong> — what are the relevant random variables in the domain?</li>
+        <li><strong>Order variables</strong> — typically causes before effects (topological order)</li>
+        <li><strong>Add nodes</strong> — one node per variable</li>
+        <li><strong>Add edges</strong> — for each variable, identify its direct causes and add edges from each cause to the variable</li>
+        <li><strong>Fill CPTs</strong> — for each node, specify P(Xᵢ | combinations of parent values)</li>
+      </ol>
+
+      <h3>Important Rule</h3>
+      <p>
+        When constructing the network, add edges only for <strong>direct</strong>
+        causal relationships. Do not add an edge from X to Z if the effect of X
+        on Z is entirely mediated through another variable Y (i.e. X → Y → Z).
+        Adding unnecessary edges makes the CPTs larger without improving accuracy.
+      </p>
+
+      <div class="info-box">
+        <strong>Causal vs Non-Causal:</strong> Bayesian Networks can technically
+        represent any conditional independence structure — not just causal ones.
+        But causal networks are easier to construct correctly and are more
+        interpretable.
+      </div>
+    </section>
+
+    <!-- ── GATE Tips ──────────────────────────────── -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li>A Bayesian Network = <strong>DAG + CPTs</strong>. Both parts must be understood.</li>
+        <li>Factorization formula: <strong>P(X₁...Xₙ) = Π P(Xᵢ | Parents(Xᵢ))</strong> — memorize this.</li>
+        <li>Root nodes (no parents) → simple prior probability P(X).</li>
+        <li>CPT size for a node with k parents = <strong>2<sup>k</sup> rows</strong>.</li>
+        <li>Total parameters in BN ≤ <strong>n × 2<sup>k</sup></strong> vs 2<sup>n</sup> for full joint.</li>
+        <li>In GATE numerical questions — apply the factorization, multiply the relevant CPT values.</li>
+        <li>P(query | evidence) = P(query, evidence) / P(evidence) — always normalize.</li>
+        <li>Absent edge X → Y means X ⊥ Y | Parents(Y) — no edge = conditional independence.</li>
+        <li>The Markov Blanket of a node = its parents + children + co-parents (other parents of its children). A node is independent of all others given its Markov Blanket.</li>
+      </ul>
+    </section>
+
+    <!-- ── Practice Questions ─────────────────────── -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> A Bayesian Network is a:</h4>
+      <ol type="A">
+        <li>Directed Cyclic Graph with probability tables</li>
+        <li>Directed Acyclic Graph with Conditional Probability Tables</li>
+        <li>Undirected graph with joint probability tables</li>
+        <li>Binary tree with marginal probabilities</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — DAG with CPTs</strong></p>
+        <p>A Bayesian Network is a Directed Acyclic Graph where each node has a CPT specifying P(Xᵢ | Parents(Xᵢ)).</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> The joint distribution factorization in a Bayesian Network is:</h4>
+      <ol type="A">
+        <li>P(X₁,...,Xₙ) = Σ P(Xᵢ | Parents(Xᵢ))</li>
+        <li>P(X₁,...,Xₙ) = Π P(Xᵢ | Parents(Xᵢ))</li>
+        <li>P(X₁,...,Xₙ) = Π P(Xᵢ)</li>
+        <li>P(X₁,...,Xₙ) = P(X₁) × P(X₂|X₁) × P(X₃|X₁,X₂) × ...</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Product of P(Xᵢ | Parents(Xᵢ))</strong></p>
+        <p>The Markov Condition allows the joint to factorize as a product of local conditional distributions.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> A node with 3 boolean parents has a CPT with how many rows?</h4>
+      <ol type="A">
+        <li>3</li>
+        <li>6</li>
+        <li>8</li>
+        <li>16</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — 8 rows</strong></p>
+        <p>With k = 3 boolean parents, CPT has 2<sup>3</sup> = 8 rows — one for each combination of parent values.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q4</span> In the burglary network, what does the absence of a direct edge from Burglary to JohnCalls mean?</h4>
+      <ol type="A">
+        <li>Burglary never causes John to call</li>
+        <li>John calling is independent of burglary given alarm state</li>
+        <li>John calling depends directly on burglary</li>
+        <li>The network is incorrect</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — J ⊥ B | A</strong></p>
+        <p>No direct edge means conditional independence. John calls only based on alarm — once alarm state is known, burglary gives no additional information.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q5</span> For a BN with n=20 variables and max k=3 parents per node, how many parameters are needed (approximately)?</h4>
+      <ol type="A">
+        <li>1,048,576 (full joint)</li>
+        <li>160</li>
+        <li>60</li>
+        <li>20</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — 160</strong></p>
+        <p>n × 2<sup>k</sup> = 20 × 2<sup>3</sup> = 20 × 8 = 160. Compare to 2<sup>20</sup> = 1,048,576 for the full joint.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q6</span> Using the burglary network CPTs, P(A=T | B=T, E=F) = ?</h4>
+      <ol type="A">
+        <li>0.95</li>
+        <li>0.94</li>
+        <li>0.29</li>
+        <li>0.001</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — 0.94</strong></p>
+        <p>From the CPT: when B=T and E=F, P(A=T | B=T, E=F) = 0.94.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q7</span> The Markov Blanket of a node X consists of:</h4>
+      <ol type="A">
+        <li>Only X's parents</li>
+        <li>Only X's children</li>
+        <li>X's parents, children, and co-parents (other parents of X's children)</li>
+        <li>All nodes in the network</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Parents + Children + Co-parents</strong></p>
+        <p>X is conditionally independent of ALL other nodes given its Markov Blanket.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q8</span> Why must a Bayesian Network be acyclic (DAG)?</h4>
+      <ol type="A">
+        <li>To make the graph look neat</li>
+        <li>To ensure the joint factorization is valid — cycles would cause circular dependencies</li>
+        <li>To reduce the number of edges</li>
+        <li>Because cyclic graphs cannot store probabilities</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Prevents circular dependencies</strong></p>
+        <p>Cycles would mean X causes Y and Y causes X — making the factorization P(X₁...Xₙ) = Π P(Xᵢ|Parents) undefined. Acyclicity ensures a valid topological ordering.</p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="cond_indep.html">← Conditional Independence</a>
+      <a class="nav-btn next" href="exact_infer.html">Exact Inference →</a>
+    </div>
+
   </article>
-  <script src="../theme.js"></script>
+
+  <!-- ── TOC Sidebar ─────────────────────────────── -->
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#bn-definition">What is a BN?</a></li>
+      <li><a href="#example">Burglary Example</a></li>
+      <li><a href="#cpts">CPTs</a></li>
+      <li class="toc-sub"><a href="#cpts">Root Nodes</a></li>
+      <li class="toc-sub"><a href="#cpts">CPT Size</a></li>
+      <li><a href="#joint">Computing from BN</a></li>
+      <li><a href="#compactness">Why BN is Compact</a></li>
+      <li><a href="#construction">How to Build BN</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>
-

@@ -1,17 +1,654 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Probability Basics</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Probability Basics — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
+
+<div id="reading-progress"></div>
+
+<!-- ── Top Nav ────────────────────────────────────── -->
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="ruuncertainty.html">Reasoning Under Uncertainty</a>
+    <span>›</span>
+    <span>Probability Basics</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
   <article>
-    <h1>Introduction to Probability Basics</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <a href="ruuncertainty.html">← Back to Reasoning Under Uncertainty Topic</a>
+
+    <h1>Probability Basics</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Reasoning Under Uncertainty</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~15 min read</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
+      <p>
+        In the real world, an AI agent rarely has complete and certain knowledge.
+        <strong>Probability</strong> provides a formal framework for reasoning under
+        uncertainty — allowing an agent to represent degrees of belief and make
+        rational decisions even when facts are incomplete or noisy.
+      </p>
+
+      <div class="info-box">
+        <strong>Why Probability in AI?</strong> Logic says a statement is either True
+        or False. But in the real world, "It will rain tomorrow" is neither definitely
+        true nor false — it has a <strong>probability</strong>. AI agents must handle
+        this uncertainty to act intelligently.
+      </div>
+
+      <h3>Basic Terminology</h3>
+      <table>
+        <thead>
+          <tr><th>Term</th><th>Meaning</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Experiment</strong></td>
+            <td>A process with uncertain outcomes</td>
+            <td>Rolling a die</td>
+          </tr>
+          <tr>
+            <td><strong>Sample Space (Ω)</strong></td>
+            <td>Set of all possible outcomes</td>
+            <td>{1, 2, 3, 4, 5, 6}</td>
+          </tr>
+          <tr>
+            <td><strong>Event</strong></td>
+            <td>A subset of the sample space</td>
+            <td>Getting an even number = {2, 4, 6}</td>
+          </tr>
+          <tr>
+            <td><strong>Probability P(A)</strong></td>
+            <td>Likelihood of event A occurring</td>
+            <td>P(even) = 3/6 = 0.5</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Axioms of Probability</h3>
+      <ul>
+        <li><strong>0 ≤ P(A) ≤ 1</strong> — probability is always between 0 and 1</li>
+        <li><strong>P(Ω) = 1</strong> — something in the sample space always happens</li>
+        <li><strong>P(A ∪ B) = P(A) + P(B)</strong> — if A and B are mutually exclusive</li>
+      </ul>
+
+      <h3>Useful Probability Rules</h3>
+      <table>
+        <thead>
+          <tr><th>Rule</th><th>Formula</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Complement Rule</strong></td>
+            <td>P(¬A) = 1 − P(A)</td>
+          </tr>
+          <tr>
+            <td><strong>Addition Rule</strong></td>
+            <td>P(A ∪ B) = P(A) + P(B) − P(A ∩ B)</td>
+          </tr>
+          <tr>
+            <td><strong>Multiplication Rule</strong></td>
+            <td>P(A ∩ B) = P(A) × P(B|A)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Random Variables ───────────────────────── -->
+    <section id="random-variables">
+      <h2>1. Random Variables</h2>
+      <p>
+        A <strong>Random Variable (RV)</strong> is a variable whose value is determined
+        by the outcome of a random experiment. It maps outcomes from the sample space
+        to numerical values.
+      </p>
+
+      <div class="info-box">
+        <strong>Definition:</strong> A random variable X is a function
+        X : Ω → ℝ that assigns a real number to each outcome in the sample space.
+      </div>
+
+      <h3>1.1 Types of Random Variables</h3>
+      <table>
+        <thead>
+          <tr><th></th><th>Discrete RV</th><th>Continuous RV</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Definition</strong></td>
+            <td>Takes countable values</td>
+            <td>Takes any value in a range</td>
+          </tr>
+          <tr>
+            <td><strong>Examples</strong></td>
+            <td>Number of heads in 10 flips, die outcome</td>
+            <td>Height, weight, temperature</td>
+          </tr>
+          <tr>
+            <td><strong>Distribution</strong></td>
+            <td>Probability Mass Function (PMF)</td>
+            <td>Probability Density Function (PDF)</td>
+          </tr>
+          <tr>
+            <td><strong>P(X = x)</strong></td>
+            <td>P(X = x) can be non-zero</td>
+            <td>P(X = x) = 0 for any specific x</td>
+          </tr>
+          <tr>
+            <td><strong>Sum/Integral</strong></td>
+            <td>Σ P(X = x) = 1</td>
+            <td>∫ f(x) dx = 1</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>1.2 Probability Mass Function (PMF)</h3>
+      <p>
+        For a <strong>discrete</strong> random variable X, the PMF gives the
+        probability that X takes each specific value.
+      </p>
+      <code class="formula-block">P(X = x) = probability that X equals x</code>
+
+      <p><strong>Example — Fair Die:</strong></p>
+      <table>
+        <thead>
+          <tr><th>x</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>P(X = x)</strong></td>
+            <td>1/6</td><td>1/6</td><td>1/6</td><td>1/6</td><td>1/6</td><td>1/6</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>All probabilities sum to 1: 6 × (1/6) = 1 ✓</p>
+
+      <h3>1.3 Joint Probability</h3>
+      <p>
+        The <strong>joint probability</strong> P(X = x, Y = y) is the probability
+        that random variable X takes value x <strong>AND</strong> Y takes value y
+        simultaneously.
+      </p>
+      <code class="formula-block">P(X = x, Y = y) = P(X = x ∩ Y = y)</code>
+
+      <h3>1.4 Marginal Probability</h3>
+      <p>
+        The <strong>marginal probability</strong> of X is obtained by summing
+        the joint probability over all values of Y.
+      </p>
+      <code class="formula-block">P(X = x) = Σ<sub>y</sub> P(X = x, Y = y)</code>
+
+      <p><strong>Example:</strong></p>
+      <table>
+        <thead>
+          <tr><th>X \ Y</th><th>Y=0</th><th>Y=1</th><th>P(X)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>X=0</strong></td><td>0.1</td><td>0.3</td><td>0.4</td></tr>
+          <tr><td><strong>X=1</strong></td><td>0.2</td><td>0.4</td><td>0.6</td></tr>
+          <tr><td><strong>P(Y)</strong></td><td>0.3</td><td>0.7</td><td>1.0</td></tr>
+        </tbody>
+      </table>
+      <p>P(X=0) = 0.1 + 0.3 = 0.4 &nbsp;·&nbsp; P(Y=1) = 0.3 + 0.4 = 0.7</p>
+
+      <h3>1.5 Expected Value (Mean)</h3>
+      <p>
+        The <strong>expected value</strong> E[X] is the weighted average of all
+        possible values of X, weighted by their probabilities.
+      </p>
+      <code class="formula-block">E[X] = Σ x · P(X = x) &nbsp;&nbsp; (discrete)</code>
+
+      <p><strong>Example — Fair Die:</strong></p>
+      <p>E[X] = 1×(1/6) + 2×(1/6) + 3×(1/6) + 4×(1/6) + 5×(1/6) + 6×(1/6) = 21/6 = <strong>3.5</strong></p>
+
+      <h3>1.6 Variance</h3>
+      <p>
+        The <strong>variance</strong> Var(X) measures how spread out the values
+        of X are around the expected value.
+      </p>
+      <code class="formula-block">Var(X) = E[X²] − (E[X])²</code>
+      <code class="formula-block">Std Dev = σ = √Var(X)</code>
+    </section>
+
+    <!-- ── Conditional Probability ────────────────── -->
+    <section id="conditional-probability">
+      <h2>2. Conditional Probability</h2>
+      <p>
+        <strong>Conditional Probability</strong> P(A|B) is the probability of
+        event A occurring <strong>given that</strong> event B has already occurred.
+        It updates our belief about A based on new information B.
+      </p>
+
+      <h3>Formula</h3>
+      <code class="formula-block amber">P(A|B) = P(A ∩ B) / P(B) &nbsp;&nbsp; where P(B) > 0</code>
+
+      <h3>Intuition</h3>
+      <p>
+        When B occurs, the sample space <strong>shrinks</strong> to only those outcomes
+        where B is true. We then ask: within this reduced space, what fraction
+        also satisfies A?
+      </p>
+
+      <h3>Example</h3>
+      <p>
+        A bag has 4 red balls and 6 blue balls. Two balls are drawn without replacement.
+      </p>
+      <pre>
+  P(2nd is red | 1st is red) = ?
+
+  P(1st red) = 4/10
+  P(1st red AND 2nd red) = (4/10) × (3/9) = 12/90
+
+  P(2nd red | 1st red) = P(both red) / P(1st red)
+                       = (12/90) / (4/10)
+                       = (12/90) × (10/4)
+                       = 120/360
+                       = 1/3  ✓
+      </pre>
+
+      <h3>2.1 Independence</h3>
+      <p>
+        Two events A and B are <strong>independent</strong> if knowing B occurred
+        gives no information about A.
+      </p>
+      <code class="formula-block">A and B are independent ⟺ P(A|B) = P(A)</code>
+      <code class="formula-block">Equivalently: P(A ∩ B) = P(A) × P(B)</code>
+
+      <p><strong>Example:</strong> Flipping a fair coin twice — the result of the first flip
+      does not affect the second flip.</p>
+      <p>P(H on flip 2 | H on flip 1) = P(H on flip 2) = 1/2 ✓</p>
+
+      <h3>2.2 Chain Rule of Probability</h3>
+      <p>The chain rule extends conditional probability to multiple events:</p>
+      <code class="formula-block">P(A ∩ B) = P(A|B) × P(B)</code>
+      <code class="formula-block">P(A ∩ B ∩ C) = P(A|B ∩ C) × P(B|C) × P(C)</code>
+
+      <h3>2.3 Law of Total Probability</h3>
+      <p>
+        If B₁, B₂, ..., Bₙ are <strong>mutually exclusive and exhaustive</strong>
+        events (they partition the sample space), then:
+      </p>
+      <code class="formula-block">P(A) = Σ P(A|Bᵢ) × P(Bᵢ)</code>
+
+      <p><strong>Example:</strong></p>
+      <pre>
+  Factory has 2 machines:
+  Machine 1 makes 60% of items, defect rate 2%
+  Machine 2 makes 40% of items, defect rate 5%
+
+  P(defect) = P(defect|M1)×P(M1) + P(defect|M2)×P(M2)
+            = 0.02×0.60 + 0.05×0.40
+            = 0.012 + 0.020
+            = 0.032 = 3.2%
+      </pre>
+    </section>
+
+    <!-- ── Bayes Theorem ──────────────────────────── -->
+    <section id="bayes-theorem">
+      <h2>3. Bayes' Theorem</h2>
+      <p>
+        <strong>Bayes' Theorem</strong> allows us to <strong>update our beliefs</strong>
+        about a hypothesis when we observe new evidence. It is the foundation of
+        probabilistic reasoning in AI.
+      </p>
+
+      <h3>Formula</h3>
+      <code class="formula-block amber">P(H|E) = [ P(E|H) × P(H) ] / P(E)</code>
+
+      <h3>Components</h3>
+      <table>
+        <thead>
+          <tr><th>Term</th><th>Name</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>P(H|E)</strong></td>
+            <td>Posterior</td>
+            <td>Updated probability of H after seeing evidence E</td>
+          </tr>
+          <tr>
+            <td><strong>P(E|H)</strong></td>
+            <td>Likelihood</td>
+            <td>Probability of seeing evidence E if H is true</td>
+          </tr>
+          <tr>
+            <td><strong>P(H)</strong></td>
+            <td>Prior</td>
+            <td>Initial probability of H before seeing evidence</td>
+          </tr>
+          <tr>
+            <td><strong>P(E)</strong></td>
+            <td>Marginal / Evidence</td>
+            <td>Total probability of evidence E (normalizing constant)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>How to Remember</h3>
+      <code class="formula-block">Posterior ∝ Likelihood × Prior</code>
+      <p>
+        (∝ means "proportional to" — P(E) is just a normalizing constant to
+        make probabilities sum to 1)
+      </p>
+
+      <h3>Derivation</h3>
+      <p>Bayes' Theorem follows directly from the definition of conditional probability:</p>
+      <pre>
+  P(H|E) = P(H ∩ E) / P(E)          ... (definition of conditional prob)
+  P(E|H) = P(H ∩ E) / P(H)          ... (definition of conditional prob)
+
+  From the second: P(H ∩ E) = P(E|H) × P(H)
+
+  Substituting into the first:
+  P(H|E) = P(E|H) × P(H) / P(E)     ✓
+      </pre>
+
+      <h3>Classic Example — Medical Diagnosis</h3>
+      <pre>
+  Disease D affects 1% of population
+  Test T: 99% accurate if disease present    P(T+|D) = 0.99
+          5% false positive rate             P(T+|¬D) = 0.05
+
+  Question: If test is positive, what is P(D|T+)?
+
+  Prior:     P(D) = 0.01,  P(¬D) = 0.99
+
+  P(T+) = P(T+|D)×P(D) + P(T+|¬D)×P(¬D)   ← Law of Total Probability
+        = 0.99×0.01 + 0.05×0.99
+        = 0.0099 + 0.0495
+        = 0.0594
+
+  P(D|T+) = P(T+|D) × P(D) / P(T+)
+           = 0.99 × 0.01 / 0.0594
+           = 0.0099 / 0.0594
+           ≈ 0.1667 ≈ 16.67%
+      </pre>
+
+      <div class="info-box">
+        <strong>Key Insight:</strong> Even with a 99% accurate test, a positive result
+        only means ~17% chance of actually having the disease. This is because the
+        disease is rare (1% prior). Bayes' Theorem correctly accounts for this —
+        this is why it is so powerful in medical AI, spam filters, and diagnostic systems.
+      </div>
+
+      <h3>Example 2 — Spam Filter</h3>
+      <pre>
+  P(Spam) = 0.4         (40% of emails are spam)
+  P(¬Spam) = 0.6
+
+  Word "FREE" appears in:
+  P(FREE|Spam) = 0.9    (90% of spam contains "FREE")
+  P(FREE|¬Spam) = 0.1   (10% of non-spam contains "FREE")
+
+  P(FREE) = 0.9×0.4 + 0.1×0.6 = 0.36 + 0.06 = 0.42
+
+  P(Spam|FREE) = P(FREE|Spam) × P(Spam) / P(FREE)
+               = 0.9 × 0.4 / 0.42
+               = 0.36 / 0.42
+               ≈ 0.857 = 85.7%
+      </pre>
+      <p>If an email contains "FREE" → 85.7% probability it is spam.</p>
+
+      <h3>3.1 Bayes' Theorem with Multiple Hypotheses</h3>
+      <p>
+        When there are multiple mutually exclusive hypotheses H₁, H₂, ..., Hₙ:
+      </p>
+      <code class="formula-block amber">P(Hᵢ|E) = P(E|Hᵢ) × P(Hᵢ) / Σⱼ P(E|Hⱼ) × P(Hⱼ)</code>
+
+      <p>The denominator Σⱼ P(E|Hⱼ) × P(Hⱼ) is just P(E) expanded using the
+      Law of Total Probability.</p>
+    </section>
+
+    <!-- ── Summary ────────────────────────────────── -->
+    <section id="summary">
+      <h2>Key Formulas Summary</h2>
+
+      <table>
+        <thead>
+          <tr><th>Formula</th><th>Name</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>P(A ∪ B) = P(A) + P(B) − P(A ∩ B)</strong></td><td>Addition Rule</td></tr>
+          <tr><td><strong>P(¬A) = 1 − P(A)</strong></td><td>Complement Rule</td></tr>
+          <tr><td><strong>P(A|B) = P(A ∩ B) / P(B)</strong></td><td>Conditional Probability</td></tr>
+          <tr><td><strong>P(A ∩ B) = P(A|B) × P(B)</strong></td><td>Chain Rule</td></tr>
+          <tr><td><strong>P(A ∩ B) = P(A) × P(B)</strong></td><td>Independence</td></tr>
+          <tr><td><strong>P(A) = Σ P(A|Bᵢ) × P(Bᵢ)</strong></td><td>Total Probability</td></tr>
+          <tr><td><strong>P(H|E) = P(E|H) × P(H) / P(E)</strong></td><td>Bayes' Theorem</td></tr>
+          <tr><td><strong>E[X] = Σ x · P(X=x)</strong></td><td>Expected Value</td></tr>
+          <tr><td><strong>Var(X) = E[X²] − (E[X])²</strong></td><td>Variance</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── GATE Tips ──────────────────────────────── -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li><strong>P(A|B) = P(A ∩ B) / P(B)</strong> — memorize this definition first.</li>
+        <li>Independent events: <strong>P(A ∩ B) = P(A) × P(B)</strong>. Always verify this before assuming independence.</li>
+        <li><strong>Law of Total Probability</strong> is used to find P(E) in Bayes' Theorem.</li>
+        <li><strong>Bayes' Theorem</strong>: Posterior = (Likelihood × Prior) / Evidence.</li>
+        <li>In Bayes problems — always identify Prior, Likelihood, and Evidence first before computing.</li>
+        <li>Marginal probability = sum joint probabilities over all values of the other variable.</li>
+        <li>P(A|B) ≠ P(B|A) — a very common mistake. Bayes' Theorem tells you how to switch them.</li>
+        <li>In medical diagnosis problems — low base rate (prior) dramatically reduces posterior even with accurate tests.</li>
+        <li>Variance formula: <strong>Var(X) = E[X²] − (E[X])²</strong> — faster than computing directly.</li>
+        <li>Conditional probability reduces sample space — think of it as zooming into the region where B is true.</li>
+      </ul>
+    </section>
+
+    <!-- ── Practice Questions ─────────────────────── -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> Which formula defines conditional probability P(A|B)?</h4>
+      <ol type="A">
+        <li>P(A) × P(B)</li>
+        <li>P(A ∩ B) / P(B)</li>
+        <li>P(A) + P(B) − P(A ∩ B)</li>
+        <li>P(B ∩ A) × P(A)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — P(A ∩ B) / P(B)</strong></p>
+        <p>Conditional probability P(A|B) is the joint probability P(A ∩ B) divided by the probability of the condition P(B).</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> Two events A and B are independent if and only if:</h4>
+      <ol type="A">
+        <li>P(A ∩ B) = 0</li>
+        <li>P(A|B) = P(B)</li>
+        <li>P(A ∩ B) = P(A) × P(B)</li>
+        <li>P(A ∪ B) = 1</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — P(A ∩ B) = P(A) × P(B)</strong></p>
+        <p>Independence means knowing B gives no information about A. This is equivalent to P(A ∩ B) = P(A) × P(B).</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> In Bayes' Theorem P(H|E) = P(E|H)×P(H)/P(E), what is P(H) called?</h4>
+      <ol type="A">
+        <li>Likelihood</li>
+        <li>Posterior</li>
+        <li>Prior</li>
+        <li>Evidence</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — Prior</strong></p>
+        <p>P(H) is the prior probability — our belief about H before seeing evidence E.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q4</span> A bag has 3 red and 7 blue balls. P(red on 2nd draw | red on 1st draw) without replacement is:</h4>
+      <ol type="A">
+        <li>3/10</li>
+        <li>2/9</li>
+        <li>3/9</li>
+        <li>2/10</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — 2/9</strong></p>
+        <p>After drawing 1 red, there are 2 red balls left out of 9 remaining. P = 2/9.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q5</span> P(A ∪ B) when A and B are mutually exclusive is:</h4>
+      <ol type="A">
+        <li>P(A) × P(B)</li>
+        <li>P(A) + P(B) − P(A ∩ B)</li>
+        <li>P(A) + P(B)</li>
+        <li>1 − P(A) − P(B)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — P(A) + P(B)</strong></p>
+        <p>Mutually exclusive means P(A ∩ B) = 0, so P(A ∪ B) = P(A) + P(B) − 0 = P(A) + P(B).</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q6</span> Disease affects 2% of people. Test is 95% accurate (sensitivity) and has 3% false positive rate. Given a positive test, P(Disease|Positive) ≈ ?</h4>
+      <ol type="A">
+        <li>95%</li>
+        <li>2%</li>
+        <li>39%</li>
+        <li>50%</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — approximately 39%</strong></p>
+        <p>
+          P(+) = 0.95×0.02 + 0.03×0.98 = 0.019 + 0.0294 = 0.0484<br>
+          P(D|+) = 0.95×0.02 / 0.0484 = 0.019/0.0484 ≈ 0.393 ≈ 39%
+        </p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q7</span> The expected value of a fair die (faces 1–6) is:</h4>
+      <ol type="A">
+        <li>3</li>
+        <li>3.5</li>
+        <li>4</li>
+        <li>2.5</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — 3.5</strong></p>
+        <p>E[X] = (1+2+3+4+5+6)/6 = 21/6 = 3.5</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q8</span> P(A|B) = P(B|A) is true when:</h4>
+      <ol type="A">
+        <li>Always</li>
+        <li>Never</li>
+        <li>When P(A) = P(B)</li>
+        <li>When A and B are mutually exclusive</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — When P(A) = P(B)</strong></p>
+        <p>From Bayes: P(A|B) = P(B|A)×P(A)/P(B). So P(A|B) = P(B|A) only when P(A) = P(B).</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q9</span> The Law of Total Probability states:</h4>
+      <ol type="A">
+        <li>P(A) = P(A|B) + P(A|¬B)</li>
+        <li>P(A) = Σ P(A|Bᵢ) × P(Bᵢ) for a partition {Bᵢ}</li>
+        <li>P(A) = P(A ∩ B) / P(B)</li>
+        <li>P(A) = P(B|A) × P(A)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — P(A) = Σ P(A|Bᵢ) × P(Bᵢ)</strong></p>
+        <p>When B₁, B₂,...,Bₙ partition the sample space, the total probability of A is the weighted sum of conditional probabilities.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q10</span> Which of the following is the correct formula for Variance?</h4>
+      <ol type="A">
+        <li>E[X] − (E[X²])</li>
+        <li>E[X²] − (E[X])²</li>
+        <li>(E[X])² − E[X²]</li>
+        <li>E[X]²</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — E[X²] − (E[X])²</strong></p>
+        <p>Var(X) = E[X²] − (E[X])². This is the most efficient formula to compute variance.</p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="ruuncertainty.html">← Reasoning Under Uncertainty</a>
+      <a class="nav-btn next" href="cond_indep.html">Conditional Independence →</a>
+    </div>
+
   </article>
-  <script src="../theme.js"></script>
+
+  <!-- ── TOC Sidebar ─────────────────────────────── -->
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#random-variables">Random Variables</a></li>
+      <li class="toc-sub"><a href="#random-variables">Discrete vs Continuous</a></li>
+      <li class="toc-sub"><a href="#random-variables">PMF & Joint</a></li>
+      <li class="toc-sub"><a href="#random-variables">Expected Value</a></li>
+      <li><a href="#conditional-probability">Conditional Probability</a></li>
+      <li class="toc-sub"><a href="#conditional-probability">Independence</a></li>
+      <li class="toc-sub"><a href="#conditional-probability">Chain Rule</a></li>
+      <li class="toc-sub"><a href="#conditional-probability">Total Probability</a></li>
+      <li><a href="#bayes-theorem">Bayes' Theorem</a></li>
+      <li class="toc-sub"><a href="#bayes-theorem">Medical Example</a></li>
+      <li class="toc-sub"><a href="#bayes-theorem">Spam Filter</a></li>
+      <li><a href="#summary">Key Formulas</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>
-

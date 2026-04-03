@@ -1,44 +1,294 @@
 <!doctype html>
-<html>
-  <head>
-    <title>Introduction to Reasoning Under Uncertainty</title>
-    <link rel="stylesheet" href="../style.css" />
-  </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reasoning Under Uncertainty — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
 
-  <body>
-    <article>
-      <h1>Introduction to Reasoning Under Uncertainty</h1>
-      <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
+<div id="reading-progress"></div>
 
-      <h2>Types of Reasoning Under Uncertainty</h2>
+<!-- ── Top Nav ────────────────────────────────────── -->
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <span>Reasoning Under Uncertainty</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
 
-      <main class="posts">
-        <a class="post-link" href=" prob_basics.html">
-          a) Probability Basics
-        </a>
-      </main>
-      <main class="posts">
-        <a class="post-link" href="cond_indep.html">
-          b) Conditional Independence
-        </a>
-      </main>
-      <main class="posts">
-        <a class="post-link" href="represent.html">
-          c) Representation
-        </a>
-      </main>
-      <main class="posts">
-        <a class="post-link" href=" exact_infer.html">
-          d) Exact Inference
-        </a>
-      </main>
-      <main class="posts">
-        <a class="post-link" href="approx_infer.html">
-          e) Approximate Inference
-        </a>
-      </main>
+<div class="page-wrap">
+  <article>
 
-    </article>
-    <script src="../theme.js"></script>
-  </body>
+    <h1>Reasoning Under Uncertainty</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Reasoning Under Uncertainty</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 Topic Overview</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
+      <p>
+        In the real world, AI agents rarely have complete, perfect knowledge.
+        Sensors are noisy, information is incomplete, and the future is unpredictable.
+        <strong>Reasoning Under Uncertainty</strong> provides a principled framework —
+        based on probability theory — to handle this uncertainty and still make
+        rational, optimal decisions.
+      </p>
+
+      <div class="info-box">
+        <strong>Why Not Just Use Logic?</strong> Logic requires statements to be
+        definitely True or False. But "the patient has disease X" is not
+        definitely true — it has a probability based on symptoms, test results,
+        and medical history. Probability theory handles this naturally where
+        logic cannot.
+      </div>
+    </section>
+
+    <!-- ── The Problem ────────────────────────────── -->
+    <section id="problem">
+      <h2>The Problem of Uncertainty</h2>
+      <p>
+        Real-world AI agents face uncertainty from multiple sources:
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Source</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Partial Observability</strong></td>
+            <td>A robot cannot see behind walls</td>
+          </tr>
+          <tr>
+            <td><strong>Noisy Sensors</strong></td>
+            <td>A temperature sensor has measurement error</td>
+          </tr>
+          <tr>
+            <td><strong>Stochastic Actions</strong></td>
+            <td>A robot arm may slip when picking up objects</td>
+          </tr>
+          <tr>
+            <td><strong>Incomplete Knowledge</strong></td>
+            <td>A medical AI doesn't know all possible diseases</td>
+          </tr>
+          <tr>
+            <td><strong>Adversarial Environments</strong></td>
+            <td>Opponent in a game makes unpredictable moves</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Solution:</strong> Instead of a binary True/False belief, an AI agent
+        maintains a <strong>probability distribution</strong> over possible states of
+        the world. As new evidence arrives, the distribution is updated using
+        Bayes' Theorem.
+      </div>
+    </section>
+
+    <!-- ── Probability as Foundation ─────────────── -->
+    <section id="foundation">
+      <h2>Probability as the Foundation</h2>
+      <p>
+        The <strong>Bayesian approach</strong> to AI treats probability as a
+        degree of belief. All uncertainty is represented as probability and
+        updated consistently as new evidence is observed.
+      </p>
+
+      <h3>Key Insight</h3>
+      <pre>
+  Agent's belief about world = Probability distribution P(X₁, X₂, ..., Xₙ)
+
+  When evidence e is observed:
+  Updated belief = P(X | e) via Bayes' Theorem
+
+  Decision = argmax P(outcome | action, evidence)
+      </pre>
+
+      <h3>The Full Joint Distribution</h3>
+      <p>
+        The complete specification of a probabilistic domain is the
+        <strong>full joint distribution</strong> — a probability for every
+        possible combination of variable values.
+      </p>
+      <p>
+        For n binary variables → <strong>2<sup>n</sup></strong> entries needed.
+        For n=30 → over 1 billion entries. This is why we need compact representations
+        like <strong>Bayesian Networks</strong>.
+      </p>
+    </section>
+
+    <!-- ── Topics ─────────────────────────────────── -->
+    <section id="topics">
+      <h2>Topics in This Section</h2>
+      <p>The GATE DA syllabus covers five topics under Reasoning Under Uncertainty:</p>
+
+      <div class="algo-grid">
+
+        <a class="algo-card" href="prob_basics.html">
+          <span class="card-num">a</span>
+          <span class="card-title">Probability Basics</span>
+          <span class="card-desc">
+            Random Variables, Conditional Probability, Bayes' Theorem —
+            the mathematical foundation for all probabilistic reasoning.
+          </span>
+          <div class="card-tags">
+            <span class="tag complete">Foundation</span>
+            <span class="tag time">Bayes' Theorem</span>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+
+        <a class="algo-card" href="cond_indep.html">
+          <span class="card-num">b</span>
+          <span class="card-title">Conditional Independence</span>
+          <span class="card-desc">
+            How variables can be independent given a third variable.
+            The key to making probabilistic reasoning tractable.
+          </span>
+          <div class="card-tags">
+            <span class="tag optimal">Chain / Fork / Collider</span>
+            <span class="tag space">d-Separation</span>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+
+        <a class="algo-card" href="represent.html">
+          <span class="card-num">c</span>
+          <span class="card-title">Representation</span>
+          <span class="card-desc">
+            Bayesian Networks and Conditional Probability Tables (CPTs) —
+            compact representation of joint distributions.
+          </span>
+          <div class="card-tags">
+            <span class="tag complete">Bayesian Networks</span>
+            <span class="tag time">CPTs</span>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+
+        <a class="algo-card" href="exact_infer.html">
+          <span class="card-num">d</span>
+          <span class="card-title">Exact Inference</span>
+          <span class="card-desc">
+            Variable Elimination — computing exact posterior probabilities
+            from a Bayesian Network.
+          </span>
+          <div class="card-tags">
+            <span class="tag complete">Exact</span>
+            <span class="tag space">Variable Elimination</span>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+
+        <a class="algo-card" href="approx_infer.html">
+          <span class="card-num">e</span>
+          <span class="card-title">Approximate Inference</span>
+          <span class="card-desc">
+            Sampling methods — Prior Sampling, Rejection Sampling,
+            Likelihood Weighting, Gibbs Sampling.
+          </span>
+          <div class="card-tags">
+            <span class="tag optimal">Sampling</span>
+            <span class="tag time">Scalable</span>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ── How Topics Connect ─────────────────────── -->
+    <section id="flow">
+      <h2>How the Topics Connect</h2>
+      <pre>
+  Probability Basics
+        ↓
+  (understanding P, P(A|B), Bayes' Theorem)
+        ↓
+  Conditional Independence
+        ↓
+  (knowing which variables can be treated independently)
+        ↓
+  Representation (Bayesian Networks + CPTs)
+        ↓
+  (compact encoding of the joint distribution)
+        ↓
+  ┌─────────────────┐
+  │  Exact Inference │ ← Variable Elimination
+  │  (small networks)│
+  └─────────────────┘
+        ↓ (too slow for large networks)
+  ┌──────────────────────┐
+  │ Approximate Inference │ ← Sampling methods
+  │  (large networks)     │
+  └──────────────────────┘
+      </pre>
+    </section>
+
+    <!-- ── GATE Tips ──────────────────────────────── -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li>This entire section builds on top of each other — understand Probability Basics first.</li>
+        <li><strong>Bayesian Networks</strong> are the central data structure — understand their structure and CPTs well.</li>
+        <li><strong>Bayes' Theorem</strong> is used in almost every question in this section.</li>
+        <li>Conditional Independence is what makes Bayesian Networks efficient — 2<sup>n</sup> → manageable.</li>
+        <li><strong>Variable Elimination</strong> is the exact inference algorithm — know how to apply it step by step.</li>
+        <li>Sampling methods are approximate — Likelihood Weighting is the most efficient of the four.</li>
+        <li>GATE questions typically ask: compute a posterior probability given evidence in a Bayesian Network.</li>
+      </ul>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="../index.html">← Home</a>
+      <a class="nav-btn next" href="prob_basics.html">Probability Basics →</a>
+    </div>
+
+  </article>
+
+  <!-- ── TOC Sidebar ─────────────────────────────── -->
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#problem">The Problem</a></li>
+      <li><a href="#foundation">Probability Foundation</a></li>
+      <li><a href="#topics">Topics</a></li>
+      <li><a href="#flow">How Topics Connect</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<script src="../theme.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
+</body>
 </html>
