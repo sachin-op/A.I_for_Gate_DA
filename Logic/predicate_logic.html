@@ -1,20 +1,800 @@
-
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Introduction to Predicate Logic</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Predicate Logic — GATE DA</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
-  <article>
-    <h1>Introduction to Predicate Logic</h1>
-    <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
-    <a href="logic.html">← Back to Logic Topic</a>
-  </article>
-  <script src="../theme.js"></script>
-  <script src="../analytics.js"></script>
 
+<div id="reading-progress"></div>
+
+<!-- ── Top Nav ────────────────────────────────────── -->
+<div class="top-nav">
+  <div class="breadcrumb">
+    <a href="../index.html">🏠 Home</a>
+    <span>›</span>
+    <a href="logic.html">Logic</a>
+    <span>›</span>
+    <span>Predicate Logic</span>
+  </div>
+  <button id="themeToggle" class="theme-toggle">☀ Light Mode</button>
+</div>
+
+<div class="page-wrap">
+  <article>
+
+    <h1>Predicate Logic (First-Order Logic)</h1>
+
+    <div class="article-meta">
+      <div class="meta-left">
+        <span class="meta-badge badge-topic">Logic</span>
+        <span class="meta-badge badge-gate">GATE DA</span>
+        <span class="read-time">📖 ~18 min read</span>
+      </div>
+    </div>
+
+    <!-- ── Intro ──────────────────────────────────── -->
+    <section id="intro">
+      <p>
+        <strong>Predicate Logic</strong> (also called <strong>First-Order Logic</strong>
+        or FOL) extends Propositional Logic by introducing
+        <strong>objects</strong>, <strong>predicates</strong>, and
+        <strong>quantifiers</strong>. It is far more expressive — capable of
+        representing complex real-world knowledge that propositional logic cannot handle.
+      </p>
+
+      <div class="info-box">
+        <strong>Why Predicate Logic?</strong> Propositional Logic can say
+        "Socrates is mortal" as a single atom P. But it cannot express the
+        general rule "All humans are mortal." Predicate Logic can:
+        <strong>∀x Human(x) → Mortal(x)</strong> — and then derive
+        Mortal(Socrates) automatically.
+      </div>
+    </section>
+
+    <!-- ── Propositional vs Predicate ────────────── -->
+    <section id="comparison">
+      <h2>1. Propositional vs Predicate Logic</h2>
+
+      <table>
+        <thead>
+          <tr><th>Feature</th><th>Propositional Logic</th><th>Predicate Logic (FOL)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Basic unit</strong></td>
+            <td>Proposition (P, Q, R)</td>
+            <td>Predicate applied to objects: Likes(Alice, Bob)</td>
+          </tr>
+          <tr>
+            <td><strong>Objects</strong></td>
+            <td>✗ None</td>
+            <td>✓ Constants, Variables, Functions</td>
+          </tr>
+          <tr>
+            <td><strong>Quantifiers</strong></td>
+            <td>✗ None</td>
+            <td>✓ ∀ (for all), ∃ (there exists)</td>
+          </tr>
+          <tr>
+            <td><strong>Expressiveness</strong></td>
+            <td>Low</td>
+            <td>High — describes relationships between objects</td>
+          </tr>
+          <tr>
+            <td><strong>Example</strong></td>
+            <td>P = "It is raining"</td>
+            <td>Raining(London) or ∀x City(x) → HasWeather(x)</td>
+          </tr>
+          <tr>
+            <td><strong>Decidability</strong></td>
+            <td>Decidable</td>
+            <td>Semi-decidable</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Building Blocks ────────────────────────── -->
+    <section id="building-blocks">
+      <h2>2. Building Blocks of FOL</h2>
+
+      <h3>2.1 Terms — What Things Exist</h3>
+      <p>Terms refer to objects in the world. There are three kinds:</p>
+
+      <table>
+        <thead>
+          <tr><th>Type</th><th>Definition</th><th>Examples</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Constant</strong></td>
+            <td>A specific named object</td>
+            <td>Alice, Bob, 5, London</td>
+          </tr>
+          <tr>
+            <td><strong>Variable</strong></td>
+            <td>A placeholder for any object</td>
+            <td>x, y, z (lowercase)</td>
+          </tr>
+          <tr>
+            <td><strong>Function</strong></td>
+            <td>Maps objects to objects</td>
+            <td>FatherOf(x), SquareOf(3)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>2.2 Predicates — Properties and Relations</h3>
+      <p>
+        A <strong>predicate</strong> is a function that takes objects as arguments
+        and returns True or False. It describes a <strong>property</strong> of an
+        object or a <strong>relation</strong> between objects.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Predicate</th><th>Meaning</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Human(x)</strong></td>
+            <td>x is a human</td>
+            <td>Human(Socrates) = True</td>
+          </tr>
+          <tr>
+            <td><strong>Mortal(x)</strong></td>
+            <td>x is mortal</td>
+            <td>Mortal(Socrates) = True</td>
+          </tr>
+          <tr>
+            <td><strong>Likes(x, y)</strong></td>
+            <td>x likes y</td>
+            <td>Likes(Alice, Bob) = True</td>
+          </tr>
+          <tr>
+            <td><strong>Greater(x, y)</strong></td>
+            <td>x is greater than y</td>
+            <td>Greater(5, 3) = True</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        The number of arguments a predicate takes is called its <strong>arity</strong>.
+        Human(x) has arity 1. Likes(x, y) has arity 2.
+      </p>
+
+      <h3>2.3 Connectives</h3>
+      <p>Same logical connectives as Propositional Logic:</p>
+      <ul>
+        <li><strong>¬</strong> (NOT), <strong>∧</strong> (AND), <strong>∨</strong> (OR)</li>
+        <li><strong>→</strong> (Implication), <strong>↔</strong> (Biconditional)</li>
+      </ul>
+
+      <h3>2.4 Equality</h3>
+      <p>
+        FOL includes the special predicate <strong>=</strong> for equality:
+        x = y means x and y refer to the same object.
+      </p>
+      <code class="formula-block">FatherOf(Alice) = Bob &nbsp;&nbsp; (Bob is Alice's father)</code>
+    </section>
+
+    <!-- ── Quantifiers ────────────────────────────── -->
+    <section id="quantifiers">
+      <h2>3. Quantifiers</h2>
+      <p>
+        Quantifiers are the most powerful feature of Predicate Logic — they allow
+        statements about <strong>all</strong> objects or <strong>some</strong> objects
+        in the domain.
+      </p>
+
+      <h3>3.1 Universal Quantifier ∀ (For All)</h3>
+      <code class="formula-block amber">∀x P(x) &nbsp;&nbsp; "For all x, P(x) is true"</code>
+
+      <p>The statement is true if P(x) holds for <strong>every</strong> object in the domain.</p>
+
+      <p><strong>Examples:</strong></p>
+      <pre>
+  ∀x Human(x) → Mortal(x)
+  "Every human is mortal"
+
+  ∀x (Cat(x) → Animal(x))
+  "All cats are animals"
+
+  ∀x ∀y Likes(x,y) → Likes(y,x)
+  "If x likes y then y likes x" (symmetry)
+      </pre>
+
+      <h3>3.2 Existential Quantifier ∃ (There Exists)</h3>
+      <code class="formula-block amber">∃x P(x) &nbsp;&nbsp; "There exists an x such that P(x) is true"</code>
+
+      <p>The statement is true if P(x) holds for <strong>at least one</strong> object.</p>
+
+      <p><strong>Examples:</strong></p>
+      <pre>
+  ∃x Human(x) ∧ Smart(x)
+  "There exists a human who is smart"
+
+  ∃x Cat(x) ∧ BlackCat(x)
+  "There exists a black cat"
+
+  ∃x ∃y Likes(x,y)
+  "Someone likes someone"
+      </pre>
+
+      <h3>3.3 Scope of Quantifiers</h3>
+      <p>
+        The scope of a quantifier is the formula it applies to.
+        Parentheses control scope.
+      </p>
+      <pre>
+  ∀x (Human(x) → Mortal(x))   ← x is bound by ∀
+  ∃y Likes(Alice, y)           ← y is bound by ∃
+
+  Free variable: appears in formula but NOT bound by any quantifier
+  Bound variable: appears under a quantifier
+      </pre>
+
+      <h3>3.4 Quantifier Interactions</h3>
+      <p>
+        The <strong>order of quantifiers matters</strong> when mixing ∀ and ∃:
+      </p>
+      <table>
+        <thead>
+          <tr><th>Formula</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>∀x ∃y Likes(x,y)</strong></td>
+            <td>Everyone likes someone (possibly different people)</td>
+          </tr>
+          <tr>
+            <td><strong>∃y ∀x Likes(x,y)</strong></td>
+            <td>There is someone that everyone likes (same person)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>Key Rule:</strong> ∀x ∃y ≠ ∃y ∀x — swapping quantifiers changes meaning.
+        The second formula is stronger (implies the first but not vice versa).
+      </div>
+
+      <h3>3.5 Negating Quantifiers</h3>
+      <p>De Morgan's Laws apply to quantifiers:</p>
+      <code class="formula-block">¬∀x P(x) &nbsp;≡&nbsp; ∃x ¬P(x)</code>
+      <code class="formula-block">¬∃x P(x) &nbsp;≡&nbsp; ∀x ¬P(x)</code>
+
+      <p><strong>In English:</strong></p>
+      <ul>
+        <li>¬∀x P(x) = "Not all x satisfy P" = "Some x does not satisfy P" = ∃x ¬P(x)</li>
+        <li>¬∃x P(x) = "No x satisfies P" = "All x do not satisfy P" = ∀x ¬P(x)</li>
+      </ul>
+
+      <p><strong>Example:</strong></p>
+      <pre>
+  ¬∀x Human(x) → Mortal(x)
+  ≡ ∃x ¬(Human(x) → Mortal(x))
+  ≡ ∃x Human(x) ∧ ¬Mortal(x)
+  "There exists an immortal human"
+      </pre>
+    </section>
+
+    <!-- ── Sentences ──────────────────────────────── -->
+    <section id="sentences">
+      <h2>4. Well-Formed Formulas (WFF)</h2>
+      <p>
+        A sentence in FOL must be a <strong>well-formed formula (WFF)</strong>
+        with no free variables — every variable must be bound by a quantifier.
+      </p>
+
+      <h3>Atomic Sentences</h3>
+      <p>The simplest sentences — a predicate applied to terms:</p>
+      <code class="formula-block">Human(Socrates) &nbsp;&nbsp; Likes(Alice, Bob) &nbsp;&nbsp; Greater(x, 0)</code>
+
+      <h3>Complex Sentences</h3>
+      <p>Built from atomic sentences using connectives and quantifiers:</p>
+      <pre>
+  Human(Socrates) ∧ Philosopher(Socrates)
+  ∀x Human(x) → Mortal(x)
+  ∃x (Student(x) ∧ Smart(x))
+  ∀x ∀y (Loves(x,y) → Loves(y,x))
+      </pre>
+    </section>
+
+    <!-- ── Interpretation ─────────────────────────── -->
+    <section id="interpretation">
+      <h2>5. Interpretation</h2>
+      <p>
+        An <strong>interpretation</strong> specifies the meaning of FOL sentences
+        by providing:
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Domain D</strong></td>
+            <td>The set of all objects that exist in this world</td>
+          </tr>
+          <tr>
+            <td><strong>Constants</strong></td>
+            <td>Each constant maps to a specific object in D</td>
+          </tr>
+          <tr>
+            <td><strong>Predicates</strong></td>
+            <td>Each predicate maps to a set of tuples from D</td>
+          </tr>
+          <tr>
+            <td><strong>Functions</strong></td>
+            <td>Each function maps tuples of D to elements of D</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Example</h3>
+      <pre>
+  Domain: D = {Alice, Bob, Charlie}
+
+  Interpretation:
+  Human(Alice) = True
+  Human(Bob)   = True
+  Human(Charlie) = False
+
+  Likes = {(Alice, Bob), (Bob, Alice)}  ← pairs where Likes is True
+
+  Evaluate: ∀x Human(x) → Mortal(x)
+  → Need to check for every x in D
+  → True if whenever Human(x) is True, Mortal(x) is also True
+      </pre>
+
+      <h3>Satisfiability and Validity in FOL</h3>
+      <table>
+        <thead>
+          <tr><th>Term</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Satisfiable</strong></td>
+            <td>True in at least one interpretation</td>
+          </tr>
+          <tr>
+            <td><strong>Valid (Tautology)</strong></td>
+            <td>True in ALL interpretations</td>
+          </tr>
+          <tr>
+            <td><strong>Unsatisfiable</strong></td>
+            <td>False in ALL interpretations</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Unification ────────────────────────────── -->
+    <section id="unification">
+      <h2>6. Unification</h2>
+      <p>
+        <strong>Unification</strong> is the process of finding a
+        <strong>substitution</strong> (called a <strong>unifier</strong>) that makes
+        two logical expressions identical. It is the core operation used in
+        FOL inference — especially in Resolution.
+      </p>
+
+      <h3>Substitution</h3>
+      <p>
+        A substitution θ is a mapping from variables to terms:
+      </p>
+      <code class="formula-block">θ = {x/Alice, y/Bob} &nbsp;&nbsp; (replace x with Alice, y with Bob)</code>
+
+      <h3>Unification Algorithm</h3>
+      <p>
+        UNIFY(p, q) returns a substitution θ such that p·θ = q·θ
+        (applying θ to both makes them identical), or FAIL if no such θ exists.
+      </p>
+
+      <h3>Unification Examples</h3>
+      <table>
+        <thead>
+          <tr><th>Expression 1</th><th>Expression 2</th><th>Unifier θ</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Knows(John, x)</td>
+            <td>Knows(John, Jane)</td>
+            <td>{x/Jane}</td>
+          </tr>
+          <tr>
+            <td>Knows(John, x)</td>
+            <td>Knows(y, Bill)</td>
+            <td>{y/John, x/Bill}</td>
+          </tr>
+          <tr>
+            <td>Knows(John, x)</td>
+            <td>Knows(x, Elizabeth)</td>
+            <td>FAIL (x cannot be both John and Elizabeth)</td>
+          </tr>
+          <tr>
+            <td>Knows(John, x)</td>
+            <td>Knows(John, Mother(x))</td>
+            <td>FAIL (occur check — x cannot equal Mother(x))</td>
+          </tr>
+          <tr>
+            <td>Likes(x, x)</td>
+            <td>Likes(Alice, Alice)</td>
+            <td>{x/Alice}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Most General Unifier (MGU)</h3>
+      <p>
+        The <strong>Most General Unifier (MGU)</strong> is the substitution that
+        makes the minimal number of commitments — it is the most general solution.
+      </p>
+
+      <pre>
+  UNIFY(Knows(John, x), Knows(John, y))
+
+  Possible unifiers:
+  θ₁ = {x/Jane, y/Jane}  ← too specific
+  θ₂ = {x/y}             ← MGU (most general — just says x and y are same)
+
+  MGU = {x/y}
+      </pre>
+
+      <h3>Occur Check</h3>
+      <p>
+        Before substituting x with a term t, check that x does not
+        appear <em>inside</em> t. If x appears in t → FAIL (would create infinite structure).
+      </p>
+      <code class="formula-block">UNIFY(x, f(x)) → FAIL &nbsp;&nbsp; (x appears inside f(x))</code>
+
+      <h3>Why Unification Matters</h3>
+      <p>
+        Unification enables <strong>Generalized Modus Ponens</strong> in FOL:
+      </p>
+      <div class="inference-box">
+        ∀x Human(x) → Mortal(x)<br>
+        Human(Socrates)<br>
+        ─────────────────────────────────────<br>
+        Unify: {x/Socrates}<br>
+        ∴ Mortal(Socrates)
+      </div>
+    </section>
+
+    <!-- ── FOL Inference ──────────────────────────── -->
+    <section id="inference">
+      <h2>7. Inference in FOL</h2>
+      <p>
+        FOL uses the same inference rules as Propositional Logic, extended with
+        rules for quantifiers.
+      </p>
+
+      <h3>7.1 Universal Instantiation (UI)</h3>
+      <p>
+        From a universal statement, we can derive a specific instance by
+        substituting any ground term for the variable.
+      </p>
+      <div class="inference-box">
+        ∀x P(x)<br>
+        ─────────────────<br>
+        ∴ P(c) &nbsp;&nbsp; for any constant c
+      </div>
+
+      <p><strong>Example:</strong></p>
+      <pre>
+  ∀x Human(x) → Mortal(x)
+  ──────────────────────────────────
+  Human(Socrates) → Mortal(Socrates)   {x/Socrates}
+  Human(Alice)    → Mortal(Alice)      {x/Alice}
+      </pre>
+
+      <h3>7.2 Existential Instantiation (EI)</h3>
+      <p>
+        From an existential statement, introduce a new constant (Skolem constant)
+        to name the object that exists.
+      </p>
+      <div class="inference-box">
+        ∃x P(x)<br>
+        ─────────────────<br>
+        ∴ P(k) &nbsp;&nbsp; where k is a new constant (Skolem constant)
+      </div>
+
+      <p><strong>Example:</strong></p>
+      <pre>
+  ∃x (Human(x) ∧ Smart(x))
+  ──────────────────────────────────
+  Human(k) ∧ Smart(k)    where k is a new Skolem constant
+      </pre>
+
+      <h3>7.3 Generalized Modus Ponens</h3>
+      <p>Combines Modus Ponens with Unification:</p>
+      <div class="inference-box">
+        ∀x P(x) → Q(x) &nbsp;,&nbsp; P(c)<br>
+        ─────────────────────────────────<br>
+        ∴ Q(c) &nbsp;&nbsp; with unifier {x/c}
+      </div>
+    </section>
+
+    <!-- ── Translation ────────────────────────────── -->
+    <section id="translation">
+      <h2>8. English to FOL Translation</h2>
+      <p>Translating English sentences to FOL is a key GATE skill.</p>
+
+      <p><strong>Domain:</strong> people and things. Predicates: Human(x), Mortal(x), Likes(x,y), Smart(x), Student(x), Teacher(x)</p>
+      <hr>
+
+      <h3>1. "All humans are mortal."</h3>
+      <code class="formula-block amber">∀x Human(x) → Mortal(x)</code>
+      <p><strong>Pattern:</strong> "All A are B" → ∀x A(x) → B(x)</p>
+      <hr>
+
+      <h3>2. "Some humans are smart."</h3>
+      <code class="formula-block amber">∃x Human(x) ∧ Smart(x)</code>
+      <p><strong>Pattern:</strong> "Some A are B" → ∃x A(x) ∧ B(x)</p>
+      <hr>
+
+      <h3>3. "No human is immortal."</h3>
+      <code class="formula-block amber">∀x Human(x) → ¬Immortal(x)</code>
+      <p>Or equivalently: ¬∃x Human(x) ∧ Immortal(x)</p>
+      <hr>
+
+      <h3>4. "Every student likes some teacher."</h3>
+      <code class="formula-block amber">∀x Student(x) → ∃y Teacher(y) ∧ Likes(x,y)</code>
+      <p>Every student (∀x) has some teacher (∃y) that they like.</p>
+      <hr>
+
+      <h3>5. "There is a teacher that every student likes."</h3>
+      <code class="formula-block amber">∃y Teacher(y) ∧ ∀x Student(x) → Likes(x,y)</code>
+      <p>One specific teacher (∃y) is liked by ALL students (∀x). Stronger than sentence 4!</p>
+      <hr>
+
+      <h3>6. "Only students are smart."</h3>
+      <code class="formula-block amber">∀x Smart(x) → Student(x)</code>
+      <p><strong>Pattern:</strong> "Only A are B" → ∀x B(x) → A(x) &nbsp;(note direction flip!)</p>
+      <hr>
+
+      <h3>7. "Alice and Bob both like each other."</h3>
+      <code class="formula-block amber">Likes(Alice, Bob) ∧ Likes(Bob, Alice)</code>
+      <hr>
+
+      <h3>8. "Everyone likes themselves."</h3>
+      <code class="formula-block amber">∀x Likes(x, x)</code>
+
+      <h3>Common Translation Patterns</h3>
+      <table>
+        <thead>
+          <tr><th>English Pattern</th><th>FOL Pattern</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>"All A are B"</td><td>∀x A(x) → B(x)</td></tr>
+          <tr><td>"Some A are B"</td><td>∃x A(x) ∧ B(x)</td></tr>
+          <tr><td>"No A are B"</td><td>∀x A(x) → ¬B(x)</td></tr>
+          <tr><td>"Only A are B"</td><td>∀x B(x) → A(x)</td></tr>
+          <tr><td>"There is an A that is B"</td><td>∃x A(x) ∧ B(x)</td></tr>
+          <tr><td>"Every A has some B"</td><td>∀x A(x) → ∃y B(y) ∧ R(x,y)</td></tr>
+          <tr><td>"There is a B for every A"</td><td>∃y B(y) ∧ ∀x A(x) → R(x,y)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── GATE Tips ──────────────────────────────── -->
+    <section id="gate-tips">
+      <h2>GATE Tips</h2>
+      <ul>
+        <li><strong>∀x uses →</strong> (implication). <strong>∃x uses ∧</strong> (AND). This is the most common mistake — never write ∀x A(x) ∧ B(x) for "All A are B".</li>
+        <li><strong>¬∀x P(x) ≡ ∃x ¬P(x)</strong> and <strong>¬∃x P(x) ≡ ∀x ¬P(x)</strong> — quantifier negation rules.</li>
+        <li>Order matters: <strong>∀x ∃y ≠ ∃y ∀x</strong> — always read left to right.</li>
+        <li><strong>Unification</strong> finds substitution θ to make two expressions identical. MGU = most general unifier.</li>
+        <li>Occur check: UNIFY(x, f(x)) = FAIL — x cannot be substituted with a term containing x.</li>
+        <li><strong>Universal Instantiation</strong>: ∀x P(x) → P(c) for any constant c.</li>
+        <li><strong>Existential Instantiation</strong>: ∃x P(x) → P(k) where k is a new Skolem constant.</li>
+        <li>"Only A are B" → ∀x B(x) → A(x) — note the direction is flipped from "All A are B".</li>
+        <li>FOL is <strong>semi-decidable</strong> — if a sentence is valid, a proof will eventually be found; if invalid, the search may never terminate.</li>
+        <li>Free variable = not bound by any quantifier. A valid FOL sentence has no free variables.</li>
+      </ul>
+    </section>
+
+    <!-- ── Practice Questions ─────────────────────── -->
+    <section id="practice">
+      <div class="quiz-header">📝 &nbsp;Practice Questions</div>
+
+      <h4><span class="q-num">Q1</span> Which FOL formula correctly translates "All cats are animals"?</h4>
+      <ol type="A">
+        <li>∃x Cat(x) ∧ Animal(x)</li>
+        <li>∀x Cat(x) ∧ Animal(x)</li>
+        <li>∀x Cat(x) → Animal(x)</li>
+        <li>∃x Cat(x) → Animal(x)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — ∀x Cat(x) → Animal(x)</strong></p>
+        <p>"All A are B" always uses ∀ with →. Using ∧ with ∀ would mean "everything is both a cat and an animal" — wrong.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q2</span> Which FOL formula correctly translates "Some students are smart"?</h4>
+      <ol type="A">
+        <li>∀x Student(x) → Smart(x)</li>
+        <li>∃x Student(x) → Smart(x)</li>
+        <li>∃x Student(x) ∧ Smart(x)</li>
+        <li>∀x Student(x) ∧ Smart(x)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — ∃x Student(x) ∧ Smart(x)</strong></p>
+        <p>"Some A are B" always uses ∃ with ∧. There exists an x who is both a student AND smart.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q3</span> What is ¬∀x P(x) equivalent to?</h4>
+      <ol type="A">
+        <li>∀x ¬P(x)</li>
+        <li>∃x ¬P(x)</li>
+        <li>¬∃x P(x)</li>
+        <li>∃x P(x)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — ∃x ¬P(x)</strong></p>
+        <p>By quantifier De Morgan: ¬∀x P(x) ≡ ∃x ¬P(x). "Not all x satisfy P" = "Some x does not satisfy P".</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q4</span> UNIFY(Knows(John, x), Knows(y, Alice)) = ?</h4>
+      <ol type="A">
+        <li>FAIL</li>
+        <li>{x/Alice, y/John}</li>
+        <li>{x/John, y/Alice}</li>
+        <li>{x/y}</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — {x/Alice, y/John}</strong></p>
+        <p>To make Knows(John, x) = Knows(y, Alice): set y=John (first arg) and x=Alice (second arg).</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q5</span> What is the difference between ∀x ∃y Likes(x,y) and ∃y ∀x Likes(x,y)?</h4>
+      <ol type="A">
+        <li>They mean the same thing</li>
+        <li>First: everyone likes someone. Second: there is one person everyone likes</li>
+        <li>First: someone likes everyone. Second: everyone likes someone</li>
+        <li>Both are invalid FOL formulas</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B</strong></p>
+        <p>∀x ∃y: for each x, there exists a y (can be different y for each x). ∃y ∀x: one fixed y that all x like. The second is much stronger.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q6</span> "Only teachers can grade exams." Translates to:</h4>
+      <ol type="A">
+        <li>∀x Teacher(x) → CanGrade(x)</li>
+        <li>∃x Teacher(x) ∧ CanGrade(x)</li>
+        <li>∀x CanGrade(x) → Teacher(x)</li>
+        <li>∀x Teacher(x) ∧ CanGrade(x)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — ∀x CanGrade(x) → Teacher(x)</strong></p>
+        <p>"Only A can B" means "if you can B, you must be A" — the direction is flipped. If x can grade, then x must be a teacher.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q7</span> Universal Instantiation allows us to derive:</h4>
+      <ol type="A">
+        <li>∀x P(x) from P(c)</li>
+        <li>P(c) from ∀x P(x) for any constant c</li>
+        <li>∃x P(x) from ∀x P(x)</li>
+        <li>¬P(c) from ∀x ¬P(x)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — P(c) from ∀x P(x)</strong></p>
+        <p>UI lets us substitute any constant for the universally quantified variable to get a specific instance.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q8</span> UNIFY(f(x), f(g(x))) gives:</h4>
+      <ol type="A">
+        <li>{x/g(x)}</li>
+        <li>{x/f(x)}</li>
+        <li>FAIL — occur check violation</li>
+        <li>{g(x)/x}</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: C — FAIL due to occur check</strong></p>
+        <p>To unify f(x) with f(g(x)) we would need x = g(x). But x appears inside g(x) — this violates the occur check and would create an infinite structure.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q9</span> Which of the following is TRUE about FOL?</h4>
+      <ol type="A">
+        <li>FOL is decidable — all valid sentences can be proved or disproved</li>
+        <li>FOL is semi-decidable — valid sentences can be proved but invalid ones may loop forever</li>
+        <li>FOL is less expressive than Propositional Logic</li>
+        <li>FOL cannot express relationships between objects</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B — Semi-decidable</strong></p>
+        <p>FOL is semi-decidable: if a sentence is valid (a tautology), a complete inference procedure will eventually find a proof. But if it is not valid, the search may run forever.</p>
+      </details>
+      <hr>
+
+      <h4><span class="q-num">Q10</span> "Every student has exactly one advisor." Translates to:</h4>
+      <ol type="A">
+        <li>∀x Student(x) → ∃y Advisor(y,x)</li>
+        <li>∀x Student(x) → ∃y Advisor(y,x) ∧ ∀z Advisor(z,x) → z=y</li>
+        <li>∃y ∀x Student(x) → Advisor(y,x)</li>
+        <li>∀x ∀y Student(x) ∧ Advisor(y,x)</li>
+      </ol>
+      <details>
+        <summary><strong>Show Answer</strong></summary>
+        <p><strong>Answer: B</strong></p>
+        <p>"Exactly one" means: there exists an advisor (∃y) AND any other advisor must be the same person (∀z ... z=y). "At least one" + "at most one" = exactly one.</p>
+      </details>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="nav-btn" href="propositional_logic.html">← Propositional Logic</a>
+      <a class="nav-btn next" href="../index.html">Home →</a>
+    </div>
+
+  </article>
+
+  <!-- ── TOC Sidebar ─────────────────────────────── -->
+  <aside class="toc-sidebar">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#comparison">vs Propositional Logic</a></li>
+      <li><a href="#building-blocks">Building Blocks</a></li>
+      <li class="toc-sub"><a href="#building-blocks">Terms</a></li>
+      <li class="toc-sub"><a href="#building-blocks">Predicates</a></li>
+      <li><a href="#quantifiers">Quantifiers</a></li>
+      <li class="toc-sub"><a href="#quantifiers">∀ Universal</a></li>
+      <li class="toc-sub"><a href="#quantifiers">∃ Existential</a></li>
+      <li class="toc-sub"><a href="#quantifiers">Negating Quantifiers</a></li>
+      <li><a href="#sentences">WFF</a></li>
+      <li><a href="#interpretation">Interpretation</a></li>
+      <li><a href="#unification">Unification</a></li>
+      <li><a href="#inference">Inference in FOL</a></li>
+      <li><a href="#translation">English → FOL</a></li>
+      <li><a href="#gate-tips">GATE Tips</a></li>
+      <li><a href="#practice">Practice Questions</a></li>
+    </ol>
+  </aside>
+
+</div>
+
+<script src="../theme.js"></script>
+<script src="../analytics.js"></script>
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+  });
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-sidebar a');
+  sections.forEach(s => new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.toc-sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(s));
+</script>
 </body>
 </html>
-
